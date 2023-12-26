@@ -59,8 +59,14 @@ export class AllowanceChargueComponent implements AfterViewInit {
     @Optional() @Inject(MAT_DIALOG_DATA) public obj: any,
   ) {
     this.creatForm();
-    const { baseAmount } = obj;
+    const { baseAmount, allowanceChargues } = obj;
     this.baseAmount = baseAmount || 0;
+    
+    if (allowanceChargues) {
+      allowanceChargues.map( (i: AllowanceChargue) => {
+        this.addItem(i);
+      })
+    }
 
     this.items.valueChanges.subscribe((itemsValues: AllowanceChargue[]) => {
       this.#allowanceChargues.set([]);
@@ -112,14 +118,13 @@ export class AllowanceChargueComponent implements AfterViewInit {
       : {
           code: '00',
           description: '',
-          baseAmount: 0,
+          baseAmount: this.baseAmount,
           amount: 0,
           rate: 0,
           // descriptionUnitCode: this.unitCodeDefault.description,
         };
     this.items.push(this.itemForm(addData));
-    // Forzar detección de cambios
-    this.cd.detectChanges();
+    
   }
 
   updateControlValue(index: number, property: string, newValue: any) {
@@ -156,7 +161,10 @@ export class AllowanceChargueComponent implements AfterViewInit {
   }
   
   selectAllowanceChargues() {
-    console.log('return');
+    this.dialogRef.close({ event: 'Cancel', data: {
+      allowanceChargues: this.#allowanceChargues(),
+      total: this.total()
+    } });
     
   }
 

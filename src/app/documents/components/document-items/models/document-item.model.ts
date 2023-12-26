@@ -10,7 +10,7 @@ export class DocumentItem {
     total: number = 0;
     quantity: number = 0;
     totalAllowanceChargue: number = 0;
-    allowanceChargue?: AllowanceChargue[] = [];
+    allowanceChargues?: AllowanceChargue[] = [];
     descriptionUnitCode?: string;
     
   

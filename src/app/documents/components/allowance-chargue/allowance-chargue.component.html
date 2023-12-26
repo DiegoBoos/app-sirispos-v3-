@@ -1,7 +1,7 @@
 <!-- Main modal -->
-<mat-dialog-content class=" w-full fixed left-1/3 inset-52 flex items-center justify-center">
+<mat-dialog-content class="fixed left-1/3 inset-52 flex items-center justify-center">
     <!-- <div class="overflow-y-auto fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"> -->
-    <div class="relative p-4 w-full max-w-lg max-h-full">
+    <div class="max-w-2xl p-4 w-full max-h-full">
 
         <div class="relative  bg-white rounded-lg shadow dark:bg-gray-700">
             <!-- Modal header -->
@@ -37,8 +37,13 @@
                                 d="M9 1v16M1 9h16" />
                         </svg>
                     </button>
-
-                    <p class="pl-40 w-max">Valor Base: $ <strong>{{baseAmount | number}}</strong> </p>
+                    
+                    <p class="ml-auto text-lg font-medium text-gray-400 dark:text-white">Vr. Base:
+                        <span class="text-gray-900 font-extrabold">
+                            {{baseAmount | currency}}
+                        </span>
+    
+                    </p>
                 </div>
 
 
@@ -127,7 +132,7 @@
                 <p class="text-right text-lg font-medium text-gray-400 dark:text-white">Subtotal:
                     <span class="text-gray-900 font-extrabold">
 
-                        $ {{total() | number}}
+                        {{total() | currency}}
                         <!-- @if (totalsInvoice()) {
                         $ {{totalsInvoice()!.total | number}}
                         } -->

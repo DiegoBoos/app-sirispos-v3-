@@ -35,6 +35,7 @@ import { SearchUnitCodeComponent } from '@shared/components/search-unit-code/sea
 import { UnitCode } from '@shared/models/unit-code.model';
 import { initFlowbite } from 'flowbite';
 import { AllowanceChargueComponent } from '../allowance-chargue/allowance-chargue.component';
+import { AllowanceChargue } from '../allowance-chargue/models/allowance-charge.model';
 
 @Component({
   selector: 'app-document-items',
@@ -47,7 +48,6 @@ import { AllowanceChargueComponent } from '../allowance-chargue/allowance-chargu
     MatDialogModule,
     NgxMaskDirective,
     SearchUnitCodeComponent,
-
   ],
   providers: [provideNgxMask()],
   templateUrl: './document-items.component.html',
@@ -58,8 +58,6 @@ import { AllowanceChargueComponent } from '../allowance-chargue/allowance-chargu
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
-
 export class DocumentItemsComponent implements AfterViewInit {
   private dialog = inject(MatDialog);
   private fb = inject(FormBuilder);
@@ -83,7 +81,7 @@ export class DocumentItemsComponent implements AfterViewInit {
     let total: number = 0;
     this.#documentItems().map((i: DocumentItem) => {
       totalItems++;
-      total += +i.quantity * +i.unitPrice;
+      total += +i.quantity * (+i.unitPrice + i.totalAllowanceChargue);
     });
 
     const totalInWords = numberToWords(total, {
@@ -150,8 +148,6 @@ export class DocumentItemsComponent implements AfterViewInit {
     return this.validatorsService.getFieldError(form, field);
   }
 
-  
-
   itemForm(data?: DocumentItem): FormGroup {
     return this.fb.group({
       consecutive: [null],
@@ -167,6 +163,7 @@ export class DocumentItemsComponent implements AfterViewInit {
       quantity: [data ? data.quantity : 1, Validators.required],
       unitPrice: [data ? data.unitPrice : 0, Validators.required],
       totalAllowanceChargue: 0,
+      allowanceChargues: [],
       total: [data ? data.total : 0, Validators.required],
       descriptionUnitCode: [
         data ? data.descriptionUnitCode : this.unitCodeDefault.description,
@@ -189,6 +186,7 @@ export class DocumentItemsComponent implements AfterViewInit {
           quantity: 1,
           unitPrice: 0,
           totalAllowanceChargue: 0,
+          allowanceChargues: [],
           total: 0,
           descriptionUnitCode: this.unitCodeDefault.description,
         };
@@ -209,8 +207,10 @@ export class DocumentItemsComponent implements AfterViewInit {
       const documentItem: DocumentItem = itemControl.value;
       const quantity = +documentItem.quantity;
       const unitPrice = +documentItem.unitPrice;
-      const totalItem = quantity * unitPrice;
-      this.updateControlValue(index,'total',totalItem);
+      const allowanceChargue = documentItem.totalAllowanceChargue? +documentItem.totalAllowanceChargue : 0;
+      const totalItem = quantity * (unitPrice + allowanceChargue);
+      this.updateControlValue(index, 'total', totalItem);
+      
       this.emitTotalsInvoiceEvent.emit(this.totals());
     }
   }
@@ -221,8 +221,9 @@ export class DocumentItemsComponent implements AfterViewInit {
       const documentItem: DocumentItem = itemControl.value;
       const totalItem = +documentItem.total;
       const quantity = +documentItem.quantity;
-      const unitPrice = totalItem / quantity;
-      this.updateControlValue(index,'unitPrice',unitPrice);
+      const allowanceChargue = documentItem.totalAllowanceChargue? +documentItem.totalAllowanceChargue : 0;
+      const unitPrice = (totalItem + allowanceChargue*-1) / quantity;
+      this.updateControlValue(index, 'unitPrice', unitPrice);
       this.emitTotalsInvoiceEvent.emit(this.totals());
     }
   }
@@ -258,24 +259,25 @@ export class DocumentItemsComponent implements AfterViewInit {
     const itemControl = this.items.at(index);
     if (itemControl) {
       const documentItem: DocumentItem = itemControl.value;
-      const baseAmount = documentItem.unitPrice; 
+      const baseAmount = documentItem.unitPrice;
+      const allowanceChargues: AllowanceChargue[] = documentItem.allowanceChargues!;
       const dialogRef = this.dialog.open(AllowanceChargueComponent, {
-        data: { baseAmount }
+        data: { baseAmount, allowanceChargues },
       });
       dialogRef.afterClosed().subscribe((result) => {
         if (result) {
           const { data } = result;
-  
+
           if (data) {
-            console.log(data);
-            
-            // const unitCode: UnitCode = data;
-            // this.updateControlValue(index, 'unitCode', unitCode.code);
-            // this.updateControlValue(
-            //   index,
-            //   'descriptionUnitCode',
-            //   unitCode.description
-            // );
+            const { allowanceChargues, total } = data;
+
+
+            if (total) {
+              
+              this.updateControlValue(index, 'allowanceChargues', allowanceChargues);
+              this.updateControlValue(index, 'totalAllowanceChargue', total);
+              this.calculateTotal(index);
+            }
             this.cd.detectChanges();
           }
         }
