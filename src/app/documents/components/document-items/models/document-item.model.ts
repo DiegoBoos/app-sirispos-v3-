@@ -1,3 +1,4 @@
+import { TaxRate } from "@shared/models/tax-rate.model";
 import { AllowanceChargue } from "../../allowance-chargue/models/allowance-charge.model";
 
 
@@ -11,6 +12,7 @@ export class DocumentItem {
     quantity: number = 0;
     totalAllowanceChargue: number = 0;
     allowanceChargues?: AllowanceChargue[] = [];
+    taxRates?: TaxRate[] = [];
     descriptionUnitCode?: string;
     
   

@@ -36,6 +36,12 @@ import { UnitCode } from '@shared/models/unit-code.model';
 import { initFlowbite } from 'flowbite';
 import { AllowanceChargueComponent } from '../allowance-chargue/allowance-chargue.component';
 import { AllowanceChargue } from '../allowance-chargue/models/allowance-charge.model';
+import { TaxComponent } from '../tax/tax.component';
+import { TaxRate } from '@shared/models/tax-rate.model';
+import { ItemTax } from './interfaces/item-tax.interface';
+import { getObjectValues } from '@shared/helpers/get-object-values';
+import { TaxScheme } from '@shared/models/tax-scheme.model';
+import { TaxSchemeService } from '@shared/services/tax-scheme.service';
 
 @Component({
   selector: 'app-document-items',
@@ -64,6 +70,9 @@ export class DocumentItemsComponent implements AfterViewInit {
   private cd = inject(ChangeDetectorRef);
   public form!: FormGroup;
   private validatorsService = inject(ValidatorsService);
+  private taxSchemesService = inject(TaxSchemeService);
+
+  private taxSchemes = computed(()=>this.taxSchemesService.taxSchemesItems())
 
   @Input({ required: true }) clienteId!: string;
 
@@ -77,12 +86,49 @@ export class DocumentItemsComponent implements AfterViewInit {
   };
 
   public totals = computed(() => {
-    let totalItems: number = 0;
-    let total: number = 0;
+    let lineCount: number = 0;
+    let subTotal: number = 0;
+    let allowanceChangueTotal: number = 0;
+    const itemTax: ItemTax[] = [];
+
     this.#documentItems().map((i: DocumentItem) => {
-      totalItems++;
-      total += +i.quantity * (+i.unitPrice + i.totalAllowanceChargue);
+      lineCount++;
+      const itemSubtotal = (+i.quantity * +i.unitPrice);
+      const itemAllowanceChangueTotal = (+i.quantity * i.totalAllowanceChargue);
+      subTotal += itemSubtotal;
+      allowanceChangueTotal += itemAllowanceChangueTotal;
+      i.taxRates?.map((taxRate: TaxRate) => {
+        const taxScheme: TaxScheme = this.taxSchemes().filter(ts=>ts.identifier===taxRate.tax)[0];
+        return itemTax.push({ baseAmount: (itemSubtotal + itemAllowanceChangueTotal), taxRate, taxScheme, totalRate: 0})
+      });
     });
+
+    // Objeto para almacenar los resultados agrupados
+    const groupedByTax: ItemTax = itemTax.reduce((result: any, current) => {
+      const tax = current.taxRate.tax;
+      const taxValue = (+current.baseAmount) * (+current.taxRate.rate/100);
+      // Si el grupo aún no existe, créalo con el valor actual
+      if (!result[tax]) {
+        result[tax] = { taxRate: current.taxRate, taxScheme: current.taxScheme, totalRate: taxValue };
+      } else {
+        // Si ya existe, simplemente suma el valor actual al totalRate
+        result[tax].totalRate += taxValue;
+      }
+
+      return result;
+    }, {});
+
+    const objValues: any[] = getObjectValues(groupedByTax);
+    const itemsTax: any[] = [];
+    objValues.map(i=>itemsTax.push(i))
+    
+    let taxTotal = 0;
+    
+    itemsTax.map(i=>taxTotal += i.totalRate)
+
+    const total = subTotal + allowanceChangueTotal + taxTotal;
+
+
 
     const totalInWords = numberToWords(total, {
       plural: 'Pesos M/CTE',
@@ -91,8 +137,11 @@ export class DocumentItemsComponent implements AfterViewInit {
       centSingular: 'centavo',
     });
 
-    const totalsInvoice = {
-      totalItems,
+    const totalsInvoice: TotalsInvoice = {
+      lineCount,
+      subTotal,
+      allowanceChangueTotal,
+      itemsTax,
       total,
       totalInWords,
     };
@@ -163,6 +212,7 @@ export class DocumentItemsComponent implements AfterViewInit {
       quantity: [data ? data.quantity : 1, Validators.required],
       unitPrice: [data ? data.unitPrice : 0, Validators.required],
       totalAllowanceChargue: 0,
+      taxRates: [],
       allowanceChargues: [],
       total: [data ? data.total : 0, Validators.required],
       descriptionUnitCode: [
@@ -186,6 +236,7 @@ export class DocumentItemsComponent implements AfterViewInit {
           quantity: 1,
           unitPrice: 0,
           totalAllowanceChargue: 0,
+          taxRates: [],
           allowanceChargues: [],
           total: 0,
           descriptionUnitCode: this.unitCodeDefault.description,
@@ -197,7 +248,7 @@ export class DocumentItemsComponent implements AfterViewInit {
 
   removeItem(index: number): void {
     this.items.removeAt(index);
-    this.emitTotalsInvoiceEvent.emit(this.totals());
+    // this.emitTotalsInvoiceEvent.emit(this.totals());
     this.cd.detectChanges();
   }
 
@@ -205,12 +256,24 @@ export class DocumentItemsComponent implements AfterViewInit {
     const itemControl = this.items.at(index);
     if (itemControl) {
       const documentItem: DocumentItem = itemControl.value;
+      
       const quantity = +documentItem.quantity;
       const unitPrice = +documentItem.unitPrice;
-      const allowanceChargue = documentItem.totalAllowanceChargue? +documentItem.totalAllowanceChargue : 0;
-      const totalItem = quantity * (unitPrice + allowanceChargue);
+      const allowanceChargue = documentItem.totalAllowanceChargue
+        ? +documentItem.totalAllowanceChargue
+        : 0;
+
+      const subtotalItemBeforeTaxes: number = unitPrice + allowanceChargue;
+
+      let totalTaxes = 0;
+      documentItem.taxRates?.map(
+        (i) => (totalTaxes += subtotalItemBeforeTaxes * (i.rate / 100))
+      );
+
+      const totalItem = quantity * (subtotalItemBeforeTaxes + totalTaxes);
+
       this.updateControlValue(index, 'total', totalItem);
-      
+
       this.emitTotalsInvoiceEvent.emit(this.totals());
     }
   }
@@ -221,8 +284,10 @@ export class DocumentItemsComponent implements AfterViewInit {
       const documentItem: DocumentItem = itemControl.value;
       const totalItem = +documentItem.total;
       const quantity = +documentItem.quantity;
-      const allowanceChargue = documentItem.totalAllowanceChargue? +documentItem.totalAllowanceChargue : 0;
-      const unitPrice = (totalItem + allowanceChargue*-1) / quantity;
+      const allowanceChargue = documentItem.totalAllowanceChargue
+        ? +documentItem.totalAllowanceChargue
+        : 0;
+      const unitPrice = (totalItem + allowanceChargue * -1) / quantity;
       this.updateControlValue(index, 'unitPrice', unitPrice);
       this.emitTotalsInvoiceEvent.emit(this.totals());
     }
@@ -255,12 +320,31 @@ export class DocumentItemsComponent implements AfterViewInit {
     });
   }
 
+  loadTaxes(index: number): void {
+    const dialogRef = this.dialog.open(TaxComponent, {});
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        const { data } = result;
+
+        if (data) {
+          const { taxRates } = data;
+          if (taxRates) {
+            this.updateControlValue(index, 'taxRates', taxRates);
+            this.calculateTotal(index);
+          }
+          this.cd.detectChanges();
+        }
+      }
+    });
+  }
+
   loadAllowanceChargues(index: number): void {
     const itemControl = this.items.at(index);
     if (itemControl) {
       const documentItem: DocumentItem = itemControl.value;
       const baseAmount = documentItem.unitPrice;
-      const allowanceChargues: AllowanceChargue[] = documentItem.allowanceChargues!;
+      const allowanceChargues: AllowanceChargue[] =
+        documentItem.allowanceChargues!;
       const dialogRef = this.dialog.open(AllowanceChargueComponent, {
         data: { baseAmount, allowanceChargues },
       });
@@ -271,10 +355,12 @@ export class DocumentItemsComponent implements AfterViewInit {
           if (data) {
             const { allowanceChargues, total } = data;
 
-
             if (total) {
-              
-              this.updateControlValue(index, 'allowanceChargues', allowanceChargues);
+              this.updateControlValue(
+                index,
+                'allowanceChargues',
+                allowanceChargues
+              );
               this.updateControlValue(index, 'totalAllowanceChargue', total);
               this.calculateTotal(index);
             }

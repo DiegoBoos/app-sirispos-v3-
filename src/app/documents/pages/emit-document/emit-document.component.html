@@ -1,6 +1,6 @@
-<form [formGroup]="form" (ngSubmit)="onSave()"  class="pt-8 max-w-7xl mx-auto">
-    
-    
+<form [formGroup]="form" (ngSubmit)="onSave()" class="pt-8 max-w-7xl mx-auto">
+
+
 
     <!-- Tipo de Documento -->
 
@@ -21,7 +21,7 @@
 
     </select>
 
-    
+
     <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
 
 
@@ -269,7 +269,7 @@
                     Número de líneas:
                 </strong>
                 @if (totalsInvoice()) {
-                {{totalsInvoice()!.totalItems}}
+                {{totalsInvoice()!.lineCount}}
                 }
             </p>
 
@@ -287,7 +287,7 @@
                     <p class="mb-0 pr-1 text-right text-sm text-gray-500 dark:text-gray-400">
                         <span class="uppercase">
                             @if (totalsInvoice()) {
-                            $ {{totalsInvoice()!.total | number}}
+                            $ {{totalsInvoice()!.subTotal | number}}
                             }
 
                         </span>
@@ -297,9 +297,9 @@
             <div class="flex flex-row">
                 <div class="basis-1/2">
                     <p class="mb-0 text-sm text-gray-500 dark:text-gray-400">
-                        <strong class="pr-2 pt-1 font-semibold text-gray-900 dark:text-white">
-                            Descuento:
-                        </strong>
+
+                        Descuento:
+
 
                     </p>
                 </div>
@@ -307,13 +307,36 @@
                     <p class="mb-0 pr-1 text-right text-sm text-gray-500 dark:text-gray-400">
                         <span class="uppercase">
                             @if (totalsInvoice()) {
-                            ${{0 | number}}
+                            ${{totalsInvoice()?.allowanceChangueTotal| number}}
                             }
 
                         </span>
                     </p>
                 </div>
             </div>
+            @if (totalsInvoice()) {
+
+            @for (item of totalsInvoice()?.itemsTax; track item.taxScheme.id) {
+            <div class="flex flex-row">
+                <div class="basis-1/2">
+                    <p class="mb-0 text-sm text-gray-500 dark:text-gray-400">
+
+                        {{item.taxScheme.name}} {{item.taxRate.rate}}%
+
+
+                    </p>
+                </div>
+                <div class="basis-1/2">
+                    <p class="mb-0 pr-1 text-right text-sm text-gray-500 dark:text-gray-400">
+                        <span class="uppercase">
+                            ${{item.totalRate | number}}
+
+                        </span>
+                    </p>
+                </div>
+            </div>
+            }
+            }
 
         </div>
     </div>
