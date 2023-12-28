@@ -20,7 +20,14 @@
             </div>
             <!-- Modal body -->
             <div class="p-4 md:p-3">
-
+                <div class="mt-4 flex bg-blue-100 h-14 items-center rounded border border-solid border-gray-300 p-4">        
+                    <p class="ml-auto text-lg font-medium text-gray-400 dark:text-white">Vr. Base:
+                        <span class="text-gray-900 font-extrabold">
+                            {{baseAmount | currency}}
+                        </span>
+    
+                    </p>
+                </div>
                 <ul>
                     @for (tax of taxSchemesItems(); track tax.id) {
                     <li class="py-3 sm:py-4">

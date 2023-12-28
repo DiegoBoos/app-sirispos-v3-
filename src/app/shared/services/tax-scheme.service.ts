@@ -13,7 +13,8 @@ export class TaxSchemeService {
   private http = inject(HttpClient);
   
   #taxSchemes = signal<TaxScheme[]>([]);
-  public taxSchemesItems = computed(() => this.#taxSchemes().filter(i=>i.identifier==='04' || i.identifier==='01' ));
+  public taxSchemesItems = computed(() => this.#taxSchemes().filter(i=>i.identifier === '04' || i.identifier === '01' ));
+  public taxSchemesGenerics = computed(() => this.#taxSchemes().filter(i=>i.identifier === '05' || i.identifier === '06' || i.identifier === '07' || i.identifier === 'RF' ));
 
   constructor() {
     this.getAll().subscribe();

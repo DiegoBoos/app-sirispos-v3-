@@ -321,21 +321,37 @@ export class DocumentItemsComponent implements AfterViewInit {
   }
 
   loadTaxes(index: number): void {
-    const dialogRef = this.dialog.open(TaxComponent, {});
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        const { data } = result;
+    const itemControl = this.items.at(index);
+    if (itemControl) {
 
-        if (data) {
-          const { taxRates } = data;
-          if (taxRates) {
-            this.updateControlValue(index, 'taxRates', taxRates);
-            this.calculateTotal(index);
+      const documentItem: DocumentItem = itemControl.value;
+      const baseAmount = +documentItem.unitPrice + documentItem.totalAllowanceChargue;
+      const taxRates: TaxRate[] =
+        documentItem.taxRates!;
+
+      const dialogRef = this.dialog.open(TaxComponent, {
+        data: { baseAmount, taxRates },
+      });
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          const { data } = result;
+  
+          if (data) {
+            const { taxRates } = data;
+  
+            taxRates?.map((taxRate: TaxRate) => {
+              const taxScheme: TaxScheme = this.taxSchemes().filter(ts=>ts.identifier===taxRate.tax)[0];
+              taxRate.taxScheme = taxScheme;
+            });
+  
+            if (taxRates) {
+              this.updateControlValue(index, 'taxRates', taxRates);
+              this.calculateTotal(index);
+            }
           }
-          this.cd.detectChanges();
         }
-      }
-    });
+      });
+    }
   }
 
   loadAllowanceChargues(index: number): void {

@@ -8,4 +8,7 @@ export interface TotalsInvoice {
     itemsTax: ItemTax[],
     total: number,
     totalInWords: string
+    globalAllowance?: number,
+    tip?: number,
+    delivery?: number,
 }

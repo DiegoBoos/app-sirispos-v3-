@@ -7,6 +7,7 @@ import { TaxSchemeService } from '@shared/services/tax-scheme.service';
 import { initFlowbite } from 'flowbite';
 import { TaxRate } from '@shared/models/tax-rate.model';
 import { getObjectValues } from '@shared/helpers/get-object-values';
+import { TaxScheme } from '@shared/models/tax-scheme.model';
 
 @Component({
   selector: 'app-tax',
@@ -32,7 +33,7 @@ export class TaxComponent implements AfterViewInit {
 
   private taxSchemeService = inject(TaxSchemeService);
 
-  selectedRates: { [key: string]: number } = {};
+  selectedRates: { [key: string]: any } = {};
 
   public taxSchemesItems = computed(()=>{
     const taxSchemas = this.taxSchemeService.taxSchemesItems();
@@ -42,10 +43,28 @@ export class TaxComponent implements AfterViewInit {
     return taxSchemas
   });
 
+
+
+  public baseAmount: number = 0;
+
   constructor(
     public dialogRef: MatDialogRef<TaxComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public obj: any,
-  ) {}
+  ) {
+
+    const { baseAmount, taxRates } = obj;
+    this.baseAmount = baseAmount || 0;
+
+    
+    if (taxRates) {
+      taxRates.map((i:TaxRate)=>{
+        this.selectedRates[i.taxScheme.identifier] = i;
+        
+      })
+    }
+
+
+  }
 
   ngAfterViewInit(): void {
     initFlowbite();
@@ -56,6 +75,8 @@ export class TaxComponent implements AfterViewInit {
   selectTaxes() {
     const taxRates: TaxRate[] = [];
     const objValues: any[] = getObjectValues(this.selectedRates);
+
+    
     objValues.map(i=>taxRates.push(i))
 
     this.dialogRef.close({ event: 'Cancel', data: {

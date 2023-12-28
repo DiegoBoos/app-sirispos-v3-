@@ -250,6 +250,65 @@
     <app-document-items (emitTotalsInvoiceEvent)="loadTotalsInvoice($event)"
         [clienteId]="customerSelected.cliente_id.toString()" />
 
+
+    <div class="flex mt-1 flex-col space-y-0.5">
+        <div class="flex basis-1/4">
+            <div class="basis-11/12 my-2 text-right">
+                <p class="mb-0 text-sm text-gray-500 dark:text-gray-400">
+                    <strong class="pr-2 pt-1 font-semibold text-gray-900 dark:text-white">
+                        Descuento Global:
+                    </strong>
+                </p>
+            </div>
+            <div class="basis-1/12">
+                <input formControlName="globalAllowance" type="text" prefix="$ " mask="separator.2"
+                    (blur)="calculateTotal()" thousandSeparator=","
+                    class="text-right rounded-md bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    [ngClass]="{
+                    'rounded bg-red-50 border border-red-500 text-red-900 placeholder-red-700   focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500': isValidField('globalAllowance')
+                  }">
+            </div>
+        </div>
+
+        <div class="flex basis-1/4">
+            <div class="basis-11/12 my-2 text-right">
+                <p class="mb-0 text-sm text-gray-500 dark:text-gray-400">
+                    <strong class="pr-2 pt-1 font-semibold text-gray-900 dark:text-white">
+                        Propina:
+                    </strong>
+                </p>
+            </div>
+            <div class="basis-1/12">
+                <input formControlName="tip" type="text" prefix="$ " mask="separator.2" (blur)="calculateTotal()"
+                    thousandSeparator=","
+                    class="text-right rounded-md bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    [ngClass]="{
+                    'rounded bg-red-50 border border-red-500 text-red-900 placeholder-red-700   focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500': isValidField('tip')
+                  }">
+            </div>
+        </div>
+
+        <div class="flex basis-1/4">
+            <div class="basis-11/12 my-2 text-right">
+                <p class="mb-0 text-sm text-gray-500 dark:text-gray-400">
+                    <strong class="pr-2 pt-1 font-semibold text-gray-900 dark:text-white">
+                        Domicilio:
+                    </strong>
+                </p>
+            </div>
+            <div class="basis-1/12">
+                <input formControlName="delivery" type="text" prefix="$ " mask="separator.2" (blur)="calculateTotal()"
+                    thousandSeparator=","
+                    class="text-right rounded-md bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    [ngClass]="{
+                    'rounded bg-red-50 border border-red-500 text-red-900 placeholder-red-700   focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500': isValidField('delivery')
+                  }">
+            </div>
+        </div>
+    </div>
+
+
+
     <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
 
     <div class="flex flex-row">
@@ -307,7 +366,8 @@
                     <p class="mb-0 pr-1 text-right text-sm text-gray-500 dark:text-gray-400">
                         <span class="uppercase">
                             @if (totalsInvoice()) {
-                            ${{totalsInvoice()?.allowanceChangueTotal| number}}
+                            ${{totalsInvoice().allowanceChangueTotal + (form.controls['globalAllowance'].value*-1) |
+                            number}}
                             }
 
                         </span>
@@ -316,7 +376,7 @@
             </div>
             @if (totalsInvoice()) {
 
-            @for (item of totalsInvoice()?.itemsTax; track item.taxScheme.id) {
+            @for (item of totalsInvoice().itemsTax; track item.taxScheme.id) {
             <div class="flex flex-row">
                 <div class="basis-1/2">
                     <p class="mb-0 text-sm text-gray-500 dark:text-gray-400">
@@ -368,10 +428,32 @@
 
 
     <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
+    <div class="text-right mr-4">
 
-    <button type="button" type="submit"
-        class="px-6 py-3.5 text-base font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-        Emitir documento</button>
+        <button type="button" (click)="loadGenericTaxes()"
+            class=" text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-500 dark:focus:ring-green-800">
+            Impuestos Genericos y Retenciones
+        </button>
+    </div>
+
+
+    <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
+
+    <div class="text-center mr-4">
+        <!-- <button type="button" type="submit"
+            class="px-6 py-3.5 text-base font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            Emitir documento</button> -->
+        <button type="button"
+            class="px-6 py-3.5 text-base font-medium text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            <svg class="pr-2 w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor" viewBox="0 0 16 20">
+                <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z" />
+                <path
+                    d="M14.067 0H7v5a2 2 0 0 1-2 2H0v4h7.414l-1.06-1.061a1 1 0 1 1 1.414-1.414l2.768 2.768a1 1 0 0 1 0 1.414l-2.768 2.768a1 1 0 0 1-1.414-1.414L7.414 13H0v5a1.969 1.969 0 0 0 1.933 2h12.134A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.933-2Z" />
+            </svg>
+            Emitir documento
+        </button>
+    </div>
 </form>
 
 
