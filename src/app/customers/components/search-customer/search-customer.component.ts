@@ -15,6 +15,7 @@ import { SearchParam } from '@shared/interfaces/search-param.interface';
 import { FormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { SearchPaymentsComponent } from '../../../customer-payments/components/search-payments/search-payments.component';
+import { initFlowbite } from 'flowbite';
 
 @Component({
   selector: 'app-search-customer',
@@ -22,9 +23,7 @@ import { SearchPaymentsComponent } from '../../../customer-payments/components/s
   imports: [CommonModule, FormsModule, MatDialogModule],
   templateUrl: './search-customer.component.html',
   styles: `
-    :host {
-      display: block;
-    }
+
   `,
 })
 export class SearchCustomerComponent implements OnInit {
@@ -58,6 +57,7 @@ export class SearchCustomerComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadData();
+    initFlowbite()
   }
 
   loadData() {

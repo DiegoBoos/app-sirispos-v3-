@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, ChangeDetectionStrategy, Component, Inject, Optional, computed, inject, signal } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, Inject, Optional, computed, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
@@ -7,7 +7,6 @@ import { TaxSchemeService } from '@shared/services/tax-scheme.service';
 import { initFlowbite } from 'flowbite';
 import { TaxRate } from '@shared/models/tax-rate.model';
 import { getObjectValues } from '@shared/helpers/get-object-values';
-import { TaxScheme } from '@shared/models/tax-scheme.model';
 
 @Component({
   selector: 'app-tax',
@@ -39,16 +38,17 @@ export class TaxComponent implements AfterViewInit {
     const taxSchemas = this.taxSchemeService.taxSchemesItems();
     taxSchemas.forEach((i) => {
       i.taxRates.map(j=>j.rate = Math.trunc(j.rate))
-    })
+    });
     return taxSchemas
   });
 
+  
 
 
   public baseAmount: number = 0;
 
   constructor(
-    public dialogRef: MatDialogRef<TaxComponent>,
+    public dialogRefItemsTax: MatDialogRef<TaxComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public obj: any,
   ) {
 
@@ -62,7 +62,6 @@ export class TaxComponent implements AfterViewInit {
         
       })
     }
-
 
   }
 
@@ -79,7 +78,7 @@ export class TaxComponent implements AfterViewInit {
     
     objValues.map(i=>taxRates.push(i))
 
-    this.dialogRef.close({ event: 'Cancel', data: {
+    this.dialogRefItemsTax.close({ event: 'Cancel', data: {
       taxRates
     } });
     
@@ -87,7 +86,7 @@ export class TaxComponent implements AfterViewInit {
 
   closeDialog(): void {
     
-    this.dialogRef.close({ event: 'Cancel', data: this.selectedRates });
+    this.dialogRefItemsTax.close({ event: 'Cancel', data: this.selectedRates });
   }
 
  }

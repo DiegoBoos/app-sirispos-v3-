@@ -6,9 +6,11 @@ export interface TotalsInvoice {
     subTotal: number,
     allowanceChangueTotal: number,
     itemsTax: ItemTax[],
+    genericsTax: ItemTax[],
     total: number,
     totalInWords: string
-    globalAllowance?: number,
-    tip?: number,
-    delivery?: number,
+    globalAllowance: number,
+    totalGenericsTax: number,
+    tip: number,
+    delivery: number,
 }

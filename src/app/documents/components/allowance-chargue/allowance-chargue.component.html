@@ -1,8 +1,9 @@
 <!-- Main modal -->
-<mat-dialog-content class="fixed left-1/3 inset-52 top-24 h-full flex items-center justify-center">
-    <div class="relative pt-0 w-full max-w-xl" >
-
-        <div class="relative  bg-white rounded-lg shadow dark:bg-gray-700">
+<div class="top-10 h-full w-full flex items-center justify-center">
+    <!-- <div class="modal-overlay absolute w-full h-full max-w-xl" > -->
+    <div class="relative p-4 w-full max-w-xl">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <!-- Modal header -->
             <div class="flex items-center justify-between p-4 md:p-3 border-b rounded-t dark:border-gray-600">
                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
@@ -76,7 +77,7 @@
 
                                     <td class="px-1">
 
-                                        <select formControlName="code"
+                                        <select formControlName="code" (change)="changueCode($index, $event.target)"
                                             class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
 
                                             @for (item of allowanceChargueCodes() ; track item.id) {
@@ -90,7 +91,7 @@
 
 
                                     <td class="px-1">
-                                        <input formControlName="rate" type="text" mask="separator.2"
+                                        <input selectText formControlName="rate" type="text" mask="separator.2"
                                             [allowNegativeNumbers]="true" thousandSeparator="," separatorLimit="100"
                                             (blur)="calculateAmount($index)"
                                             class=" text-right rounded-md bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -104,7 +105,7 @@
                                     </td>
 
                                     <td class="px-1">
-                                        <input formControlName="amount" type="text" (blur)="calculateRate($index)"
+                                        <input selectText formControlName="amount" type="text" (blur)="calculateRate($index)"
                                             prefix="$ " mask="separator.2" [allowNegativeNumbers]="true" thousandSeparator=","
                                             class=" text-right rounded-md bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             [ngClass]="{
@@ -131,7 +132,7 @@
                 <p class="text-right text-lg font-medium text-gray-400 dark:text-white">Subtotal:
                     <span class="text-gray-900 font-extrabold">
 
-                        {{total() | currency}}
+                        {{subtotal() | currency}}
                         <!-- @if (totalsInvoice()) {
                         $ {{totalsInvoice()!.total | number}}
                         } -->
@@ -151,4 +152,4 @@
             </div>
         </div>
     </div>
-</mat-dialog-content>
+</div>

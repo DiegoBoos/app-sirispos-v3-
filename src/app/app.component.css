@@ -1,0 +1,5 @@
+::ng-deep .mat-dialog-container {
+    box-shadow: none;
+    border: none;
+    /* Agregar cualquier estilo adicional según sea necesario */
+  }

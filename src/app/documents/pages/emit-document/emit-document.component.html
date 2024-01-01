@@ -246,9 +246,44 @@
 
 
 
+    <div class="mt-1 items-center rounded border border-solid border-gray-300 p-4">
 
-    <app-document-items (emitTotalsInvoiceEvent)="loadTotalsInvoice($event)"
-        [clienteId]="customerSelected.cliente_id.toString()" />
+        <!-- @if (attachedFiles.length > 0) { -->
+        <div class="flex text-center justify-center items-center">
+            @if (loadingFiles()) {
+                <div
+                    class="text-center px-3 w-40 py-2 text-xs font-medium leading-none text-blue-800 bg-blue-200 rounded-full animate-pulse dark:bg-blue-900 dark:text-blue-200">
+                    Cargando archivos...</div>
+            } @else {
+                <label class="text-xl text-slate-500 text-center cursor-pointer block mb-2 font-medium dark:text-white"
+                for="multiple_files">
+                Adjuntar Archivos</label>
+            }
+
+        </div>
+        <ul class="items-center justify-center mt-2 space-y-1 text-left text-gray-500 dark:text-gray-400">
+            
+            <input (change)="onFileChange($event)"
+                class="hidden w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                id="multiple_files" type="file" multiple>
+            @for (file of attachedFiles(); track $index) {
+
+            
+            <li class="text-center items-center space-x-1 rtl:space-x-reverse">
+                <span class="w-max "> <span class="max-w-50">{{ file.name }}</span> <span
+                        class="font-semibold text-gray-900 dark:text-white">&nbsp; {{ file.size }}</span> <span
+                        (click)="removeFile($index)"
+                        class="pl-3 cursor-pointer text-lg font-extrabold text-red-600">X</span>
+                </span>
+            </li>
+            }
+        </ul>
+        <!-- } -->
+
+
+    </div>
+
+    <app-document-items (emitItemsEvent)="loadItems($event)" [clienteId]="customerSelected.cliente_id.toString()" />
 
 
     <div class="flex mt-1 flex-col space-y-0.5">
@@ -261,7 +296,7 @@
                 </p>
             </div>
             <div class="basis-1/12">
-                <input formControlName="globalAllowance" type="text" prefix="$ " mask="separator.2"
+                <input selectText formControlName="globalAllowance" type="text" prefix="$ " mask="separator.2"
                     (blur)="calculateTotal()" thousandSeparator=","
                     class="text-right rounded-md bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     [ngClass]="{
@@ -279,8 +314,8 @@
                 </p>
             </div>
             <div class="basis-1/12">
-                <input formControlName="tip" type="text" prefix="$ " mask="separator.2" (blur)="calculateTotal()"
-                    thousandSeparator=","
+                <input selectText formControlName="tip" type="text" prefix="$ " mask="separator.2"
+                    (blur)="calculateTotal()" thousandSeparator=","
                     class="text-right rounded-md bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     [ngClass]="{
                     'rounded bg-red-50 border border-red-500 text-red-900 placeholder-red-700   focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500': isValidField('tip')
@@ -297,8 +332,8 @@
                 </p>
             </div>
             <div class="basis-1/12">
-                <input formControlName="delivery" type="text" prefix="$ " mask="separator.2" (blur)="calculateTotal()"
-                    thousandSeparator=","
+                <input selectText formControlName="delivery" type="text" prefix="$ " mask="separator.2"
+                    (blur)="calculateTotal()" thousandSeparator=","
                     class="text-right rounded-md bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     [ngClass]="{
                     'rounded bg-red-50 border border-red-500 text-red-900 placeholder-red-700   focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500': isValidField('delivery')
@@ -317,7 +352,7 @@
                 <strong class="pr-2 pt-1 font-semibold text-gray-900 dark:text-white">
                     Valor en letras:
                 </strong>
-                <span class="italic">
+                <span class="pt-1 italic">
                     @if (totalsInvoice()) {
                     {{totalsInvoice()!.totalInWords}}
                     }
@@ -327,9 +362,11 @@
                 <strong class="pr-2 pt-1 font-semibold text-gray-900 dark:text-white">
                     Número de líneas:
                 </strong>
-                @if (totalsInvoice()) {
-                {{totalsInvoice()!.lineCount}}
-                }
+                <span class="pt-1">
+                    @if (totalsInvoice()) {
+                    {{totalsInvoice()!.lineCount}}
+                    }
+                </span>
             </p>
 
         </div>
@@ -366,7 +403,7 @@
                     <p class="mb-0 pr-1 text-right text-sm text-gray-500 dark:text-gray-400">
                         <span class="uppercase">
                             @if (totalsInvoice()) {
-                            ${{totalsInvoice().allowanceChangueTotal + (form.controls['globalAllowance'].value*-1) |
+                            ${{totalsInvoice().allowanceChangueTotal - totalsInvoice().globalAllowance |
                             number}}
                             }
 
@@ -396,10 +433,65 @@
                 </div>
             </div>
             }
+
             }
 
         </div>
     </div>
+
+    @if (totalsInvoice().totalGenericsTax > 0) {
+    <div class="flex flex-row">
+        <div class="basis-9/12">
+        </div>
+        <div class="basis-3/12">
+            <div class="flex flex-row">
+                <div class="basis-1/2">
+
+                    <p class="pl-1 bg-slate-200 text-lg font-medium text-gray-500 dark:text-white">Sin retenciones:
+
+                    </p>
+                </div>
+                <div class="basis-1/2">
+                    <p class="pr-1 text-right pl-1 bg-slate-200 text-lg font-medium text-gray-500 dark:text-white">
+                        <span class=" uppercase">
+                            @if (totalsInvoice()) {
+                            $ {{totalsInvoice().total | number}}
+                            }
+                        </span>
+                    </p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="flex flex-row">
+        <div class="basis-9/12">
+        </div>
+        <div class="basis-3/12">
+            @for (item of totalsInvoice().genericsTax; track item.taxScheme.id) {
+            <div class="flex flex-row">
+                <div class="basis-1/2">
+                    <p class="mb-0 text-sm text-gray-500 dark:text-gray-400">
+                        {{item.taxScheme.name}} {{item.taxRate.rate}}%
+                    </p>
+                </div>
+                <div class="basis-1/2">
+                    <p class="mb-0 pr-1 text-right text-sm text-gray-500 dark:text-gray-400">
+                        <span class="uppercase">
+                            ${{item.totalRate | number}}
+
+                        </span>
+                    </p>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+    }
+
 
     <div class="flex flex-row">
         <div class="basis-9/12">
@@ -416,7 +508,7 @@
                     <p class="pr-1 text-right pl-1 bg-slate-400 text-lg font-medium text-gray-900 dark:text-white">
                         <span class=" uppercase">
                             @if (totalsInvoice()) {
-                            $ {{totalsInvoice()!.total | number}}
+                            $ {{totalsInvoice().total - totalsInvoice().totalGenericsTax| number}}
                             }
                         </span>
                     </p>
@@ -425,6 +517,7 @@
             </div>
         </div>
     </div>
+
 
 
     <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
@@ -436,14 +529,13 @@
         </button>
     </div>
 
-
     <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
 
     <div class="text-center mr-4">
         <!-- <button type="button" type="submit"
             class="px-6 py-3.5 text-base font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
             Emitir documento</button> -->
-        <button type="button"
+        <button type="button" (click)="emitDocument()"
             class="px-6 py-3.5 text-base font-medium text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
             <svg class="pr-2 w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                 fill="currentColor" viewBox="0 0 16 20">
