@@ -53,18 +53,18 @@ export class ValidatorsService {
     };
   }
 
-  public operationTypeValidator(documentType: string, operationType: string) {
+  public operationTypeValidator(operationType: string, discrepancyResponse: string) {
     return (formGroup: AbstractControl): ValidationErrors | null => {
-      const documentTypeValue = formGroup.get(documentType)?.value;
       const operationTypeValue = formGroup.get(operationType)?.value;
+      const discrepancyResponseValue = formGroup.get(discrepancyResponse)?.value;
 
-      if (documentTypeValue !=='22' && documentTypeValue !=='32' && !operationTypeValue) {
-        formGroup.get(operationType)?.setErrors({ required: true });
+      if (operationTypeValue !== '22' && operationTypeValue !== '32' && !discrepancyResponseValue) {
+        formGroup.get(discrepancyResponse)?.setErrors({ required: true });
 
         return { required: true };
       }
 
-      formGroup.get(operationType)?.setErrors(null);
+      formGroup.get(discrepancyResponse)?.setErrors(null);
 
       return null;
     };

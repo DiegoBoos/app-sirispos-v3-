@@ -7,6 +7,8 @@ import { TaxSchemeService } from '@shared/services/tax-scheme.service';
 import { initFlowbite } from 'flowbite';
 import { TaxRate } from '@shared/models/tax-rate.model';
 import { getObjectValues } from '@shared/helpers/get-object-values';
+import { Tax } from './models/tax.model';
+import { TaxScheme } from '@shared/models/tax-scheme.model';
 
 @Component({
   selector: 'app-tax',
@@ -32,18 +34,22 @@ export class TaxComponent implements AfterViewInit {
 
   private taxSchemeService = inject(TaxSchemeService);
 
-  selectedRates: { [key: string]: any } = {};
+  public selectedRates: { [key: string]: any } = {};
+
+  public taxes: Tax[] = [];
 
   public taxSchemesItems = computed(()=>{
     const taxSchemas = this.taxSchemeService.taxSchemesItems();
     taxSchemas.forEach((i) => {
-      i.taxRates.map(j=>j.rate = Math.trunc(j.rate))
+      i.taxRates!.map(j=>j.rate = Math.trunc(j.rate))
     });
     return taxSchemas
   });
 
   
+  private taxSchemesService = inject(TaxSchemeService);
 
+  private taxSchemes = computed(() => this.taxSchemesService.taxSchemesItems());
 
   public baseAmount: number = 0;
 
@@ -75,11 +81,31 @@ export class TaxComponent implements AfterViewInit {
     const taxRates: TaxRate[] = [];
     const objValues: any[] = getObjectValues(this.selectedRates);
 
-    
     objValues.map(i=>taxRates.push(i))
 
+    const taxes: Tax[] = [];
+
+    taxRates.map(i=>{
+
+      const taxScheme: TaxScheme = this.taxSchemes().filter(
+        (ts) => ts.identifier === i.tax
+      )[0];
+      const { taxRates, ...rest } = taxScheme
+      i.taxScheme = rest;
+      
+      const tax: Tax = {
+        rate: i.rate,
+        identifier: i.tax,
+        name: i.taxScheme.name,
+        amount: this.baseAmount * (i.rate/100),
+        baseamount: this.baseAmount
+      }
+      taxes.push(tax);
+    })
+
     this.dialogRefItemsTax.close({ event: 'Cancel', data: {
-      taxRates
+      taxRates,
+      taxes
     } });
     
   }

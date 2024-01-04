@@ -37,6 +37,7 @@ import { TaxRate } from '@shared/models/tax-rate.model';
 import { TaxScheme } from '@shared/models/tax-scheme.model';
 import { TaxSchemeService } from '@shared/services/tax-scheme.service';
 import { SelectTextDirective } from '@shared/directives/select-text.directive';
+import { Tax } from '../tax/models/tax.model';
 
 @Component({
   selector: 'app-document-items',
@@ -149,7 +150,9 @@ export class DocumentItemsComponent implements AfterViewInit {
       unitPrice: [data ? data.unitPrice : 0, Validators.required],
       totalAllowanceChargue: 0,
       taxRates: [],
+      taxes: [],
       allowanceChargues: [],
+      userTotal: 0,
       total: [data ? data.total : 0, Validators.required],
       descriptionUnitCode: [
         data ? data.descriptionUnitCode : this.unitCodeDefault.description,
@@ -173,7 +176,9 @@ export class DocumentItemsComponent implements AfterViewInit {
           unitPrice: 0,
           totalAllowanceChargue: 0,
           taxRates: [],
+          taxes: [],
           allowanceChargues: [],
+          userTotal: 0,
           total: 0,
           descriptionUnitCode: this.unitCodeDefault.description,
         };
@@ -213,7 +218,7 @@ export class DocumentItemsComponent implements AfterViewInit {
       this.updateControlValue(
         index,
         'totalAllowanceChargue',
-        documentItem.totalAllowanceChargue
+        documentItem.totalAllowanceChargue * quantity
       );
 
       const subtotalItemBeforeTaxes: number =
@@ -226,6 +231,7 @@ export class DocumentItemsComponent implements AfterViewInit {
 
       const totalItem = quantity * (subtotalItemBeforeTaxes + totalTaxes);
 
+      this.updateControlValue(index, 'userTotal', subtotalItemBeforeTaxes * quantity);
       this.updateControlValue(index, 'total', totalItem);
 
       this.emitItems();
@@ -281,27 +287,30 @@ export class DocumentItemsComponent implements AfterViewInit {
       );
 
       const baseAmount = +documentItem.unitPrice + allowanceChargue;
+      const taxes: Tax[] = documentItem.taxes!;
       const taxRates: TaxRate[] = documentItem.taxRates!;
 
       const dialogRef = this.dialog.open(TaxComponent, {
-        data: { baseAmount, taxRates },
+        data: { baseAmount, taxes, taxRates },
       });
       dialogRef.afterClosed().subscribe((result) => {
         if (result) {
           const { data } = result;
 
           if (data) {
-            const { taxRates } = data;
+            const { taxRates, taxes } = data;
 
             taxRates?.map((taxRate: TaxRate) => {
               const taxScheme: TaxScheme = this.taxSchemes().filter(
                 (ts) => ts.identifier === taxRate.tax
               )[0];
-              taxRate.taxScheme = taxScheme;
+              const { taxRates, ...rest } = taxScheme
+              taxRate.taxScheme = rest;
             });
 
             if (taxRates) {
               this.updateControlValue(index, 'taxRates', taxRates);
+              this.updateControlValue(index, 'taxes', taxes);
               this.calculateTotal(index);
             }
             this.cd.detectChanges();

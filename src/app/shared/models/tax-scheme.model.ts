@@ -5,7 +5,7 @@ export class TaxScheme {
   identifier: string = '';
   name: string = '';
   description: string = '';
-  taxRates: TaxRate[] = [];
+  taxRates?: TaxRate[] = [];
 
   constructor(data: Partial<TaxScheme> = {}) {
     Object.assign(this, data);

@@ -20,6 +20,7 @@ import { TaxScheme } from '@shared/models/tax-scheme.model';
 import { TaxSchemeService } from '@shared/services/tax-scheme.service';
 import { initFlowbite } from 'flowbite';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+import { Tax } from '../tax/models/tax.model';
 
 @Component({
   selector: 'app-generic-taxes',
@@ -34,45 +35,38 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
 export class GenericTaxesComponent implements AfterViewInit {
   private taxSchemeService = inject(TaxSchemeService);
 
-  selectedRates: { [key: string]: TaxRate } = {};
+  selectedRates: { [key: string]: any } = {};
 
   public taxSchemesGenerics = computed(() => {
     const taxSchemas = this.taxSchemeService.taxSchemesGenerics();
     taxSchemas.forEach((i) => {
-      i.taxRates.map((j) => (j.rate = Math.trunc(j.rate * 10) / 10));
+      i.taxRates!.map((j) => (j.rate = Math.trunc(j.rate * 10) / 10));
     });
     return taxSchemas;
   });
 
   public baseAmount: number = 0;
 
+  private taxSchemesService = inject(TaxSchemeService);
+
+  private taxSchemes = computed(() => this.taxSchemesService.taxSchemesGenerics());
+
+
   constructor(
     public dialogRef: MatDialogRef<GenericTaxesComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public obj: any
   ) {
-
     const { baseAmount, taxRates } = obj;
     this.baseAmount = baseAmount || 0;
 
-    
-    
     if (taxRates) {
       taxRates.map((i: TaxRate) => {
-        
         this.selectedRates[i.taxScheme.identifier] = i;
-        
-        // if (i.id!.length < 3) {
-          // } else {
-            //   this.selectedRates[i.tax] = i;
-            // }
-          });
-        }
-        console.log(this.selectedRates);
-        
+      });
+    }
   }
 
   ngAfterViewInit(): void {
@@ -83,30 +77,37 @@ export class GenericTaxesComponent implements AfterViewInit {
     const taxRates: TaxRate[] = [];
     const objValues: any[] = getObjectValues(this.selectedRates);
 
-    console.log(this.selectedRates);
+    
+    objValues.map((i) => taxRates.push(i));
+    
+    const taxesGenerics: Tax[] = [];
 
-    objValues.map((i) => {
-      const taxScheme: TaxScheme = this.taxSchemesGenerics().filter(
+    taxRates.map(i=>{
+
+      const taxScheme: TaxScheme = this.taxSchemes().filter(
         (ts) => ts.identifier === i.tax
       )[0];
-
-      const taxGeneric: TaxRate = {
-        id: i.id,
-        tax: i.tax,
-        description: i.description,
+      const { taxRates, ...rest } = taxScheme
+      i.taxScheme = rest;
+      
+      const tax: Tax = {
         rate: i.rate,
-        taxScheme,
-      };
-      taxRates.push(taxGeneric);
-    });
-    // objValues.map(i=>taxRates.push(i))
+        identifier: i.tax,
+        name: i.taxScheme.name,
+        amount: this.baseAmount * (i.rate/100),
+        baseamount: this.baseAmount
+      }
+      taxesGenerics.push(tax);
+    })
 
     this.dialogRef.close({
       event: 'Cancel',
       data: {
         taxRates,
+        taxesGenerics
       },
     });
+
   }
 
   onBlur(event: any, identifier: string) {
@@ -124,7 +125,7 @@ export class GenericTaxesComponent implements AfterViewInit {
         tax: identifier,
         description: '',
         rate: +inputValue,
-        taxScheme
+        taxScheme,
       };
     }
   }

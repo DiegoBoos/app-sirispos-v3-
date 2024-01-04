@@ -46,7 +46,11 @@ import { TaxSchemeService } from '@shared/services/tax-scheme.service';
 import { AllowanceChargue } from '../../components/allowance-chargue/models/allowance-charge.model';
 import { getObjectValues } from '@shared/helpers/get-object-values';
 import { SelectTextDirective } from '@shared/directives/select-text.directive';
-import { AttachedFile } from '@shared/interfaces/attached-file.interface';
+import { AttachedFile } from '@shared/components/attach-file/interfaces/attached-file.interface';
+import { AttachFileComponent } from '@shared/components/attach-file/attach-file.component';
+import { Tax } from '../../components/tax/models/tax.model';
+import { DocumentEmit } from '../../interfaces/document.interface';
+import { documentTypesTaxxa } from '../../interfaces/document-type-taxxa';
 
 @Component({
   selector: 'app-emit-document',
@@ -59,9 +63,10 @@ import { AttachedFile } from '@shared/interfaces/attached-file.interface';
     SearchPaymentsComponent,
     DocumentItemsComponent,
     SelectCustomerComponent,
+    AttachFileComponent,
     MatDialogModule,
     NgxMaskDirective,
-    SelectTextDirective
+    SelectTextDirective,
   ],
   templateUrl: './emit-document.component.html',
   providers: [{ provide: LOCALE_ID, useValue: 'es' }, provideNgxMask()],
@@ -106,9 +111,13 @@ export default class EmitDocumentComponent implements OnInit {
   public minDate: Date = new Date();
   public maxDate: Date = new Date();
 
-  attachedFiles = signal<AttachedFile[]>([]);
-
-  loadingFiles = signal<boolean>(false);
+  public taxSchemesGenerics = computed(() => {
+    const taxSchemas = this.taxSchemesService.taxSchemesGenerics();
+    taxSchemas.forEach((i) => {
+      i.taxRates!.map((j) => (j.rate = Math.trunc(j.rate * 10) / 10));
+    });
+    return taxSchemas;
+  });
 
   #totalsInvoice = signal<TotalsInvoice>({
     lineCount: 0,
@@ -138,28 +147,29 @@ export default class EmitDocumentComponent implements OnInit {
 
   public form: FormGroup = this.fb.group(
     {
-      clienteId: null,
+      clienteId: [null, [Validators.required]],
       issueDate: [format(new Date(), 'yyyy-MM-dd'), [Validators.required]],
       dueDate: [format(new Date(), 'yyyy-MM-dd'), [Validators.required]],
-      documentType: [22, [Validators.required]], // Default 22 Nota Crédito sin referencia a facturas
-      operationType: [null, [Validators.required]],
-      paymentMean: [1, [Validators.required]],
-      paymentMethod: [10, [Validators.required]],
-      documentItems: [],
+      operationType:  ['22', [Validators.required]], // Default 22 Nota Crédito sin referencia a facturas
+      discrepancyResponse: [null], // Default 22 Nota Crédito sin referencia a facturas
+      paymentMean: ['1', [Validators.required]],
+      paymentMethod: ['10', [Validators.required]],
+      documentItems: [[], [Validators.required]],
       genericsTax: [],
+      taxesGenerics: [],
       attachedFiles: [],
       globalAllowance: 0,
       tip: 0,
       delivery: 0,
       notes: [''],
-      ordeReference: [''],
+      orderReference: [''],
     },
     {
       validators: [
         this.validatorsService.dueDateValidator('issueDate', 'dueDate'),
         this.validatorsService.operationTypeValidator(
-          'documentType',
-          'operationType'
+          'operationType',
+          'discrepancyResponse'
         ),
       ],
     }
@@ -170,7 +180,10 @@ export default class EmitDocumentComponent implements OnInit {
   #documentItems = signal<DocumentItem[]>([]);
 
   groupValues = computed(() => {
-    this.#documentItems()
+    // this.#documentItems();
+    console.log(this.#documentItems());
+    
+    this.form.controls['documentItems'].setValue(this.#documentItems());
     return this.calculateTotal();
   });
 
@@ -257,6 +270,7 @@ export default class EmitDocumentComponent implements OnInit {
 
   loadCustomer(e: any) {
     this.customerSelected = e;
+    this.form.controls['clienteId'].setValue(this.customerSelected.cliente_id);
   }
 
   onChange(e: any) {
@@ -317,43 +331,35 @@ export default class EmitDocumentComponent implements OnInit {
     let allowanceChangueTotal = 0;
 
     this.#documentItems().map((i) => {
-      subTotal += (i.quantity * i.unitPrice);
-      allowanceChangueTotal += (i.totalAllowanceChargue);
+      subTotal += i.quantity * i.unitPrice;
+      allowanceChangueTotal += i.totalAllowanceChargue;
     });
 
-    
     const globalAllowance = +this.form.controls['globalAllowance'].value;
     const tip = +this.form.controls['tip'].value;
     const delivery = +this.form.controls['delivery'].value;
-    
-    
+
     const itemsTax = this.groupTaxes();
     let totalItemsTaxes: number = 0;
     itemsTax.map((i) => (totalItemsTaxes += i.totalRate));
-    
-    const genericsTax: TaxRate[] = this.form.controls['genericsTax'].value || [];
+
+    const genericsTax: TaxRate[] =
+      this.form.controls['genericsTax'].value || [];
     const genericsTaxItem: ItemTax[] = [];
 
     let totalGenericsTax = 0;
-    genericsTax.map(i=>{
-
+    genericsTax.map((i) => {
       const subtotalAfterAllowance = subTotal + allowanceChangueTotal;
-      const totalRate = (subtotalAfterAllowance * (+i.rate/100));
+      const totalRate = subtotalAfterAllowance * (+i.rate / 100);
 
       genericsTaxItem.push({
         baseAmount: subtotalAfterAllowance,
         taxRate: i,
         taxScheme: i.taxScheme,
         totalRate,
-      })
+      });
       totalGenericsTax += totalRate;
     });
-
-    
-    // let totalTaxGenerics: number = 0;
-    // genericsTax.map((i: TaxRate) => (totalTaxGenerics += i.rate));
-    // console.log(totalTaxGenerics);
-    
 
     const total =
       subTotal +
@@ -383,7 +389,6 @@ export default class EmitDocumentComponent implements OnInit {
     totalsInvoice.totalGenericsTax = totalGenericsTax;
 
     this.#totalsInvoice.set(totalsInvoice);
-    
 
     return totalsInvoice;
   }
@@ -395,23 +400,39 @@ export default class EmitDocumentComponent implements OnInit {
 
     const baseAmount = subtotal + totalAllowances - globalAllowance;
 
-    const taxRates: TaxRate[] = this.form.controls['genericsTax'].value;
+    const taxRates: TaxRate[] = this.form.controls['genericsTax'].value || [];
+    const taxesGenerics: Tax[] = this.form.controls['taxesGenerics'].value || [];
+
+    taxRates.map((i) => {
+      const taxScheme: TaxScheme = this.taxSchemesGenerics().filter(
+        (ts) => ts.identifier === i.tax
+      )[0];
+
+      const { taxRates, ...rest } = taxScheme
+      i.taxScheme = rest;
+    });
 
     const dialogRef = this.dialog.open(GenericTaxesComponent, {
-      data: { baseAmount, taxRates },
+      data: { baseAmount, taxesGenerics, taxRates },
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         const { data } = result;
 
         if (data) {
-          const { taxRates } = data;
+          const { taxRates, taxesGenerics } = data;
 
-          console.log(taxRates);
-          
+          taxRates?.map((taxRate: TaxRate) => {
+            const taxScheme: TaxScheme = this.taxSchemesGenerics().filter(
+              (ts) => ts.identifier === taxRate.tax
+            )[0];
+            const { taxRates, ...rest } = taxScheme
+            taxRate.taxScheme = rest;
+          });
 
           if (taxRates) {
             this.form.controls['genericsTax'].setValue(taxRates);
+            this.form.controls['taxesGenerics'].setValue(taxesGenerics);
 
             this.calculateTotal();
           }
@@ -420,57 +441,75 @@ export default class EmitDocumentComponent implements OnInit {
     });
   }
 
-  onFileChange(event: any): void {
-    const files: FileList = event.target.files;
-  
-    const attachedFiles: AttachedFile[] = [];
-  
-    // Create an array of Promises
-    const promises: Promise<void>[] = [];
-
-    // this.attachedFiles = Array.from(files);
-    this.loadingFiles.set(true);
-  
-    Array.from(files).forEach((file: File) => {
-      const reader = new FileReader();
-  
-      const promise = new Promise<void>((resolve) => {
-        reader.onload = (e: any) => {
-          const base64Content: string = e.target.result;
-  
-          const attachedFile: AttachedFile = {
-            name: file.name,
-            base64: base64Content,
-            size: file.size
-          };
-  
-          attachedFiles.push(attachedFile);
-          resolve(); // Resolve the promise when the file is processed
-        };
-      });
-  
-      promises.push(promise);
-  
-      // Read the content of the file as base64
-      reader.readAsDataURL(file);
-    });
-  
-    // Wait for all promises to be resolved before updating the form control
-    Promise.all(promises).then(() => {
-      this.loadingFiles.set(false);
-      this.form.controls['attachedFiles'].setValue(attachedFiles);
-      this.attachedFiles.set(attachedFiles);
-    });
+  loadAttachedFile(files: AttachedFile[]) {
+    this.form.controls['attachedFiles'].setValue(files);
   }
-  
+
+  getFormErrors() {
+    const errores: { [key: string]: any } = {};
+
+    // Recorrer todos los controles del formulario
+    Object.keys(this.form.controls).forEach(controlName => {
+      const control = this.form.get(controlName);
+
+      // Obtener los errores del control si existen
+      if (control?.errors) {
+        errores[controlName] = control.errors;
+      }
+    });
+
+    return errores;
+  }
 
   emitDocument() {
-    console.log(this.form.value);
-    
-  }
 
-  removeFile(index: number) {
-    this.attachedFiles().splice(index, 1);
-    this.form.controls['attachedFiles'].setValue(this.attachedFiles());
+    this.form.controls['documentItems'].setValue(this.#documentItems());
+
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      console.log(this.getFormErrors());
+    
+      return;
+    }
+   
+    const data = this.form.value;
+
+    const documentItems: any[] = [];
+
+    data.documentItems.map((i: any)=>{
+      delete i.taxRates;
+      documentItems.push(i);
+    });
+
+
+    const documentTypeTaxxa = documentTypesTaxxa.filter(i=>i.code === this.invoiceType.code)[0];
+
+    
+    const document: DocumentEmit = {
+      id: '',
+      clienteId: data.clienteId,
+      issueDate: data.issueDate,
+      dueDate: data.dueDate,
+      documentType: documentTypeTaxxa.documentType,
+      documentTypeCode: this.invoiceType.code,
+      currency: 'COP',
+      operationType: data.operationType,
+      customizationId: '',
+      discrepancyResponse: data.discrepancyResponse,
+      paymentMean: data.paymentMean,
+      paymentMethod: data.paymentMethod,
+      businessRegimen: this.settingService.seeting().codigo_persona,
+      documentItems,
+      taxesGenerics: data.taxesGenerics,
+      attachedFiles: data.attachedFiles,
+      globalAllowance: data.globalAllowance,
+      tip: data.tip,
+      delivery: data.delivery,
+      notes: data.notes,
+      orderReference: data.restorderReference
+    }
+    console.log(document);
+
+
   }
 }
