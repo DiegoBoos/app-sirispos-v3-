@@ -5,7 +5,7 @@ export class VCliente {
     display: string = '';
     codigo_persona: number = 0;
     persona: string = '';
-    codigo_regimen: number = 0;
+    codigo_regimen: string = '';
     regimen: string = '';
     nombre_comercial: string = '';
     codigo_cliente: string = '';

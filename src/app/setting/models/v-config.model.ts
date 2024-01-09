@@ -99,6 +99,11 @@ export class VConfig {
   municipio: string = '';
   departamento: string = '';
   pais: string = '';
+  codigo_municipio: string = '';
+  codigo_departamento: string = '';
+  codigo_pais: string = '';
+  codpostal: string = '';
+  nombre_tercero: string = '';
   
 
   

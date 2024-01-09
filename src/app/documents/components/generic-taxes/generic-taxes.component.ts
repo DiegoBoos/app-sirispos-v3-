@@ -95,7 +95,7 @@ export class GenericTaxesComponent implements AfterViewInit {
         identifier: i.tax,
         name: i.taxScheme.name,
         amount: this.baseAmount * (i.rate/100),
-        baseamount: this.baseAmount
+        baseAmount: this.baseAmount
       }
       taxesGenerics.push(tax);
     })

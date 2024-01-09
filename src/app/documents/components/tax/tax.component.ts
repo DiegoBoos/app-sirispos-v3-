@@ -98,7 +98,7 @@ export class TaxComponent implements AfterViewInit {
         identifier: i.tax,
         name: i.taxScheme.name,
         amount: this.baseAmount * (i.rate/100),
-        baseamount: this.baseAmount
+        baseAmount: this.baseAmount
       }
       taxes.push(tax);
     })

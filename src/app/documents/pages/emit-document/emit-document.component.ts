@@ -49,7 +49,7 @@ import { SelectTextDirective } from '@shared/directives/select-text.directive';
 import { AttachedFile } from '@shared/components/attach-file/interfaces/attached-file.interface';
 import { AttachFileComponent } from '@shared/components/attach-file/attach-file.component';
 import { Tax } from '../../components/tax/models/tax.model';
-import { DocumentEmit } from '../../interfaces/document.interface';
+import { Buyer, ContactBuyer, ContactSeller, DocumentEmit, PartylegalEntity, RegistrationAddress, Seller } from '../../interfaces/document.interface';
 import { documentTypesTaxxa } from '../../interfaces/document-type-taxxa';
 
 @Component({
@@ -152,8 +152,8 @@ export default class EmitDocumentComponent implements OnInit {
       dueDate: [format(new Date(), 'yyyy-MM-dd'), [Validators.required]],
       operationType:  ['22', [Validators.required]], // Default 22 Nota Crédito sin referencia a facturas
       discrepancyResponse: [null], // Default 22 Nota Crédito sin referencia a facturas
-      paymentMean: ['1', [Validators.required]],
-      paymentMethod: ['10', [Validators.required]],
+      paymentMean: ['10', [Validators.required]],
+      paymentMethod: ['1', [Validators.required]],
       documentItems: [[], [Validators.required]],
       genericsTax: [],
       taxesGenerics: [],
@@ -283,7 +283,7 @@ export default class EmitDocumentComponent implements OnInit {
       this.discrepancyResponsesList = [];
     } else {
       this.discrepancyResponsesList = this.discrepancyResponses().filter(
-        (i) => i.noteType === code
+        (i) => i.operationType === code
       );
     }
   }
@@ -484,6 +484,89 @@ export default class EmitDocumentComponent implements OnInit {
 
     const documentTypeTaxxa = documentTypesTaxxa.filter(i=>i.code === this.invoiceType.code)[0];
 
+   
+    
+    // Buyer
+
+    const buyerSeeting = this.settingService.seeting();
+  
+    const partyLegalEntityBuyer: PartylegalEntity = {
+      docType: buyerSeeting.codigo_alterno,
+      docNo: buyerSeeting.identificacion,
+      corporateRegistrationSchemename: buyerSeeting.nombre_comercial
+    }
+
+    const registrationAddressBuyer: RegistrationAddress = {
+      countryCode: buyerSeeting.codigo_pais,
+      departmentCode: buyerSeeting.codigo_departamento,
+      townCode: buyerSeeting.codigo_municipio,
+      cityName: buyerSeeting.municipio,
+      addressline1: buyerSeeting.direccion1,
+      zip: +buyerSeeting.codpostal
+    }
+
+    const contactBuyer: ContactBuyer = {
+      contactPerson: `${buyerSeeting.nombre1 || ''} ${buyerSeeting.apellido1 || ''}`,
+      electronicMail: buyerSeeting.email,
+      telephone: buyerSeeting.telefono,
+      registrationAddressBuyer: registrationAddressBuyer
+    }
+
+    console.log(buyerSeeting);
+    
+
+    const buyer: Buyer = {
+      legalOrganizationType: buyerSeeting.persona === 'NATURAL'? 'person': 'company',
+      costumerName: buyerSeeting.nombre_tercero,
+      tributaryIdentificationKey: '01', //TODO: Parametrizqcion identificacion tributaria
+      tributaryIdentificationName: 'IVA',  //TODO: Parametrizqcion identificacion tributaria
+      fiscalResponsibilities: buyerSeeting.responsabilidades_fiscales,
+      fiscalRegime: buyerSeeting.codigo_regimen,
+      partyLegalEntityBuyer,
+      contactBuyer
+    }
+
+
+
+    // Seller
+
+    const customer = this.customerSelected;
+
+    const partyLegalEntitySeller: PartylegalEntity = {
+      docType: customer.tipo_doc,
+      docNo: customer.identificacion,
+      corporateRegistrationSchemename: customer.nombre_comercial
+    }
+
+    const registrationAddressSeller: RegistrationAddress = {
+      countryCode: customer.codigo_pais,
+      departmentCode: customer.codigo_departamento,
+      townCode: customer.codigo_municipio,
+      cityName: customer.municipio,
+      addressline1: customer.direccion1,
+      zip: +customer.codpostal
+    }
+
+
+    const contactSeller: ContactSeller = {
+      contactPerson: customer.contacto_cliente,
+      electronicMail: customer.email,
+      telephone: customer.telefono,
+      registrationAddressSeller
+    }
+
+    const seller: Seller = {
+      legalOrganizationType: customer.persona === 'NATURAL'? 'person': 'company',
+      costumerName: customer.nombre,
+      tributaryIdentificationKey: 'ZZ', //TODO: Parametrizqcion identificacion tributaria
+      tributaryIdentificationName: 'No Aplica', //TODO: Parametrizqcion identificacion tributaria
+      fiscalResponsibilities: customer.responsabilidades_fiscales,
+      fiscalRegime: customer.codigo_regimen,
+      partyLegalEntitySeller,
+      contactSeller,
+      tableInfo: {}
+    }
+
     
     const document: DocumentEmit = {
       id: '',
@@ -500,13 +583,15 @@ export default class EmitDocumentComponent implements OnInit {
       paymentMethod: data.paymentMethod,
       businessRegimen: this.settingService.seeting().codigo_persona,
       documentItems,
-      taxesGenerics: data.taxesGenerics,
+      genericsTax: data.taxesGenerics,
       attachedFiles: data.attachedFiles,
       globalAllowance: data.globalAllowance,
       tip: data.tip,
       delivery: data.delivery,
       notes: data.notes,
-      orderReference: data.restorderReference
+      orderReference: data.restorderReference,
+      buyer,
+      seller
     }
     console.log(document);
 

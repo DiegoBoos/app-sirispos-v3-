@@ -3,7 +3,7 @@ export class Tax {
     identifier: string = '';
     name: string = '';
     amount: number = 0;
-    baseamount: number = 0;
+    baseAmount: number = 0;
       
     constructor(data: Partial<Tax> = {}) {
       Object.assign(this, data);

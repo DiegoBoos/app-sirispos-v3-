@@ -207,7 +207,7 @@
                 </strong>
 
             </p>
-            <select formControlName="paymentMean"
+            <select formControlName="paymentMethod"
                 class="pl-4 w-52 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
 
                 @for (paymentMethod of paymentMethods() ; track paymentMethod.code) {
@@ -224,7 +224,7 @@
                 </strong>
 
             </p>
-            <select formControlName="paymentMethod"
+            <select formControlName="paymentMean"
                 class="pl-4 w-96 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
 
                 @for (paymentMean of paymentMeans() ; track paymentMean.code) {
