@@ -9,6 +9,10 @@ export interface DocumentEmit {
     operationType:       string;
     customizationId:     string; // Aplica solo a Salud
     discrepancyResponse: string;
+    lineExtensionAmount: number;
+    taxExclusiveAmount:  number;
+    taxInclusiveAmount:  number;
+    paylableAmount:      number;
     paymentMean:         string;
     paymentMethod:       string;
     businessRegimen:     string;
@@ -79,14 +83,14 @@ export interface ContactBuyer {
     contactPerson:       string;
     electronicMail:      string;
     telephone:           string;
-    registrationAddressBuyer: RegistrationAddress;
+    registrationAddress: RegistrationAddress;
 }
 
 export interface ContactSeller {
     contactPerson:       string;
     electronicMail:      string;
     telephone:           string;
-    registrationAddressSeller: RegistrationAddress;
+    registrationAddress: RegistrationAddress;
 }
 
 export interface RegistrationAddress {
@@ -94,7 +98,7 @@ export interface RegistrationAddress {
     departmentCode: string;
     townCode:       string;
     cityName:       string;
-    addressline1:   string;
+    addressLine1:   string;
     zip:            number;
 }
 

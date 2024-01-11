@@ -129,6 +129,7 @@ export default class EmitDocumentComponent implements OnInit {
     totalInWords: '',
     globalAllowance: 0,
     totalGenericsTax: 0,
+    totalToPay: 0,
     tip: 0,
     delivery: 0,
   });
@@ -152,8 +153,8 @@ export default class EmitDocumentComponent implements OnInit {
       dueDate: [format(new Date(), 'yyyy-MM-dd'), [Validators.required]],
       operationType:  ['22', [Validators.required]], // Default 22 Nota Crédito sin referencia a facturas
       discrepancyResponse: [null], // Default 22 Nota Crédito sin referencia a facturas
-      paymentMean: ['10', [Validators.required]],
-      paymentMethod: ['1', [Validators.required]],
+      paymentMean: ['1', [Validators.required]],
+      paymentMethod: ['10', [Validators.required]],
       documentItems: [[], [Validators.required]],
       genericsTax: [],
       taxesGenerics: [],
@@ -275,6 +276,7 @@ export default class EmitDocumentComponent implements OnInit {
 
   onChange(e: any) {
     const code = e.value;
+    this.form.controls['discrepancyResponse'].setValue(null);
     this.invoiceType = this.invoiceTypes().filter(
       (i) => i.operationTypes.filter((j) => j.code === code)[0]
     )[0];
@@ -322,6 +324,7 @@ export default class EmitDocumentComponent implements OnInit {
       genericsTax: [],
       totalGenericsTax: 0,
       total: 0,
+      totalToPay: 0,
       totalInWords: '',
       tip: 0,
       delivery: 0,
@@ -349,7 +352,7 @@ export default class EmitDocumentComponent implements OnInit {
 
     let totalGenericsTax = 0;
     genericsTax.map((i) => {
-      const subtotalAfterAllowance = subTotal + allowanceChangueTotal;
+      const subtotalAfterAllowance = subTotal + allowanceChangueTotal - globalAllowance;
       const totalRate = subtotalAfterAllowance * (+i.rate / 100);
 
       genericsTaxItem.push({
@@ -369,6 +372,8 @@ export default class EmitDocumentComponent implements OnInit {
       delivery -
       globalAllowance;
 
+
+    const totalToPay = total - totalGenericsTax;  
     const totalInWords = numberToWords(total, {
       plural: 'Pesos M/CTE',
       singular: 'Peso M/CTE',
@@ -384,6 +389,7 @@ export default class EmitDocumentComponent implements OnInit {
     totalsInvoice.delivery = delivery;
     totalsInvoice.itemsTax = itemsTax;
     totalsInvoice.total = total;
+    totalsInvoice.totalToPay = totalToPay;
     totalsInvoice.totalInWords = totalInWords;
     totalsInvoice.genericsTax = genericsTaxItem;
     totalsInvoice.totalGenericsTax = totalGenericsTax;
@@ -495,13 +501,13 @@ export default class EmitDocumentComponent implements OnInit {
       docNo: buyerSeeting.identificacion,
       corporateRegistrationSchemename: buyerSeeting.nombre_comercial
     }
-
+    
     const registrationAddressBuyer: RegistrationAddress = {
       countryCode: buyerSeeting.codigo_pais,
       departmentCode: buyerSeeting.codigo_departamento,
       townCode: buyerSeeting.codigo_municipio,
       cityName: buyerSeeting.municipio,
-      addressline1: buyerSeeting.direccion1,
+      addressLine1: buyerSeeting.direccion1,
       zip: +buyerSeeting.codpostal
     }
 
@@ -509,11 +515,8 @@ export default class EmitDocumentComponent implements OnInit {
       contactPerson: `${buyerSeeting.nombre1 || ''} ${buyerSeeting.apellido1 || ''}`,
       electronicMail: buyerSeeting.email,
       telephone: buyerSeeting.telefono,
-      registrationAddressBuyer: registrationAddressBuyer
+      registrationAddress: registrationAddressBuyer
     }
-
-    console.log(buyerSeeting);
-    
 
     const buyer: Buyer = {
       legalOrganizationType: buyerSeeting.persona === 'NATURAL'? 'person': 'company',
@@ -543,7 +546,7 @@ export default class EmitDocumentComponent implements OnInit {
       departmentCode: customer.codigo_departamento,
       townCode: customer.codigo_municipio,
       cityName: customer.municipio,
-      addressline1: customer.direccion1,
+      addressLine1: customer.direccion1,
       zip: +customer.codpostal
     }
 
@@ -552,7 +555,7 @@ export default class EmitDocumentComponent implements OnInit {
       contactPerson: customer.contacto_cliente,
       electronicMail: customer.email,
       telephone: customer.telefono,
-      registrationAddressSeller
+      registrationAddress: registrationAddressSeller
     }
 
     const seller: Seller = {
@@ -567,6 +570,9 @@ export default class EmitDocumentComponent implements OnInit {
       tableInfo: {}
     }
 
+    let totalItemsTax = 0;
+
+    this.#totalsInvoice().itemsTax.map(i=>totalItemsTax += i.totalRate);
     
     const document: DocumentEmit = {
       id: '',
@@ -579,6 +585,10 @@ export default class EmitDocumentComponent implements OnInit {
       operationType: data.operationType,
       customizationId: '',
       discrepancyResponse: data.discrepancyResponse,
+      lineExtensionAmount: this.#totalsInvoice().subTotal,
+      taxExclusiveAmount: this.#totalsInvoice().subTotal + this.#totalsInvoice().allowanceChangueTotal,
+      taxInclusiveAmount: this.#totalsInvoice().subTotal + this.#totalsInvoice().allowanceChangueTotal + totalItemsTax + this.#totalsInvoice().totalGenericsTax,
+      paylableAmount: this.#totalsInvoice().total,
       paymentMean: data.paymentMean,
       paymentMethod: data.paymentMethod,
       businessRegimen: this.settingService.seeting().codigo_persona,
@@ -589,7 +599,7 @@ export default class EmitDocumentComponent implements OnInit {
       tip: data.tip,
       delivery: data.delivery,
       notes: data.notes,
-      orderReference: data.restorderReference,
+      orderReference: data.orderReference,
       buyer,
       seller
     }

@@ -11,6 +11,7 @@ export interface TotalsInvoice {
     totalInWords: string
     globalAllowance: number,
     totalGenericsTax: number,
+    totalToPay: number,
     tip: number,
     delivery: number,
 }
