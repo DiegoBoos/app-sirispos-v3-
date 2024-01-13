@@ -12,6 +12,8 @@ import {
 } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
+import { format } from 'date-fns';
+
 import { SearchParam } from '@shared/interfaces/search-param.interface';
 import { FormsModule } from '@angular/forms';
 import { CustomerPaymentService } from '../../customer-payment.service';
@@ -36,10 +38,16 @@ export class SearchPaymentsComponent implements OnInit {
   
   public customerPaymentService = inject(CustomerPaymentService);
 
+  
   public customerPayments = signal<VPagoCliDetalle[]>([]);
   public term: string = '';
+  public maxDate: Date = new Date();
+  public dateFrom: string =  format(new Date(new Date().getFullYear(), 0, 1), 'yyyy-MM-dd');
+  public dateTo: string =  format(new Date(), 'yyyy-MM-dd');
 
-  isHidden = true;
+
+  public isHidden = true;
+  public isSelectedAll = false;
 
   // #customerSelect = signal<VCliente>(new VCliente());
   // public customerSelect = computed(() => this.#customerSelect());
@@ -60,6 +68,8 @@ export class SearchPaymentsComponent implements OnInit {
       pages: 0,
     },
     term: '',
+    dateFrom: '',
+    dateTo: '',
   };
 
   constructor(
@@ -78,8 +88,13 @@ export class SearchPaymentsComponent implements OnInit {
 
 
   loadData() {
+    this.totalDiscounts = 0;
+    this.isSelectedAll = false;
     this.searchParam.term = this.term;
+    this.searchParam.dateFrom = this.dateFrom;
+    this.searchParam.dateTo = this.dateTo;
     let previousLength: number = this.searchParam.pagination!.length;
+
     this.customerPaymentService
       .searchCustomerPaymentsByClient(this.clienteId, this.searchParam)
       .subscribe((resp) => {
@@ -113,6 +128,11 @@ export class SearchPaymentsComponent implements OnInit {
   }
 
 
+  totalCalculate() {
+    this.totalDiscounts = 0;
+    this.selectedPayments.map(i => this.totalDiscounts += Number(i.descuento));
+  }
+
 
   selectCustomerPayments() {
     this.customerPaymentsSelect.emit(this.selectedPayments);
@@ -126,8 +146,18 @@ export class SearchPaymentsComponent implements OnInit {
       this.selectedPayments = this.selectedPayments.filter((p) => p !== payment);
     }
 
-    this.totalDiscounts = 0;
-    this.selectedPayments.map(i => this.totalDiscounts += Number(i.descuento));
+    this.totalCalculate();
   }
 
+  toggleSelectionAll() {
+    this.customerPayments().map(i => i.isSelected = this.isSelectedAll);
+    this.customerPayments().map(i => {
+      if (i.isSelected) {
+        this.selectedPayments.push(i);
+      } else {
+        this.selectedPayments = this.selectedPayments.filter((p) => p !== i);
+      }
+    })
+    this.totalCalculate();
+  }
 }

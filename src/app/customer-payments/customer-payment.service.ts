@@ -21,11 +21,11 @@ export class CustomerPaymentService {
   searchCustomerPaymentsByClient(id: string, searchParam: SearchParam): Observable<PaginationCustomer> {
 
     this.#isLoading.set(true);
-    const { pagination, term = '' } = searchParam;
+    const { pagination, term = '', dateFrom = '', dateTo = '' } = searchParam;
 
     const { pageIndex = 1, pageSize = 10 } = pagination!;
 
-    const url = `${this.apiUrl}/customer-payment/find-by-client-term/${id}?limit=${pageSize}&page=${pageIndex}&term=${term}`;
+    const url = `${this.apiUrl}/customer-payment/find-by-client-term/${id}?limit=${pageSize}&page=${pageIndex}&term=${term}&dateFrom=${dateFrom}&dateTo=${dateTo}`;
 
     return this.http.get<PaginationCustomer>(url)
       .pipe(

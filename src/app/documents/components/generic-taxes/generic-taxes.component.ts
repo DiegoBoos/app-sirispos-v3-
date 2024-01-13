@@ -89,12 +89,20 @@ export class GenericTaxesComponent implements AfterViewInit {
       )[0];
       const { taxRates, ...rest } = taxScheme
       i.taxScheme = rest;
+
+      let amount = this.baseAmount * (i.rate/100);
+
+      //Manejo ReteIca
+      if (i.tax === '07'){
+        amount = this.baseAmount * (i.rate/1000);
+      } 
+        
       
       const tax: Tax = {
         rate: i.rate,
         identifier: i.tax,
         name: i.taxScheme.name,
-        amount: this.baseAmount * (i.rate/100),
+        amount,
         baseAmount: this.baseAmount
       }
       taxesGenerics.push(tax);
@@ -124,7 +132,7 @@ export class GenericTaxesComponent implements AfterViewInit {
         id: identifier,
         tax: identifier,
         description: '',
-        rate: +inputValue,
+        rate: +inputValue, //Para manejos de ReteICA
         taxScheme,
       };
     }

@@ -165,29 +165,39 @@ export class DocumentItemsComponent implements AfterViewInit {
   }
 
   addItem(data?: DocumentItem): void {
-    const addData: DocumentItem = data
-      ? data
-      : {
-          consecutive: this.items.length + 1,
-          description: '',
-          standardItemIdentification: '',
-          unitCode: this.unitCodeDefault.code,
-          quantity: 1,
-          unitPrice: 0,
-          totalAllowanceChargue: 0,
-          taxRates: [],
-          taxes: [],
-          allowanceChargues: [],
-          userTotal: 0,
-          total: 0,
-          descriptionUnitCode: this.unitCodeDefault.description,
-        };
-    this.items.push(this.itemForm(addData));
 
-    this.emitItems();
+    const items: DocumentItem[] = this.items.value;
 
-    // Forzar detección de cambios
-    this.cd.detectChanges();
+    const searchItem = items.filter(i=>i.standardItemIdentification === data?.standardItemIdentification);
+
+    if (searchItem.length === 0 ) {
+
+      const addData: DocumentItem = data
+        ? data
+        : {
+            consecutive: this.items.length + 1,
+            description: '',
+            standardItemIdentification: '',
+            unitCode: this.unitCodeDefault.code,
+            quantity: 1,
+            unitPrice: 0,
+            totalAllowanceChargue: 0,
+            taxRates: [],
+            taxes: [],
+            allowanceChargues: [],
+            userTotal: 0,
+            total: 0,
+            descriptionUnitCode: this.unitCodeDefault.description,
+          };
+      this.items.push(this.itemForm(addData));
+  
+      this.emitItems();
+  
+      // Forzar detección de cambios
+      this.cd.detectChanges();
+    }
+    
+
   }
 
   removeItem(index: number): void {
@@ -363,6 +373,8 @@ export class DocumentItemsComponent implements AfterViewInit {
 
         const payments: VPagoCliDetalle[] = data;
 
+        
+
         let i = 0;
         payments.forEach((element) => {
           const documentItem: DocumentItem = new DocumentItem();
@@ -371,10 +383,10 @@ export class DocumentItemsComponent implements AfterViewInit {
           documentItem.unitPrice = +element.descuento;
           documentItem.unitCode = this.unitCodeDefault.code;
           documentItem.descriptionUnitCode = this.unitCodeDefault.description;
-          documentItem.description = `Descuento por recibo No. ${
+          documentItem.description = `Descuento por factura ${element.dcto} - recibo No. ${
             element.recibo
           } (${format(element.fechapago, 'dd-MMM-yyyy', { locale: es })})`;
-          documentItem.standardItemIdentification = element.recibo;
+          documentItem.standardItemIdentification = `${element.dcto}-${element.recibo}`;
           documentItem.total = documentItem.quantity * documentItem.unitPrice;
 
           this.addItem(documentItem);

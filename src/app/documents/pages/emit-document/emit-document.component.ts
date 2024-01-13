@@ -353,7 +353,12 @@ export default class EmitDocumentComponent implements OnInit {
     let totalGenericsTax = 0;
     genericsTax.map((i) => {
       const subtotalAfterAllowance = subTotal + allowanceChangueTotal - globalAllowance;
-      const totalRate = subtotalAfterAllowance * (+i.rate / 100);
+      let totalRate = subtotalAfterAllowance * (+i.rate / 100);
+
+       //Manejo ReteIca
+       if (i.tax === '07'){
+        totalRate = subtotalAfterAllowance * (+i.rate / 1000);
+      } 
 
       genericsTaxItem.push({
         baseAmount: subtotalAfterAllowance,
