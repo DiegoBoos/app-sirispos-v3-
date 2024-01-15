@@ -157,6 +157,8 @@ export class DocumentItemsComponent implements AfterViewInit {
       descriptionUnitCode: [
         data ? data.descriptionUnitCode : this.unitCodeDefault.description,
       ],
+      itemType:  data ? data.itemType : 'I',
+      itemTypeReferenceId: data ? data.itemTypeReferenceId ? data.itemTypeReferenceId : null : null,
     });
   }
 
@@ -188,7 +190,9 @@ export class DocumentItemsComponent implements AfterViewInit {
             userTotal: 0,
             total: 0,
             descriptionUnitCode: this.unitCodeDefault.description,
+            itemType: 'I',
           };
+
       this.items.push(this.itemForm(addData));
   
       this.emitItems();
@@ -383,14 +387,14 @@ export class DocumentItemsComponent implements AfterViewInit {
           documentItem.unitPrice = +element.descuento;
           documentItem.unitCode = this.unitCodeDefault.code;
           documentItem.descriptionUnitCode = this.unitCodeDefault.description;
-          documentItem.description = `Descuento por factura ${element.dcto} - recibo No. ${
+          documentItem.description = `Descuento Factura No. ${element.dcto} - Recibo No. ${
             element.recibo
           } (${format(element.fechapago, 'dd-MMM-yyyy', { locale: es })})`;
           documentItem.standardItemIdentification = `${element.dcto}-${element.recibo}`;
           documentItem.total = documentItem.quantity * documentItem.unitPrice;
-
+          documentItem.itemType = 'D';
+          documentItem.itemTypeReferenceId = element.pagoclitransac_id;
           this.addItem(documentItem);
-
           i++;
         });
       }

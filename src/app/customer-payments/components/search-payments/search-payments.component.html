@@ -62,7 +62,7 @@
                             [(ngModel)]="isSelectedAll" 
                             [ngModelOptions]="{standalone: true}"
                             (change)="toggleSelectionAll()">
-                        <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                        <p [ngClass]="customerPayments().length === 0 ? 'text-sm font-medium text-gray-400 truncate dark:text-white' : 'text-sm font-medium text-gray-900 truncate dark:text-white'">
                             Seleccionar todo
                         </p>
 

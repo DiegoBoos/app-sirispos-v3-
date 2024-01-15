@@ -100,7 +100,7 @@ export class SearchPaymentsComponent implements OnInit {
       .subscribe((resp) => {
 
         const customerPaymentsWithDiscount: VPagoCliDetalle[] =
-          resp.data.filter((i) => i.descuento > 0);
+          resp.data.filter((i) => i.descuento > 0 && i.isGenerateNote === 0);
 
           customerPaymentsWithDiscount.map ( i=>i.isSelected = false);
  

@@ -18,7 +18,6 @@ export class ValidatorsService {
   }
 
   getFieldError(form: FormGroup, field: string): string | null {
-
     if (!form.controls[field]) return null;
     const errors = form.controls[field].errors || {};
 
@@ -30,6 +29,8 @@ export class ValidatorsService {
           return 'Requerido *';
         case 'notValidDate':
           return 'Fecha No Válida';
+        case 'email':
+          return 'Correo no válido *';
       }
     }
 
@@ -53,12 +54,20 @@ export class ValidatorsService {
     };
   }
 
-  public operationTypeValidator(operationType: string, discrepancyResponse: string) {
+  public operationTypeValidator(
+    operationType: string,
+    discrepancyResponse: string
+  ) {
     return (formGroup: AbstractControl): ValidationErrors | null => {
       const operationTypeValue = formGroup.get(operationType)?.value;
-      const discrepancyResponseValue = formGroup.get(discrepancyResponse)?.value;
+      const discrepancyResponseValue =
+        formGroup.get(discrepancyResponse)?.value;
 
-      if (operationTypeValue !== '22' && operationTypeValue !== '32' && !discrepancyResponseValue) {
+      if (
+        operationTypeValue !== '22' &&
+        operationTypeValue !== '32' &&
+        !discrepancyResponseValue
+      ) {
         formGroup.get(discrepancyResponse)?.setErrors({ required: true });
 
         return { required: true };
@@ -69,5 +78,4 @@ export class ValidatorsService {
       return null;
     };
   }
-
 }

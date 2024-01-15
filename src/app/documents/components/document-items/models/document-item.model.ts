@@ -17,7 +17,8 @@ export class DocumentItem {
     taxRates?: TaxRate[] = [];
     taxes?: Tax[] = [];
     descriptionUnitCode?: string;
-    
+    itemType?: string;
+    itemTypeReferenceId?: number = 0;
   
     constructor(data: Partial<DocumentItem> = {}) {
       Object.assign(this, data);

@@ -32,6 +32,7 @@ export class VPagoCliDetalle {
   termino_pago: string = '';
   recibo: string = '';
   isSelected?: boolean = false;
+  isGenerateNote: number = 0;
 
   constructor(data: Partial<VPagoCliDetalle> = {}) {
     Object.assign(this, data);

@@ -1,0 +1,340 @@
+<div class="top-10 h-full max-w-2xl flex items-center justify-center">
+    <!-- <div class="modal-overlay absolute w-full h-full max-w-xl" > -->
+    <div class="relative p-4 w-full max-w-xl">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-4 md:p-2 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                    {{action | action}} Tercero
+                </h3>
+                <button type="button" (click)="closeDialog()"
+                    class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+
+            <!-- Modal body -->
+            <form [formGroup]="form" (ngSubmit)="onSave()" class="space-y-4 w-full" action="#">
+
+                <!-- Seleccionar Tercero -->
+                <!-- <div class="grid md:grid-cols-6 md:gap-6">
+                    <div class="relative col-span-6 z-0 mb-5 group"> -->
+
+                <select formControlName="personType"
+                    class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+
+                    @for (item of personTypes ; track item.value) {
+                    <option [value]="item.value">
+                        {{item.description}}
+                    </option>
+                    }
+
+                </select>
+                <!-- </div>
+                </div> -->
+
+                <div class="mb-1 border-b border-gray-200 dark:border-gray-700">
+                    <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-tab"
+                        data-tabs-toggle="#default-tab-content" role="tablist">
+                        <li class="me-2" role="presentation">
+                            <button class="inline-block p-4 border-b-2 rounded-t-lg" id="basic-tab"
+                                data-tabs-target="#basic" type="button" role="tab" aria-controls="basic"
+                                aria-selected="false">Datos Básicos</button>
+                        </li>
+                        <li class="me-2" role="presentation">
+                            <button
+                                class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                                id="advance-tab" data-tabs-target="#advance" type="button" role="tab"
+                                aria-controls="advance" aria-selected="false">Parametrizaciones</button>
+                        </li>
+                    </ul>
+                </div>
+                <div id="default-tab-content">
+                    <div class="hidden p-0 rounded-lg bg-gray-50 dark:bg-gray-800" id="basic" role="tabpanel"
+                        aria-labelledby="basic-tab">
+                        <div class="h-96 max-w-2xl mx-auto p-4 md:p-5 overflow-y-scroll">
+
+                            <div class="grid md:grid-cols-6 md:gap-6">
+
+                                <!-- Tipos Documento -->
+                                <div class="relative col-span-3 z-0 mb-5 group">
+                                    <!-- <p class="text-sm pr-2 pt-1 text-gray-500 dark:text-white">
+                                        Tipo Documento
+                                    </p> -->
+                                    <select id="identificationType" formControlName="identificationType"
+                                        class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+
+                                        @for (item of tiposDocumento() ; track item.tipodocumentoId) {
+                                        <option [value]="item.tipodocumentoId">
+                                            {{item.nombre}}
+                                        </option>
+                                        }
+
+                                    </select>
+
+                                </div>
+
+                                <!-- Identification -->
+                                <div class="relative col-span-2 z-0 mb-5 group">
+
+                                    <input selectText type="text" name="identification" id="identification"
+                                        formControlName="identification"
+                                        class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                        placeholder=" " />
+                                    <label for="identification"
+                                        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Identificación</label>
+                                    @if (isValidField('identification')) {
+                                    <p class="text-xs text-red-600 dark:text-red-500">
+                                        {{getFieldError('identification')}}</p>
+                                    }
+                                </div>
+
+                                <!-- Digito Verificación -->
+                                <div class="relative z-0 mb-5 group">
+                                    <input type="text" name="dv" id="dv" formControlName="dv" mask="9"
+                                        class="w-full block py-2.5 px-0 text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                        placeholder=" " />
+                                    <label for="dv"
+                                        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">DV</label>
+                                    @if (isValidField('dv')) {
+                                    <p class="text-xs text-red-600 dark:text-red-500">{{getFieldError('dv')}}</p>
+                                    }
+                                </div>
+                            </div>
+
+                            <!-- tributaryIdentificationName -->
+
+                            <div class="grid md:grid-cols-6 md:gap-6">
+                                <div class="relative col-span-6 z-0 mb-5 group">
+                                    <input type="text" name="tributaryIdentificationName"
+                                        id="tributaryIdentificationName" formControlName="tributaryIdentificationName"
+                                        class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                        placeholder=" " />
+                                    <label for="tributaryIdentificationName"
+                                        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Razón
+                                        Social</label>
+                                    @if (isValidField('tributaryIdentificationName')) {
+                                    <p class="text-xs text-red-600 dark:text-red-500">
+                                        {{getFieldError('tributaryIdentificationName')}}</p>
+                                    }
+                                </div>
+                            </div>
+
+                            <!-- costumerName -->
+                            <div class="grid md:grid-cols-6 md:gap-6">
+                                <div class="relative col-span-6 z-0 mb-5 group">
+                                    <input type="text" name="costumerName" id="costumerName"
+                                        formControlName="costumerName"
+                                        class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                        placeholder=" " />
+                                    <label for="costumerName"
+                                        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Nombre
+                                        Comercial</label>
+                                    @if (isValidField('costumerName')) {
+                                    <p class="text-xs text-red-600 dark:text-red-500">{{getFieldError('costumerName')}}
+                                    </p>
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="grid md:grid-cols-6 md:gap-6">
+
+                                <!-- electronicMail -->
+                                <div class="relative col-span-4 z-0 mb-5 group">
+                                    <input type="text" name="electronicMail" id="electronicMail"
+                                        formControlName="electronicMail"
+                                        class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                        placeholder=" " />
+                                    <label for="electronicMail"
+                                        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Correo
+                                        electrónico</label>
+                                    @if (isValidField('electronicMail')) {
+                                    <p class="text-xs text-red-600 dark:text-red-500">
+                                        {{getFieldError('electronicMail')}}</p>
+                                    }
+                                </div>
+
+                                <!-- telephone -->
+                                <div class="relative col-span-2 z-0 mb-5 group">
+                                    <input type="text" name="telephone" id="telephone" formControlName="telephone"
+                                        class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                        placeholder=" " />
+                                    <label for="telephone"
+                                        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Teléfono</label>
+                                    @if (isValidField('telephone')) {
+                                    <p class="text-xs text-red-600 dark:text-red-500">{{getFieldError('telephone')}}</p>
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="grid md:grid-cols-6 md:gap-6">
+
+                                <!-- Paises -->
+                                <div class="relative col-span-3 z-0 mb-5 group">
+                                    <p class="text-sm pr-2 pt-1 text-gray-500 dark:text-white">
+                                        Pais
+                                    </p>
+                                    <select id="paisId" formControlName="paisId"
+                                        class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+
+                                        @for (item of paises() ; track item.paisId) {
+                                        <option [value]="item.paisId">
+                                            {{item.nombre}}
+                                        </option>
+                                        }
+
+                                    </select>
+
+                                </div>
+
+                                <!-- Municipios -->
+                                <div class="relative col-span-3 z-0 mb-5 group">
+                                    <p class="text-sm pr-2 pt-1 text-gray-500 dark:text-white">
+                                        Ciudad
+                                    </p>
+                                    <select id="municipioId" formControlName="municipioId"
+                                        class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+
+                                        @for (item of municipios() ; track item.municipioId) {
+                                        <option [value]="item.municipioId">
+                                            {{item.nombre}}
+                                        </option>
+                                        }
+
+                                    </select>
+
+                                </div>
+                            </div>
+
+                            <!-- addressLine1 -->
+                            <div class="grid md:grid-cols-6 md:gap-6">
+
+                                <div class="relative col-span-6 z-0 mb-5 group">
+                                    <input inputAddress type="text" name="addressLine1" id="addressLine1"
+                                        formControlName="addressLine1"
+                                        class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                        placeholder=" " />
+                                    <label for="addressLine1"
+                                        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Dirección</label>
+                                    @if (isValidField('addressLine1')) {
+                                    <p class="text-xs text-red-600 dark:text-red-500">{{getFieldError('addressLine1')}}
+                                    </p>
+                                    }
+                                </div>
+                            </div>
+
+                            <!-- Tipos Persona -->
+                            <div class="grid md:grid-cols-6 md:gap-6">
+
+                                <div class="relative col-span-6 z-0 mb-5 group">
+                                    <p class="text-sm pr-2 pt-1 text-gray-500 dark:text-white">
+                                        Tipo Persona
+                                    </p>
+                                    <select id="tipoPersonaId" formControlName="tipoPersonaId"
+                                        class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+
+                                        @for (item of tiposPersona() ; track item.tipoPersonaId) {
+                                        <option [value]="item.tipoPersonaId">
+                                            {{item.descripcion}}
+                                        </option>
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Tipos Regimen -->
+                            <div class="grid md:grid-cols-6 md:gap-6">
+
+                                <div class="relative col-span-6 z-0 mb-5 group">
+                                    <p class="text-sm pr-2 pt-1 text-gray-500 dark:text-white">
+                                        Tipo Regimen
+                                    </p>
+                                    <select id="tipoRegimenId" formControlName="tipoRegimenId"
+                                        class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+
+                                        @for (item of tiposRegimen() ; track item.tipoRegimenId) {
+                                        {{item | json}}
+                                        <option [value]="item.tipoRegimenId">
+                                            {{item.descripcion}}
+                                        </option>
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Tipos Impuesto -->
+                            <div class="grid md:grid-cols-6 md:gap-6">
+
+                                <div class="relative col-span-6 z-0 mb-5 group">
+                                    <p class="text-sm pr-2 pt-1 text-gray-500 dark:text-white">
+                                        Tributos
+                                    </p>
+                                    <select id="schemeIdentifier" formControlName="schemeIdentifier"
+                                        class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+
+                                        @for (item of taxSchemes() ; track item.identifier) {
+                                        {{item | json}}
+                                        <option [value]="item.identifier">
+                                            {{item.name}}
+                                        </option>
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Tipos Impuesto -->
+                            <div class="grid md:grid-cols-6 md:gap-6">
+
+                                <div class="relative col-span-6 z-0 mb-5 group">
+                                    <p class="text-sm pr-2 pt-1 text-gray-500 dark:text-white">
+                                        Responsabilidades Fiscales
+                                    </p>
+                                    <select multiple id="responsabilidadesFiscales"
+                                        formControlName="responsabilidadesFiscales"
+                                        class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+
+                                        @for (item of responsabilidadesFiscales() ; track item.codigo) {
+                                        {{item | json}}
+                                        <option [value]="item.codigo">
+                                            {{item.descripcion}}
+                                        </option>
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="hidden p-0 rounded-lg bg-gray-50 dark:bg-gray-800" id="advance" role="tabpanel"
+                        aria-labelledby="advance-tab">
+                        <p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong
+                                class="font-medium text-gray-800 dark:text-white">Dashboard tab's associated
+                                content</strong>. Clicking another tab will toggle the visibility of this one for the
+                            next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
+                    </div>
+                </div>
+
+
+                <!-- Modal footer -->
+                <div
+                    class="flex items-center justify-between p-2 md:p-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+
+                    <button type="submit"
+                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        {{action | action}}</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

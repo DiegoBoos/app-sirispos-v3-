@@ -526,8 +526,8 @@ export default class EmitDocumentComponent implements OnInit {
     const buyer: Buyer = {
       legalOrganizationType: buyerSeeting.persona === 'NATURAL'? 'person': 'company',
       costumerName: buyerSeeting.nombre_tercero,
-      tributaryIdentificationKey: '01', //TODO: Parametrizqcion identificacion tributaria
-      tributaryIdentificationName: 'IVA',  //TODO: Parametrizqcion identificacion tributaria
+      tributaryIdentificationKey: '01', //TODO: Parametizacion identificacion tributaria
+      tributaryIdentificationName: 'IVA',  //TODO: Parametizacion identificacion tributaria
       fiscalResponsibilities: buyerSeeting.responsabilidades_fiscales,
       fiscalRegime: buyerSeeting.codigo_regimen,
       partyLegalEntityBuyer,
@@ -567,7 +567,7 @@ export default class EmitDocumentComponent implements OnInit {
       legalOrganizationType: customer.persona === 'NATURAL'? 'person': 'company',
       costumerName: customer.nombre,
       tributaryIdentificationKey: 'ZZ', //TODO: Parametrizqcion identificacion tributaria
-      tributaryIdentificationName: 'No Aplica', //TODO: Parametrizqcion identificacion tributaria
+      tributaryIdentificationName: 'Nombre de la figura tributaria', //TODO: Parametrizqcion identificacion tributaria
       fiscalResponsibilities: customer.responsabilidades_fiscales,
       fiscalRegime: customer.codigo_regimen,
       partyLegalEntitySeller,

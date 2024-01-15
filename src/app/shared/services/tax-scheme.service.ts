@@ -16,8 +16,12 @@ export class TaxSchemeService {
   public taxSchemesItems = computed(() => this.#taxSchemes().filter(i=>i.identifier === '04' || i.identifier === '01' ));
   public taxSchemesGenerics = computed(() => this.#taxSchemes().filter(i=>i.identifier === '05' || i.identifier === '06' || i.identifier === '07' || i.identifier === 'RF' ));
 
+  #taxAllSchemes = signal<TaxScheme[]>([]);
+  public taxAllSchemes = computed(() => this.#taxAllSchemes());
+
   constructor() {
     this.getAll().subscribe();
+    this.getAllSchemes().subscribe();
   }
 
   getAll() {
@@ -29,5 +33,16 @@ export class TaxSchemeService {
       catchError(() => []),
     )
   }
+
+  getAllSchemes() {
+    const url = `${this.apiUrl}/tax-scheme/all-schemes`;
+
+    return this.http.get<TaxScheme[]>(url)
+    .pipe(
+      map((taxAllSchemes) => { this.#taxAllSchemes.set(taxAllSchemes) }),
+      catchError(() => []),
+    )
+  }
+  
 
 }
