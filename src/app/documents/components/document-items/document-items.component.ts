@@ -191,6 +191,7 @@ export class DocumentItemsComponent implements AfterViewInit {
             total: 0,
             descriptionUnitCode: this.unitCodeDefault.description,
             itemType: 'I',
+            itemTypeReferenceId: 0
           };
 
       this.items.push(this.itemForm(addData));

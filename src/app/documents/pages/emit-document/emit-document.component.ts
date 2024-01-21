@@ -49,8 +49,20 @@ import { SelectTextDirective } from '@shared/directives/select-text.directive';
 import { AttachedFile } from '@shared/components/attach-file/interfaces/attached-file.interface';
 import { AttachFileComponent } from '@shared/components/attach-file/attach-file.component';
 import { Tax } from '../../components/tax/models/tax.model';
-import { Buyer, ContactBuyer, ContactSeller, DocumentEmit, PartylegalEntity, RegistrationAddress, Seller } from '../../interfaces/document.interface';
+import {
+  Buyer,
+  ContactBuyer,
+  ContactSeller,
+  DocumentEmit,
+  PartylegalEntity,
+  RegistrationAddress,
+  Seller,
+} from '../../interfaces/document.interface';
 import { documentTypesTaxxa } from '../../interfaces/document-type-taxxa';
+import { DocumentService } from '../../document.service';
+import { BlockUI, BlockUIModule, NgBlockUI } from 'ng-block-ui';
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-emit-document',
@@ -59,6 +71,8 @@ import { documentTypesTaxxa } from '../../interfaces/document-type-taxxa';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    BlockUIModule,
+
     SearchCustomerComponent,
     SearchPaymentsComponent,
     DocumentItemsComponent,
@@ -78,12 +92,17 @@ import { documentTypesTaxxa } from '../../interfaces/document-type-taxxa';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class EmitDocumentComponent implements OnInit {
+  
+  @BlockUI() blockUI?: NgBlockUI;
+  private router = inject(Router);
+
   private invoiceTypeService = inject(InvoiceTypeService);
   public settingService = inject(SettingService);
   private discrepancyResponseService = inject(DiscrepancyResponseService);
   private paymentMethodService = inject(PaymentMethodService);
   private paymentMeanService = inject(PaymentMeanService);
   private validatorsService = inject(ValidatorsService);
+  private documentService = inject(DocumentService);
 
   public invoiceType: InvoiceType = new InvoiceType();
   public invoiceTypes = computed(() => this.invoiceTypeService.invoiceTypes());
@@ -151,7 +170,7 @@ export default class EmitDocumentComponent implements OnInit {
       clienteId: [null, [Validators.required]],
       issueDate: [format(new Date(), 'yyyy-MM-dd'), [Validators.required]],
       dueDate: [format(new Date(), 'yyyy-MM-dd'), [Validators.required]],
-      operationType:  ['22', [Validators.required]], // Default 22 Nota Crédito sin referencia a facturas
+      operationType: ['22', [Validators.required]], // Default 22 Nota Crédito sin referencia a facturas
       discrepancyResponse: [null], // Default 22 Nota Crédito sin referencia a facturas
       paymentMean: ['1', [Validators.required]],
       paymentMethod: ['10', [Validators.required]],
@@ -183,7 +202,7 @@ export default class EmitDocumentComponent implements OnInit {
   groupValues = computed(() => {
     // this.#documentItems();
     console.log(this.#documentItems());
-    
+
     this.form.controls['documentItems'].setValue(this.#documentItems());
     return this.calculateTotal();
   });
@@ -352,13 +371,14 @@ export default class EmitDocumentComponent implements OnInit {
 
     let totalGenericsTax = 0;
     genericsTax.map((i) => {
-      const subtotalAfterAllowance = subTotal + allowanceChangueTotal - globalAllowance;
+      const subtotalAfterAllowance =
+        subTotal + allowanceChangueTotal - globalAllowance;
       let totalRate = subtotalAfterAllowance * (+i.rate / 100);
 
-       //Manejo ReteIca
-       if (i.tax === '07'){
+      //Manejo ReteIca
+      if (i.tax === '07') {
         totalRate = subtotalAfterAllowance * (+i.rate / 1000);
-      } 
+      }
 
       genericsTaxItem.push({
         baseAmount: subtotalAfterAllowance,
@@ -377,8 +397,7 @@ export default class EmitDocumentComponent implements OnInit {
       delivery -
       globalAllowance;
 
-
-    const totalToPay = total - totalGenericsTax;  
+    const totalToPay = total - totalGenericsTax;
     const totalInWords = numberToWords(total, {
       plural: 'Pesos M/CTE',
       singular: 'Peso M/CTE',
@@ -412,14 +431,15 @@ export default class EmitDocumentComponent implements OnInit {
     const baseAmount = subtotal + totalAllowances - globalAllowance;
 
     const taxRates: TaxRate[] = this.form.controls['genericsTax'].value || [];
-    const taxesGenerics: Tax[] = this.form.controls['taxesGenerics'].value || [];
+    const taxesGenerics: Tax[] =
+      this.form.controls['taxesGenerics'].value || [];
 
     taxRates.map((i) => {
       const taxScheme: TaxScheme = this.taxSchemesGenerics().filter(
         (ts) => ts.identifier === i.tax
       )[0];
 
-      const { taxRates, ...rest } = taxScheme
+      const { taxRates, ...rest } = taxScheme;
       i.taxScheme = rest;
     });
 
@@ -437,7 +457,7 @@ export default class EmitDocumentComponent implements OnInit {
             const taxScheme: TaxScheme = this.taxSchemesGenerics().filter(
               (ts) => ts.identifier === taxRate.tax
             )[0];
-            const { taxRates, ...rest } = taxScheme
+            const { taxRates, ...rest } = taxScheme;
             taxRate.taxScheme = rest;
           });
 
@@ -460,7 +480,7 @@ export default class EmitDocumentComponent implements OnInit {
     const errores: { [key: string]: any } = {};
 
     // Recorrer todos los controles del formulario
-    Object.keys(this.form.controls).forEach(controlName => {
+    Object.keys(this.form.controls).forEach((controlName) => {
       const control = this.form.get(controlName);
 
       // Obtener los errores del control si existen
@@ -473,112 +493,112 @@ export default class EmitDocumentComponent implements OnInit {
   }
 
   emitDocument() {
-
     this.form.controls['documentItems'].setValue(this.#documentItems());
 
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       console.log(this.getFormErrors());
-    
+
       return;
     }
-   
+
     const data = this.form.value;
 
     const documentItems: any[] = [];
 
-    data.documentItems.map((i: any)=>{
+    data.documentItems.map((i: any) => {
       delete i.taxRates;
       documentItems.push(i);
     });
 
-
-    const documentTypeTaxxa = documentTypesTaxxa.filter(i=>i.code === this.invoiceType.code)[0];
-
-   
-    
-    // Buyer
-
-    const buyerSeeting = this.settingService.seeting();
-  
-    const partyLegalEntityBuyer: PartylegalEntity = {
-      docType: buyerSeeting.codigo_alterno,
-      docNo: buyerSeeting.identificacion,
-      corporateRegistrationSchemename: buyerSeeting.nombre_comercial
-    }
-    
-    const registrationAddressBuyer: RegistrationAddress = {
-      countryCode: buyerSeeting.codigo_pais,
-      departmentCode: buyerSeeting.codigo_departamento,
-      townCode: buyerSeeting.codigo_municipio,
-      cityName: buyerSeeting.municipio,
-      addressLine1: buyerSeeting.direccion1,
-      zip: +buyerSeeting.codpostal
-    }
-
-    const contactBuyer: ContactBuyer = {
-      contactPerson: `${buyerSeeting.nombre1 || ''} ${buyerSeeting.apellido1 || ''}`,
-      electronicMail: buyerSeeting.email,
-      telephone: buyerSeeting.telefono,
-      registrationAddress: registrationAddressBuyer
-    }
-
-    const buyer: Buyer = {
-      legalOrganizationType: buyerSeeting.persona === 'NATURAL'? 'person': 'company',
-      costumerName: buyerSeeting.nombre_tercero,
-      tributaryIdentificationKey: '01', //TODO: Parametizacion identificacion tributaria
-      tributaryIdentificationName: 'IVA',  //TODO: Parametizacion identificacion tributaria
-      fiscalResponsibilities: buyerSeeting.responsabilidades_fiscales,
-      fiscalRegime: buyerSeeting.codigo_regimen,
-      partyLegalEntityBuyer,
-      contactBuyer
-    }
-
-
+    const documentTypeTaxxa = documentTypesTaxxa.filter(
+      (i) => i.code === this.invoiceType.code
+    )[0];
 
     // Seller
 
-    const customer = this.customerSelected;
+    const sellerSeeting = this.settingService.seeting();
 
     const partyLegalEntitySeller: PartylegalEntity = {
-      docType: customer.tipo_doc,
-      docNo: customer.identificacion,
-      corporateRegistrationSchemename: customer.nombre_comercial
-    }
+      docType: sellerSeeting.codigo_alterno,
+      docNo: sellerSeeting.identificacion,
+      corporateRegistrationSchemename: sellerSeeting.nombre_comercial,
+    };
 
     const registrationAddressSeller: RegistrationAddress = {
+      countryCode: sellerSeeting.codigo_pais,
+      departmentCode: sellerSeeting.codigo_departamento,
+      townCode: sellerSeeting.codigo_municipio,
+      cityName: sellerSeeting.municipio,
+      addressLine1: sellerSeeting.direccion1,
+      zip: +sellerSeeting.codpostal,
+    };
+
+    const contactSeller: ContactSeller = {
+      contactPerson: `${sellerSeeting.nombre1 || ''} ${
+        sellerSeeting.apellido1 || ''
+      }`,
+      electronicMail: sellerSeeting.email,
+      telephone: sellerSeeting.telefono,
+      registrationAddress: registrationAddressSeller,
+    };
+
+    const seller: Seller = {
+      legalOrganizationType:
+        sellerSeeting.persona === 'NATURAL' ? 'person' : 'company',
+      costumerName: sellerSeeting.razon_social1,
+      tributaryIdentificationKey: 'ZZ', //TODO: Parametizacion identificacion tributaria
+      tributaryIdentificationName: 'Nombre de la figura tributaria', //TODO: Parametizacion identificacion tributaria
+      fiscalResponsibilities: sellerSeeting.responsabilidades_fiscales,
+      fiscalRegime: sellerSeeting.codigo_regimen,
+      partyLegalEntitySeller,
+      contactSeller,
+      tableInfo: {},
+    };
+
+    // Buyer
+
+    const customer = this.customerSelected;
+
+    const partyLegalEntityBuyer: PartylegalEntity = {
+      docType: customer.tipo_doc,
+      docNo: customer.identificacion,
+      corporateRegistrationSchemename: customer.nombre_comercial,
+    };
+
+    const registrationAddressBuyer: RegistrationAddress = {
       countryCode: customer.codigo_pais,
       departmentCode: customer.codigo_departamento,
       townCode: customer.codigo_municipio,
       cityName: customer.municipio,
       addressLine1: customer.direccion1,
-      zip: +customer.codpostal
-    }
+      zip: +customer.codpostal,
+    };
 
-
-    const contactSeller: ContactSeller = {
+    const contactBuyer: ContactBuyer = {
       contactPerson: customer.contacto_cliente,
       electronicMail: customer.email,
       telephone: customer.telefono,
-      registrationAddress: registrationAddressSeller
-    }
+      registrationAddress: registrationAddressBuyer,
+    };
 
-    const seller: Seller = {
-      legalOrganizationType: customer.persona === 'NATURAL'? 'person': 'company',
+    const buyer: Buyer = {
+      legalOrganizationType:
+        customer.persona === 'NATURAL' ? 'person' : 'company',
       costumerName: customer.nombre,
       tributaryIdentificationKey: 'ZZ', //TODO: Parametrizqcion identificacion tributaria
       tributaryIdentificationName: 'Nombre de la figura tributaria', //TODO: Parametrizqcion identificacion tributaria
       fiscalResponsibilities: customer.responsabilidades_fiscales,
       fiscalRegime: customer.codigo_regimen,
-      partyLegalEntitySeller,
-      contactSeller,
-      tableInfo: {}
-    }
+      partyLegalEntityBuyer,
+      contactBuyer,
+      tableInfo: {},
+    };
 
     let totalItemsTax = 0;
 
-    this.#totalsInvoice().itemsTax.map(i=>totalItemsTax += i.totalRate);
-    
+    this.#totalsInvoice().itemsTax.map((i) => (totalItemsTax += i.totalRate));
+
     const document: DocumentEmit = {
       id: '',
       clienteId: data.clienteId,
@@ -591,8 +611,14 @@ export default class EmitDocumentComponent implements OnInit {
       customizationId: '',
       discrepancyResponse: data.discrepancyResponse,
       lineExtensionAmount: this.#totalsInvoice().subTotal,
-      taxExclusiveAmount: this.#totalsInvoice().subTotal + this.#totalsInvoice().allowanceChangueTotal,
-      taxInclusiveAmount: this.#totalsInvoice().subTotal + this.#totalsInvoice().allowanceChangueTotal + totalItemsTax + this.#totalsInvoice().totalGenericsTax,
+      taxExclusiveAmount:
+        this.#totalsInvoice().subTotal +
+        this.#totalsInvoice().allowanceChangueTotal,
+      taxInclusiveAmount:
+        this.#totalsInvoice().subTotal +
+        this.#totalsInvoice().allowanceChangueTotal +
+        totalItemsTax +
+        this.#totalsInvoice().totalGenericsTax,
       paylableAmount: this.#totalsInvoice().total,
       paymentMean: data.paymentMean,
       paymentMethod: data.paymentMethod,
@@ -606,10 +632,31 @@ export default class EmitDocumentComponent implements OnInit {
       notes: data.notes,
       orderReference: data.orderReference,
       buyer,
-      seller
-    }
-    console.log(document);
+      seller,
+    };
+    // console.log(document);
 
-
+    this.documentService.createDocument(document).subscribe((resp: any) => {
+      if (resp) {
+        const { ok, document } = resp;
+        if (ok) {
+          if (this.settingService.seeting().onfe) {
+            this.blockUI!.start('Generando documento electrónico ...');
+            this.documentService
+              .emitDocument(document.id)
+              .subscribe((resp) => {
+                this.blockUI?.stop();
+                if (resp) {
+                  Swal.fire('Transacción Exitosa.', 'Documento generado correctamente.','success');       
+                }
+                
+              });
+            } else {
+              Swal.fire('Advertencia.', 'Documento registrado. Pendiente de emitir.','warning');
+            }
+            this.router.navigateByUrl('/dashboard/documents-query');
+        }
+      }
+    });
   }
 }

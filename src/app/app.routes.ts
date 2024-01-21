@@ -14,6 +14,10 @@ export const routes: Routes = [
         path: 'emit-document',
         loadComponent: () => import('./documents/pages/emit-document/emit-document.component')
       },
+      {
+        path: 'documents-query',
+        loadComponent: () => import('./documents/pages/documents-query/documents-query.component')
+      },
     ]
   },
   {

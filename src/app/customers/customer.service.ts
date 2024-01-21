@@ -4,6 +4,8 @@ import { environment } from '../environments/environment';
 import { Observable, catchError, of } from 'rxjs';
 import { SearchParam } from '@shared/interfaces/search-param.interface';
 import { PaginationCustomer } from './interfaces/pagination-customer.interface';
+import { VCliente } from './models/v-cliente.model';
+import { Cliente } from './models/cliente-model';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +30,15 @@ export class CustomerService {
         catchError(() => of()),
       )
 
+  }
+
+  findById(id: string) {
+    const url = `${this.apiUrl}/customer/${id}`;
+
+    return this.http.get<Cliente>(url)
+      .pipe(
+        catchError(() => of()),
+      )
   }
 
 

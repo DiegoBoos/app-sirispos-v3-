@@ -1,3 +1,5 @@
+import { OperationType } from "@shared/models/operation-type.model";
+
 export interface DocumentEmit {
     id:                  string;
     clienteId:           number;
@@ -6,7 +8,7 @@ export interface DocumentEmit {
     documentType:        string;
     documentTypeCode:    string;
     currency:            string;
-    operationType:       string;
+    operationType:       OperationType;
     customizationId:     string; // Aplica solo a Salud
     discrepancyResponse: string;
     lineExtensionAmount: number;
@@ -18,7 +20,7 @@ export interface DocumentEmit {
     businessRegimen:     string;
     // lineExtensionAmount: number;
     documentItems:       DocumentItem[];
-    genericsTax:       Tax[];
+    genericsTax:         Tax[];
     attachedFiles:       AttachedFile[];
     globalAllowance:     number;
     tip:                 number;
@@ -27,6 +29,9 @@ export interface DocumentEmit {
     orderReference:      string;
     buyer:               Buyer;
     seller:              Seller;
+    documentPrefix?:     string;
+    documentSuffix?:     string;
+    responseEmit?:       ResponseEmit;
 }
 
 export interface AttachedFile {
@@ -34,6 +39,17 @@ export interface AttachedFile {
     name:   string;
     base64: string;
     size:   number;
+}
+
+export interface ResponseEmit {
+    id: string;
+    statusCode: string;
+    message: string;
+    emitDate: Date;
+    returnedXml: string;
+    cufe: string;
+    qr: string;
+    ptReference: string;
 }
 
 export interface DocumentItem {
@@ -77,6 +93,7 @@ export interface Buyer {
     fiscalRegime:                string;
     partyLegalEntityBuyer:       PartylegalEntity;
     contactBuyer:                ContactBuyer;
+    tableInfo:                   { [key: string]: TableInfo };
 }
 
 export interface ContactBuyer {

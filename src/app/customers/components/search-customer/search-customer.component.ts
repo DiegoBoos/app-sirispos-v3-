@@ -13,9 +13,10 @@ import { CustomerService } from '../../customer.service';
 import { VCliente } from '../../models/v-cliente.model';
 import { SearchParam } from '@shared/interfaces/search-param.interface';
 import { FormsModule } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { SearchPaymentsComponent } from '../../../customer-payments/components/search-payments/search-payments.component';
 import { initFlowbite } from 'flowbite';
+import { NewEditCustomerComponent } from '../new-edit-customer/new-edit-customer.component';
 
 @Component({
   selector: 'app-search-customer',
@@ -46,11 +47,14 @@ export class SearchCustomerComponent implements OnInit {
     term: '',
   };
 
+  private dialog = inject(MatDialog);
+  
   constructor(
     public dialogRef: MatDialogRef<SearchPaymentsComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public obj: any,
   ) {
 
+    
 
   }
 
@@ -102,6 +106,22 @@ export class SearchCustomerComponent implements OnInit {
       this.searchParam.pagination!.pageIndex++;
     }
     this.loadData();
+  }
+
+  editCustomer(customerId: number) {
+
+    const dialogRef = this.dialog.open(NewEditCustomerComponent, { data: { action: 'update', customerId } });
+
+    dialogRef.afterClosed().subscribe((result) => {
+     
+      if (result) {
+        const { data } = result;
+        // this.#customerSelect.set(data);
+        // this.customerSelectEvent.emit(data);
+        // this.customerSelected.set(data);
+      }
+    });
+  
   }
 
   closeDialog(): void {

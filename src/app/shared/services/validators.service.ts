@@ -78,4 +78,28 @@ export class ValidatorsService {
       return null;
     };
   }
+
+  public tipoPersonaValidator(
+    tipoPersonaId: string, apellido1: string, nombre1: string, tributaryIdentificationName: string
+  ) {
+    return (formGroup: AbstractControl): ValidationErrors | null => {
+      const tipoPersonaIdValue = +formGroup.get(tipoPersonaId)?.value;
+      const nombre1Value = formGroup.get(nombre1)?.value;
+      const apellido1Value = formGroup.get(apellido1)?.value;
+      const tributaryIdentificationNameValue = formGroup.get(tributaryIdentificationName)?.value;
+
+      if (tipoPersonaIdValue === 2 && apellido1Value.trim()==='') {
+        formGroup.get(apellido1)?.setErrors({ required: true });
+      }
+      if (tipoPersonaIdValue === 2 && nombre1Value.trim()==='') {
+        formGroup.get(nombre1)?.setErrors({ required: true });
+      }
+      if (tipoPersonaIdValue === 1 && tributaryIdentificationNameValue.trim()==='') {
+        formGroup.get(tributaryIdentificationName)?.setErrors({ required: true });
+      }
+
+
+      return null;
+    };
+  }
 }
