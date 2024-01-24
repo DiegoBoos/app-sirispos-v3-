@@ -18,6 +18,11 @@ export const routes: Routes = [
         path: 'documents-query',
         loadComponent: () => import('./documents/pages/documents-query/documents-query.component')
       },
+      {
+        path: 'statistics',
+        title: 'Estadísticas',
+        loadComponent: () => import('./dashboard/pages/statistics/statistics.component'),
+      },
     ]
   },
   {

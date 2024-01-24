@@ -4,6 +4,7 @@ import { environment } from '../environments/environment';
 import { Observable, catchError, finalize, of } from 'rxjs';
 import { SearchParam } from '@shared/interfaces/search-param.interface';
 import { PaginationCustomer } from './interfaces/pagination-customer.interface';
+import { MonthValue } from '../dashboard/pages/statistics/interfaces/month-value.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,20 @@ export class CustomerPaymentService {
     const url = `${this.apiUrl}/customer-payment/find-by-client-term/${id}?limit=${pageSize}&page=${pageIndex}&term=${term}&dateFrom=${dateFrom}&dateTo=${dateTo}`;
 
     return this.http.get<PaginationCustomer>(url)
+      .pipe(
+        catchError(() => of()),
+        finalize(() => this.#isLoading.set(false)) 
+      )
+
+  }
+
+  getStatisticsNoDocumentEmit(dateFrom: string, dateTo: string): Observable<MonthValue[]> {
+
+    this.#isLoading.set(true);
+   
+    const url = `${this.apiUrl}/customer-payment/statistics?dateFrom=${dateFrom}&dateTo=${dateTo}`;
+
+    return this.http.get<MonthValue[]>(url)
       .pipe(
         catchError(() => of()),
         finalize(() => this.#isLoading.set(false)) 
