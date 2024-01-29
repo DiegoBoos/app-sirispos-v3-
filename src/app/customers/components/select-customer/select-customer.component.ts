@@ -74,7 +74,7 @@ export class SelectCustomerComponent {
 
   openDialog(): void {
 
-    const dialogRef = this.dialog.open(SearchCustomerComponent);
+    const dialogRef = this.dialog.open(SearchCustomerComponent,{ disableClose: true });
     dialogRef.afterClosed().subscribe((result) => {
      
       if (result) {
@@ -94,6 +94,9 @@ export class SelectCustomerComponent {
      
       if (result) {
         const { data } = result;
+        this.#customerSelect.set(data);
+        this.customerSelectEvent.emit(data);
+        this.customerSelected.set(data);
         // this.#customerSelect.set(data);
         // this.customerSelectEvent.emit(data);
         // this.customerSelected.set(data);

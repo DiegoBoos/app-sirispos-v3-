@@ -44,8 +44,10 @@ import { ClientAllowance } from '../../models/client-allowance.model';
 import { ReteFuenteService } from '@shared/services/retefuente.service';
 import { dvCalculate } from '@shared/helpers/dv-calculate';
 import { CustomerService } from '../../customer.service';
-import { VCliente } from '../../models/v-cliente.model';
 import { Cliente } from '../../models/cliente-model';
+import Swal from 'sweetalert2';
+import { VCliente } from '../../models/v-cliente.model';
+import { Customer } from '../../interfaces/customer.interface';
 
 @Component({
   selector: 'app-new-edit-customer',
@@ -87,13 +89,17 @@ export class NewEditCustomerComponent implements OnInit, AfterViewInit {
   public retefuenteService = inject(ReteFuenteService);
   public customerService = inject(CustomerService);
 
-  public tiposDocumento = computed(() => this.tipoDocumentoService.tiposDocumento());
+  public tiposDocumento = computed(() =>
+    this.tipoDocumentoService.tiposDocumento()
+  );
   public tiposPersona = computed(() => this.tipoPersonaService.tiposPersona());
   public tiposRegimen = computed(() => this.tipoRegimenService.tiposRegimen());
   public paises = computed(() => this.paisService.paises());
   public municipios = computed(() => this.municipioService.municipios());
   public taxSchemes = computed(() => this.taxSchemeService.taxAllSchemes());
-  public responsabilidadesFiscales = computed(() => this.responsabilidadFiscalService.responsabilidadesFiscales());
+  public responsabilidadesFiscales = computed(() =>
+    this.responsabilidadFiscalService.responsabilidadesFiscales()
+  );
   public tiposPrecio = computed(() => this.tipoPrecioService.tiposPrecio());
   public vendedores = computed(() => this.vendedorService.vendedores());
   public zonas = computed(() => this.zonaService.zonas());
@@ -105,6 +111,7 @@ export class NewEditCustomerComponent implements OnInit, AfterViewInit {
   public isReteICA: boolean = false;
 
   public tipoPersonaId: number = 2;
+  private vCliente: VCliente = new VCliente();
 
   // public personTypes = [
   //   {
@@ -121,47 +128,54 @@ export class NewEditCustomerComponent implements OnInit, AfterViewInit {
   //   },
   // ];
 
-  public form: FormGroup = this.fb.group({
-    // personType: ['C', [Validators.required]], //C=Cliente, P=Proveedor, A=ClienteAndProveedor,
-    identificationType: [3, [Validators.required]],
-    identification: ['', [Validators.required]],
-    dv: ['', [Validators.required]],
-    customerName: ['', [Validators.required]],
-    apellido1: [''],
-    apellido2: [''],
-    nombre1: [''],
-    nombre2: [''],
-    tributaryIdentificationName: [''],
-    electronicMail: ['', [Validators.required, Validators.email]],
-    telephone: ['', [Validators.required]],
-    paisId: [48, [Validators.required]],
-    municipioId: [757, [Validators.required]],
-    addressLine1: [''],
-    tipoPersonaId: [2, [Validators.required]],
-    tipoRegimenId: [1, [Validators.required]],
-    schemeIdentifier: ['ZZ', [Validators.required]],
-    responsabilidadesFiscales: [['R-99-PN'], [Validators.required]],
-    plazoCredito: [0],
-    bloqueoMora: [0],
-    cupoCredito: [0],
-    tipoPrecioId: [0, [Validators.required]],
-    vendedorId: [1, [Validators.required]],
-    zonaId: [1, [Validators.required]],
-    aplicaFE: [1, [Validators.required]],
-    activo: [1, [Validators.required]],
-    isResident: [1, [Validators.required]],
-    isReteFuente: [0, [Validators.required]],
-    isReteIVA: [0, [Validators.required]],
-    isReteICA: [0, [Validators.required]],
-    retefteId: [null],
-    porcreteica: [0],
-    discountParams: [[]]
-  },
-  {
-    validators: [
-      this.validatorsService.tipoPersonaValidator('tipoPersonaId', 'apellido1', 'nombre1', 'tributaryIdentificationName'),
-    ],
-  }
+  public form: FormGroup = this.fb.group(
+    {
+      // personType: ['C', [Validators.required]], //C=Cliente, P=Proveedor, A=ClienteAndProveedor,
+      id: [null],
+      identificationType: [3, [Validators.required]],
+      identification: ['', [Validators.required]],
+      dv: ['', [Validators.required]],
+      customerName: ['', [Validators.required]],
+      apellido1: [''],
+      apellido2: [''],
+      nombre1: [''],
+      nombre2: [''],
+      tributaryIdentificationName: [''],
+      electronicMail: ['', [Validators.required, Validators.email]],
+      telephone: ['', [Validators.required]],
+      paisId: [48, [Validators.required]],
+      municipioId: [757, [Validators.required]],
+      addressLine1: [''],
+      tipoPersonaId: [2, [Validators.required]],
+      tipoRegimenId: [1, [Validators.required]],
+      schemeIdentifier: ['ZZ', [Validators.required]],
+      responsabilidadesFiscales: [['R-99-PN'], [Validators.required]],
+      plazoCredito: [0],
+      bloqueoMora: [0],
+      cupoCredito: [0],
+      tipoPrecioId: [0, [Validators.required]],
+      vendedorId: [1, [Validators.required]],
+      zonaId: [1, [Validators.required]],
+      aplicaFE: [1, [Validators.required]],
+      activo: [1, [Validators.required]],
+      isResident: [1, [Validators.required]],
+      isReteFuente: [0, [Validators.required]],
+      isReteIVA: [0, [Validators.required]],
+      isReteICA: [0, [Validators.required]],
+      retefteId: [null],
+      porcreteica: [0],
+      discountParams: [[]],
+    },
+    {
+      validators: [
+        this.validatorsService.tipoPersonaValidator(
+          'tipoPersonaId',
+          'apellido1',
+          'nombre1',
+          'tributaryIdentificationName'
+        ),
+      ],
+    }
   );
 
   public formDescuentos!: FormGroup;
@@ -173,32 +187,50 @@ export class NewEditCustomerComponent implements OnInit, AfterViewInit {
     const { action, customerId } = obj;
 
     if (customerId) {
-
-      this.customerService.findById(customerId).subscribe(resp=>{
-
+      this.customerService.findById(customerId).subscribe((resp) => {
         if (resp) {
           const cliente: Cliente = resp;
 
-          const responsabilidadesFiscales = cliente.tercero?.responsabilidadesFiscales.split(',');
+          const responsabilidadesFiscales =
+            cliente.tercero?.responsabilidadesFiscales.split(',');
 
-          this.form.controls['identificationType'].setValue(cliente.tercero?.tipoDocumentoId);
-          this.form.controls['identification'].setValue(cliente.tercero?.identificacion);
-          this.form.controls['dv'].setValue(cliente.tercero?.digitoVerificacion);
+          this.form.controls['identificationType'].setValue(
+            cliente.tercero?.tipoDocumentoId
+          );
+          this.form.controls['identification'].setValue(
+            cliente.tercero?.identificacion
+          );
+          this.form.controls['dv'].setValue(
+            cliente.tercero?.digitoVerificacion
+          );
+          this.form.controls['id'].setValue(customerId);
           this.form.controls['customerName'].setValue(cliente.nombreComercial);
           this.form.controls['apellido1'].setValue(cliente.tercero?.apellido1);
           this.form.controls['apellido2'].setValue(cliente.tercero?.apellido2);
           this.form.controls['nombre1'].setValue(cliente.tercero?.nombre1);
           this.form.controls['nombre2'].setValue(cliente.tercero?.nombre2);
-          this.form.controls['tributaryIdentificationName'].setValue(cliente.tercero?.razonSocial1);
+          this.form.controls['tributaryIdentificationName'].setValue(
+            cliente.tercero?.razonSocial1
+          );
           this.form.controls['electronicMail'].setValue(cliente.email);
           this.form.controls['telephone'].setValue(cliente.telefono);
-          this.form.controls['paisId'].setValue(cliente.tercero?.paisId)
-          this.form.controls['municipioId'].setValue(cliente.tercero?.municipioId)
-          this.form.controls['addressLine1'].setValue(cliente.tercero?.direccion1);
-          this.form.controls['tipoPersonaId'].setValue(cliente.tercero?.tipoPersonaId);
-          this.form.controls['tipoRegimenId'].setValue(cliente.tercero?.tipoRegimenId);
+          this.form.controls['paisId'].setValue(cliente.tercero?.paisId);
+          this.form.controls['municipioId'].setValue(
+            cliente.tercero?.municipioId
+          );
+          this.form.controls['addressLine1'].setValue(
+            cliente.tercero?.direccion1
+          );
+          this.form.controls['tipoPersonaId'].setValue(
+            cliente.tercero?.tipoPersonaId
+          );
+          this.form.controls['tipoRegimenId'].setValue(
+            cliente.tercero?.tipoRegimenId
+          );
           this.form.controls['schemeIdentifier'].setValue('ZZ');
-          this.form.controls['responsabilidadesFiscales'].setValue(responsabilidadesFiscales);
+          this.form.controls['responsabilidadesFiscales'].setValue(
+            responsabilidadesFiscales
+          );
           this.form.controls['plazoCredito'].setValue(cliente.plazoCredito);
           this.form.controls['bloqueoMora'].setValue(cliente.diasBloqueoMora);
           this.form.controls['cupoCredito'].setValue(cliente.cupoCredito);
@@ -207,27 +239,40 @@ export class NewEditCustomerComponent implements OnInit, AfterViewInit {
           this.form.controls['zonaId'].setValue(cliente.zonaId);
           this.form.controls['aplicaFE'].setValue(cliente.aplicaFe);
           this.form.controls['activo'].setValue(cliente.activo);
-          this.form.controls['isResident'].setValue(cliente.tercero?.isResident);
-          this.form.controls['isReteFuente'].setValue(cliente.tercero?.retefuente);
+          this.form.controls['isResident'].setValue(
+            cliente.tercero?.isResident
+          );
+          this.form.controls['isReteFuente'].setValue(
+            cliente.tercero?.retefuente
+          );
           this.form.controls['isReteIVA'].setValue(cliente.tercero?.reteiva);
           this.form.controls['isReteICA'].setValue(cliente.tercero?.reteica);
           this.form.controls['retefteId'].setValue(cliente.tercero?.retefteId);
-          this.form.controls['porcreteica'].setValue(cliente.tercero?.porcreteica);
-          this.form.controls['discountParams'].setValue('');
+          this.form.controls['porcreteica'].setValue(
+            cliente.tercero?.porcreteica
+          );
+          this.form.controls['discountParams'].setValue(cliente.discountParams);
 
+          cliente.discountParams?.map(i=>{
+            const item: ClientAllowance = {
+              clientAllowanceId: i.id,
+              days: i.days!,
+              rate: i.rate!
+            };
+            this.addItem(item)
+          })
           this.changueRetefuente();
-
         }
-        
-      })
-      
+      });
     }
 
     this.action = action;
     this.creatForm();
   }
   ngAfterViewInit(): void {
-    this.form.controls['tipoPrecioId'].setValue(this.settingService.seeting().tipoprecio_id);
+    this.form.controls['tipoPrecioId'].setValue(
+      this.settingService.seeting().tipoprecio_id
+    );
   }
 
   ngOnInit(): void {
@@ -281,7 +326,7 @@ export class NewEditCustomerComponent implements OnInit, AfterViewInit {
     const errores: { [key: string]: any } = {};
 
     // Recorrer todos los controles del formulario
-    Object.keys(this.form.controls).forEach(controlName => {
+    Object.keys(this.form.controls).forEach((controlName) => {
       const control = this.form.get(controlName);
 
       // Obtener los errores del control si existen
@@ -294,14 +339,10 @@ export class NewEditCustomerComponent implements OnInit, AfterViewInit {
   }
 
   onChangeTipoPersona(e: any) {
-
     this.tipoPersonaId = +e.value;
-   
-    
   }
 
   onSave() {
-
     this.form.controls['discountParams'].setValue(this.formDescuentos.value);
     if (this.tipoPersonaId !== 2) {
       this.form.controls['apellido1'].setValue('');
@@ -310,16 +351,53 @@ export class NewEditCustomerComponent implements OnInit, AfterViewInit {
       this.form.controls['nombre2'].setValue('');
     } else {
       this.form.controls['tributaryIdentificationName'].setValue('');
-
     }
 
     if (this.form.invalid) {
       this.form.markAllAsTouched();
-      console.log(this.getFormErrors());
+
+      const errors = this.getFormErrors();
+      const errorProperties = [];
+
+      for (const property in errors) {
+        errorProperties.push(property);
+      }
+
+      Swal.fire(
+        'Error de validación',
+        `Campos: ${errorProperties.join(', ')}`,
+        'error'
+      );
+
+      console.log(errors);
 
       return;
     }
-    console.log(this.form.value);
+
+    const customer: Customer = this.form.value;
+
+    if (!customer.id) {
+      this.customerService.create(customer).subscribe((resp: any) => {
+        if (resp.ok) {
+          Swal.fire('Transacción exitosa.','Cliente creado satisfactoriamente.','success');
+          this.vCliente = resp.data;
+          this.closeDialog();
+        }
+        
+      });
+    } else {
+
+      this.customerService.update(customer).subscribe((resp: any) => {
+        if (resp.ok) {
+          Swal.fire('Transacción exitosa.','Cliente actualizado satisfactoriamente.','success');
+          // this.vCliente = resp.data;
+          this.closeDialog();
+        }
+        
+      });
+    }
+
+
   }
 
   dvCalc() {
@@ -333,7 +411,6 @@ export class NewEditCustomerComponent implements OnInit, AfterViewInit {
     if (!this.isRetefuente) {
       this.form.controls['retefteId'].setValue(null);
     }
-    
   }
 
   changueReteICA() {
@@ -341,14 +418,13 @@ export class NewEditCustomerComponent implements OnInit, AfterViewInit {
     if (!this.isReteICA) {
       this.form.controls['porcreteica'].setValue(0);
     }
-    
   }
 
   addItem(data?: ClientAllowance): void {
     const addData: ClientAllowance = data
       ? data
       : {
-        clientAllowanceId: '',
+          clientAllowanceId: '',
           days: 0,
           rate: 0,
         };
@@ -360,6 +436,7 @@ export class NewEditCustomerComponent implements OnInit, AfterViewInit {
   }
 
   closeDialog(): void {
-    this.dialogRef.close();
+    const data = this.vCliente;
+    this.dialogRef.close({data});
   }
 }

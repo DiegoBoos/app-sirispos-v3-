@@ -12,18 +12,32 @@ export const routes: Routes = [
       },
       {
         path: 'emit-document',
-        loadComponent: () => import('./documents/pages/emit-document/emit-document.component')
+        loadComponent: () =>
+          import('./documents/pages/emit-document/emit-document.component'),
       },
       {
         path: 'documents-query',
-        loadComponent: () => import('./documents/pages/documents-query/documents-query.component')
+        loadComponent: () =>
+          import('./documents/pages/documents-query/documents-query.component'),
       },
       {
         path: 'statistics',
         title: 'Estadísticas',
-        loadComponent: () => import('./dashboard/pages/statistics/statistics.component'),
+        loadComponent: () =>
+          import('./statistics/statistics.component'),
       },
-    ]
+      {
+        path: 'discounts',
+        loadComponent: () =>
+          import('./statistics/discounts/discounts.component'),
+      },
+      {
+        path: 'customers',
+        title: 'Clientes',
+        loadComponent: () =>
+          import('./customers/pages/customers/customers.component'),
+      },
+    ],
   },
   {
     path: 'auth',

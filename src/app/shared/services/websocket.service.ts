@@ -1,9 +1,9 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { EventSocket } from '@shared/models/event-socket.model';
 import { Socket } from 'ngx-socket-io';
-import { AuthService } from '../../auth/services/auth.service';
 import { Router } from '@angular/router';
-// import Swal from 'sweetalert2';
+import Swal from 'sweetalert2';
+
 
 @Injectable({
   providedIn: 'root'
@@ -54,7 +54,7 @@ export class WebsocketService {
     localStorage.removeItem('token-app-spv3');
     localStorage.removeItem('user-app-spv3');
     this.router.navigateByUrl('/auth/side-login');
-    // Swal.fire('Error', 'No es posible iniciar sesión. Ya hay una sesión Activa.', 'error' );
+    Swal.fire('Error', 'No es posible iniciar sesión. Ya hay una sesión Activa.', 'error' );
   }
 
 

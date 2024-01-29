@@ -73,7 +73,7 @@ export default class DocumentsQueryComponent implements OnInit {
 
   searchParam: SearchParam = {
     pagination: {
-      pageSize: 10000,
+      pageSize: 10,
       pageIndex: 0,
       length: 0,
       pages: 0,

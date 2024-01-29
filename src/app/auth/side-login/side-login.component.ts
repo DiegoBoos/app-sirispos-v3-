@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -49,7 +50,7 @@ export default class SideLoginComponent {
         error: (message) => {
           console.log(message);
           
-          // Swal.fire('Error', message, 'error' )
+          Swal.fire('Error', message, 'error' )
   
         }
       })

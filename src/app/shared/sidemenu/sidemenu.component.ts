@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, computed, inject } from '@angular/core';
 import { routes } from '../../app.routes';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../auth/services/auth.service';
+import { initFlowbite } from 'flowbite';
 
 @Component({
   selector: 'app-sidemenu',
@@ -16,7 +17,7 @@ import { AuthService } from '../../auth/services/auth.service';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SidemenuComponent {
+export class SidemenuComponent implements OnInit {
 
   private authService = inject(AuthService);
 
@@ -26,7 +27,7 @@ export class SidemenuComponent {
     .map((route) => route.children ?? [])
     .flat()
     .filter((route) => route && route.path)
-    .filter((route) => route.path !== 'side-login' && route.path !== 'emit-document')
+    .filter((route) => route.path !== 'side-login' && route.path !== 'emit-document' && route.path !== 'discounts' && route.path !== 'documents-query')
     .filter((route) => !route.path?.includes(':'));
 
   constructor() {
@@ -35,6 +36,9 @@ export class SidemenuComponent {
     // .flat()
     // .filter( route => route && route.path )
     // .filter( route => !route.path?.includes(':'))
+  }
+  ngOnInit(): void {
+   initFlowbite();
   }
 
   logout() {

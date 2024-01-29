@@ -45,9 +45,9 @@
                     <ul class="h-80 py-2 overflow-y-auto text-gray-700 dark:text-gray-200">
                         @for (customer of customers() ; track customer.cliente_id) {
 
-                        <li (click)="selectCustomer(customer)" class="pb-3 sm:pb-4 cursor-pointer">
+                        <li class="pb-3 sm:pb-4 cursor-pointer">
                             <div class="flex items-center space-x-4 rtl:space-x-reverse">
-                                <div class="flex-1 min-w-0">
+                                <div (click)="selectCustomer(customer)" class="flex-1 min-w-0">
                                     <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
                                         {{customer.nombre_comercial}}
                                     </p>

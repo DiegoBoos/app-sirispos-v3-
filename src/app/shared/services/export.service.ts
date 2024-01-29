@@ -6,7 +6,7 @@ import * as XLSX from 'xlsx';
 @Injectable({
   providedIn: 'root'
 })
-export class StatisticsService {
+export class ExportService {
 
   constructor() { }
 

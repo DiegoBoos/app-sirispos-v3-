@@ -1,50 +1,32 @@
-<div class="relative">
+<div id="mega-menu-full-dropdown"
+    class="mt-1 bg-white border-gray-200 shadow-sm border-y dark:bg-gray-800 dark:border-gray-600">
+    <div
+        class="grid max-w-screen-xl px-4 py-5 mx-auto text-gray-900 dark:text-white sm:grid-cols-2 md:grid-cols-3 md:px-6">
+        
+        <ul aria-labelledby="mega-menu-full-dropdown-button">
 
-    <div class="absolute left-1/2 z-10 mt-5 flex w-screen max-w-max -translate-x-1/2 px-4">
+            <li>
+                <a [routerLink]="['/dashboard/documents-query']" routerLinkActive="router-link-active"
+                    class="block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
+                    <div class="font-semibold">Consultar</div>
+                    <span class="text-sm text-gray-500 dark:text-gray-400">Consultar documentos electrónicos
+                        </span>
+                </a>
+            </li>
 
-        <div
-            class="w-screen max-w-md flex-auto overflow-hidden rounded-3xl bg-white text-sm leading-6 shadow-lg ring-1 ring-gray-900/5">
-            <div class="p-12">
-                
-                <div class="group relative flex gap-x-6 rounded-lg p-4 hover:bg-gray-50">
-                    <div
-                        class="mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
-                        <svg class="h-6 w-6 text-gray-600 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24"
-                            stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 002.25-2.25V6a2.25 2.25 0 00-2.25-2.25H6A2.25 2.25 0 003.75 6v2.25A2.25 2.25 0 006 10.5zm0 9.75h2.25A2.25 2.25 0 0010.5 18v-2.25a2.25 2.25 0 00-2.25-2.25H6a2.25 2.25 0 00-2.25 2.25V18A2.25 2.25 0 006 20.25zm9.75-9.75H18a2.25 2.25 0 002.25-2.25V6A2.25 2.25 0 0018 3.75h-2.25A2.25 2.25 0 0013.5 6v2.25a2.25 2.25 0 002.25 2.25z" />
-                        </svg>
-                    </div>
-                    <div>
-                        <a [routerLink]="['/dashboard/emit-document']" class="font-semibold text-gray-900">
-                            Emitir Documentos
-                            <span class="absolute inset-0"></span>
-                        </a>
-                        <p class="mt-1 text-gray-600">Emisión de Documentos Electrónicos.</p>
+        </ul>
+        <ul aria-labelledby="mega-menu-full-dropdown-button">
 
+            <li>
+                <a [routerLink]="['/dashboard/emit-document']" routerLinkActive="router-link-active"
+                    class="block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
+                    <div class="font-semibold">Emitir</div>
+                    <span class="text-sm text-gray-500 dark:text-gray-400">Emisión de documentos electrónicos
+                        </span>
+                </a>
+            </li>
 
-                    </div>
-                </div>
-                <div class="group relative flex gap-x-6 rounded-lg p-4 hover:bg-gray-50">
-                    
-                    <div
-                        class="mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
-                        <svg class="h-6 w-6 text-gray-600 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24"
-                            stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
-                        </svg>
-                    </div>
-                    <div>
-                        <a [routerLink]="['/dashboard/documents-query']" class="font-semibold text-gray-900">
-                            Consultar Documentos
-                            <span class="absolute inset-0"></span>
-                        </a>
-                        <p class="mt-1 text-gray-600">Consultar Documentos Emitidos</p>
-                    </div>
-                </div>
+        </ul>
 
-            </div>
-        </div>
     </div>
 </div>

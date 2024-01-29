@@ -54,7 +54,7 @@ export class DocumentService {
           downloadBlob(response);
         },
         error: (resp: HttpErrorResponse) => {
-          const message = resp.status === 404? 'La consulta de retorno datos': 'Error desconocido';
+          const message = resp.status === 404? 'La consulta no retornó datos': 'Error desconocido';
           Swal.fire('No hay datos', message, 'warning')
         }
       })

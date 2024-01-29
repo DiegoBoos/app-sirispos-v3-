@@ -1,33 +1,30 @@
 import { CommonModule } from '@angular/common';
-import {
-  Component,
-  EventEmitter,
-  Inject,
-  OnInit,
-  Optional,
-  Output,
-  inject,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output, inject, signal } from '@angular/core';
+import { SearchParam } from '@shared/interfaces/search-param.interface';
 import { CustomerService } from '../../customer.service';
 import { VCliente } from '../../models/v-cliente.model';
-import { SearchParam } from '@shared/interfaces/search-param.interface';
-import { FormsModule } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { SearchPaymentsComponent } from '../../../customer-payments/components/search-payments/search-payments.component';
 import { initFlowbite } from 'flowbite';
-import { NewEditCustomerComponent } from '../new-edit-customer/new-edit-customer.component';
+import { FormsModule } from '@angular/forms';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { NewEditCustomerComponent } from '../../components/new-edit-customer/new-edit-customer.component';
 
 @Component({
-  selector: 'app-search-customer',
+  selector: 'app-customers',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatDialogModule],
-  templateUrl: './search-customer.component.html',
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatDialogModule
+  ],
+  templateUrl: './customers.component.html',
   styles: `
-
+    :host {
+      display: block;
+    }
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SearchCustomerComponent implements OnInit {
+export default class CustomersComponent implements OnInit { 
 
   private customersService = inject(CustomerService);
 
@@ -48,16 +45,6 @@ export class SearchCustomerComponent implements OnInit {
   };
 
   private dialog = inject(MatDialog);
-  
-  constructor(
-    public dialogRef: MatDialogRef<SearchPaymentsComponent>,
-    @Optional() @Inject(MAT_DIALOG_DATA) public obj: any,
-  ) {
-
-    
-
-  }
-
 
   ngOnInit(): void {
     this.loadData();
@@ -86,12 +73,6 @@ export class SearchCustomerComponent implements OnInit {
       });
   }
 
-
-
-  selectCustomer(customer: VCliente) {
-    this.dialogRef.close({ event: 'Cancel', data: customer });
-  }
-
   previousPage() {
     const pageIndex = this.searchParam.pagination!.pageIndex;
     if (pageIndex > 0) {
@@ -108,6 +89,20 @@ export class SearchCustomerComponent implements OnInit {
     this.loadData();
   }
 
+  newCustomer(): void {
+
+    const dialogRef = this.dialog.open(NewEditCustomerComponent, { data: { action: 'add' } });
+
+    dialogRef.afterClosed().subscribe((result) => {
+     
+      if (result) {
+        this.loadData();
+
+      }
+    });
+  }
+
+
   editCustomer(customerId: number) {
 
     const dialogRef = this.dialog.open(NewEditCustomerComponent, { data: { action: 'update', customerId } });
@@ -115,17 +110,15 @@ export class SearchCustomerComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
      
       if (result) {
-        const { data } = result;
         this.loadData();
-        // this.#customerSelect.set(data);
-        // this.customerSelectEvent.emit(data);
-        // this.customerSelected.set(data);
       }
     });
-  
   }
 
-  closeDialog(): void {
-    this.dialogRef.close();
+  listClientDownload() {
+    this.customersService.getReportExcelBase64();
   }
+  
+
+  
 }

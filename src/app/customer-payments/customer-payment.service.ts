@@ -4,7 +4,7 @@ import { environment } from '../environments/environment';
 import { Observable, catchError, finalize, of } from 'rxjs';
 import { SearchParam } from '@shared/interfaces/search-param.interface';
 import { PaginationCustomer } from './interfaces/pagination-customer.interface';
-import { MonthValue } from '../dashboard/pages/statistics/interfaces/month-value.interface';
+import { MonthValue } from '../statistics/interfaces/month-value.interface';
 
 @Injectable({
   providedIn: 'root'

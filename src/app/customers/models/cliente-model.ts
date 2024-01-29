@@ -1,3 +1,4 @@
+import { DiscountParams } from "../interfaces/customer.interface";
 import { Tercero } from "./tercero.model";
 
 export class Cliente {
@@ -39,6 +40,7 @@ export class Cliente {
     municipioId: number = 0;
     diasBloqueoMora: number = 0;
     tercero?: Tercero;
+    discountParams?: any[] = [];
   
     constructor(data: Partial<Cliente> = {}) {
       Object.assign(this, data);
