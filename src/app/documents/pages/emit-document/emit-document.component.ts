@@ -24,7 +24,7 @@ import {
 } from '@angular/forms';
 import { SearchCustomerComponent } from '../../../customers/components/search-customer/search-customer.component';
 import { VCliente } from '../../../customers/models/v-cliente.model';
-import { SearchPaymentsComponent } from '../../../customer-payments/components/search-payments/search-payments.component';
+import { SearchPaymentsComponent } from '../../../accounts-receivable/components/search-payments/search-payments.component';
 import { SettingService } from '../../../setting/setting.service';
 import { InvoiceType } from '@shared/models/invoice-type.model';
 import { PaymentMeanService } from '@shared/services/payment-means.service';
@@ -648,15 +648,21 @@ export default class EmitDocumentComponent implements OnInit {
                 this.blockUI?.stop();
                 if (resp) {
                   Swal.fire('Transacción Exitosa.', 'Documento generado correctamente.','success');       
-                }
+                  window.location.reload();
                 
+                } else {
+                  this.router.navigateByUrl('/dashboard/documents-query');
+                }
               });
             } else {
               Swal.fire('Advertencia.', 'Documento registrado. Pendiente de emitir.','warning');
+              this.router.navigateByUrl('/dashboard/documents-query');
             }
-            this.router.navigateByUrl('/dashboard/documents-query');
+            
         }
       }
     });
   }
+
+
 }

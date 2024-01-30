@@ -14,7 +14,7 @@ import { VCliente } from '../../models/v-cliente.model';
 import { SearchParam } from '@shared/interfaces/search-param.interface';
 import { FormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { SearchPaymentsComponent } from '../../../customer-payments/components/search-payments/search-payments.component';
+import { SearchPaymentsComponent } from '../../../accounts-receivable/components/search-payments/search-payments.component';
 import { initFlowbite } from 'flowbite';
 import { NewEditCustomerComponent } from '../new-edit-customer/new-edit-customer.component';
 

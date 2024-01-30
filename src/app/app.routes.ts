@@ -37,6 +37,17 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./customers/pages/customers/customers.component'),
       },
+      {
+        path: 'customer-payments',
+        loadComponent: () =>
+          import('./accounts-receivable/pages/customer-payments/customer-payments.component'),
+      },
+      {
+        path: 'accounts-receivable',
+        title: 'Cuentas por Cobrar',
+        loadComponent: () =>
+          import('./accounts-receivable/accounts-receivable.component'),
+      },
     ],
   },
   {

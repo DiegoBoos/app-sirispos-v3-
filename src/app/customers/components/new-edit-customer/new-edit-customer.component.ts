@@ -14,7 +14,7 @@ import {
   MAT_DIALOG_DATA,
   MatDialogModule,
 } from '@angular/material/dialog';
-import { SearchPaymentsComponent } from '../../../customer-payments/components/search-payments/search-payments.component';
+import { SearchPaymentsComponent } from '../../../accounts-receivable/components/search-payments/search-payments.component';
 import {
   FormArray,
   FormBuilder,

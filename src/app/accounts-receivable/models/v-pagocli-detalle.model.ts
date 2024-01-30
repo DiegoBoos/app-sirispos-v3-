@@ -33,6 +33,7 @@ export class VPagoCliDetalle {
   recibo: string = '';
   isSelected?: boolean = false;
   isGenerateNote: number = 0;
+  statusEmit: string = '';
 
   constructor(data: Partial<VPagoCliDetalle> = {}) {
     Object.assign(this, data);

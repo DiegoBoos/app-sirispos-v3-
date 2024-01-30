@@ -27,7 +27,7 @@ export class SidemenuComponent implements OnInit {
     .map((route) => route.children ?? [])
     .flat()
     .filter((route) => route && route.path)
-    .filter((route) => route.path !== 'side-login' && route.path !== 'emit-document' && route.path !== 'discounts' && route.path !== 'documents-query')
+    .filter((route) => route.path !== 'side-login' && route.path !== 'emit-document' && route.path !== 'discounts' && route.path !== 'documents-query' && route.path !== 'customer-payments')
     .filter((route) => !route.path?.includes(':'));
 
   constructor() {

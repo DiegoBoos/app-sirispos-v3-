@@ -10,12 +10,12 @@ import {
   computed,
   inject,
 } from '@angular/core';
-import { SearchPaymentsComponent } from '../../../customer-payments/components/search-payments/search-payments.component';
+import { SearchPaymentsComponent } from '../../../accounts-receivable/components/search-payments/search-payments.component';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DocumentItem } from './models/document-item.model';
-import { VPagoCliDetalle } from '../../../customer-payments/models/v-pagocli-detalle.model';
+import { VPagoCliDetalle } from '../../../accounts-receivable/models/v-pagocli-detalle.model';
 import {
   FormArray,
   FormBuilder,
