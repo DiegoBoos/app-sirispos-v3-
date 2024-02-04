@@ -5,5 +5,6 @@ export interface SearchParam {
     term?:   string,
     dateFrom?: string,
     dateTo?: string,
-    pagination?: MatPagination
+    pagination?: MatPagination,
+    anuladas?: boolean
 }

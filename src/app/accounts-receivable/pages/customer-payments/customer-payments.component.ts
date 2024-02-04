@@ -6,13 +6,15 @@ import { CustomerPaymentService } from '../../customer-payment.service';
 import { VPagoCli } from '../../models/v-pagocli.model';
 import { FormsModule } from '@angular/forms';
 import { format } from 'date-fns';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-customer-payments',
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    RouterModule
   ],
   templateUrl: './customer-payments.component.html',
   styles: `
@@ -29,11 +31,16 @@ export default class CustomerPaymentsComponent implements OnInit {
   public customerPayments = signal<VPagoCli[]>([]);
   public maxDate: Date = new Date();
   public dateFrom: string = format(
-    new Date(new Date().getFullYear(), 0, 1),
+    new Date('2023-01-01'),
     'yyyy-MM-dd'
   );
+  // public dateFrom: string = format(
+  //   new Date(new Date().getFullYear(), 0, 1),
+  //   'yyyy-MM-dd'
+  // );
   public dateTo: string = format(new Date(), 'yyyy-MM-dd');
   public term: string = '';
+  public anuladas: boolean = false;
 
   searchParam: SearchParam = {
     pagination: {
@@ -45,6 +52,7 @@ export default class CustomerPaymentsComponent implements OnInit {
     term: '',
     dateFrom: '',
     dateTo: '',
+    anuladas: false
   }
 
   ngOnInit(): void {
@@ -60,6 +68,7 @@ export default class CustomerPaymentsComponent implements OnInit {
     this.searchParam.dateFrom = this.dateFrom;
     this.searchParam.dateTo = this.dateTo;
     this.searchParam.term = this.term;
+    this.searchParam.anuladas = this.anuladas;
     let previousLength: number = this.searchParam.pagination!.length;
 
 

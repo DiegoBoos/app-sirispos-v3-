@@ -23,11 +23,12 @@ import { InvoiceTypeService } from '@shared/services/invoice-type.service';
 import { InvoiceType } from '@shared/models/invoice-type.model';
 import { DocumentStauts } from '../../components/document-items/interfaces/document-status.interface';
 import { DocumentSearchParam } from '../../components/document-items/interfaces/document-search-param.interface';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-documents-query',
   standalone: true,
-  imports: [CommonModule, FormsModule, PipesModule, MatDialogModule],
+  imports: [CommonModule, FormsModule, PipesModule, MatDialogModule, RouterModule],
   templateUrl: './documents-query.component.html',
   styles: `
     :host {

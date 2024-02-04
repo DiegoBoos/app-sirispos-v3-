@@ -23,11 +23,12 @@ import { VPagoCliDetalle } from '../../accounts-receivable/models/v-pagocli-deta
 import { MonthValue } from '../interfaces/month-value.interface';
 import { ChartOptions } from '../interfaces/chart-options.interface';
 import { ExportService } from '@shared/services/export.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-discounts',
   standalone: true,
-  imports: [CommonModule, NgApexchartsModule, FormsModule, BlockUIModule],
+  imports: [CommonModule, NgApexchartsModule, FormsModule, BlockUIModule, RouterModule],
   templateUrl: './discounts.component.html',
   styles: `
     :host {
@@ -37,7 +38,7 @@ import { ExportService } from '@shared/services/export.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class StatisticsDiscountsComponent implements OnInit {
-  // @BlockUI() blockUI?: NgBlockUI;
+
   @BlockUI('load-data') blockUILoadData!: NgBlockUI;
 
   @ViewChild('chart', { static: false }) chart!: ChartComponent;

@@ -61,8 +61,9 @@ import {
 import { documentTypesTaxxa } from '../../interfaces/document-type-taxxa';
 import { DocumentService } from '../../document.service';
 import { BlockUI, BlockUIModule, NgBlockUI } from 'ng-block-ui';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
+import { DisplaySettingComponent } from '@shared/components/display-setting/display-setting.component';
 
 @Component({
   selector: 'app-emit-document',
@@ -72,12 +73,16 @@ import Swal from 'sweetalert2';
     FormsModule,
     ReactiveFormsModule,
     BlockUIModule,
+    RouterModule,
 
     SearchCustomerComponent,
     SearchPaymentsComponent,
     DocumentItemsComponent,
     SelectCustomerComponent,
     AttachFileComponent,
+    DisplaySettingComponent,
+
+    
     MatDialogModule,
     NgxMaskDirective,
     SelectTextDirective,

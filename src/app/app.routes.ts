@@ -48,6 +48,12 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./accounts-receivable/accounts-receivable.component'),
       },
+      {
+        path: 'new-customer-payment',
+       
+        loadComponent: () =>
+          import('./accounts-receivable/pages/new-customer-payment/new-customer-payment.component'),
+      },
     ],
   },
   {

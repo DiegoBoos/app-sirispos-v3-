@@ -10,6 +10,7 @@ import { Customer } from './interfaces/customer.interface';
 import { id } from 'date-fns/locale';
 import { downloadBlob } from '@utils/download-blob';
 import Swal from 'sweetalert2';
+import { DiscountParameterClient } from './models/discount-parameter-client.model';
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +41,15 @@ export class CustomerService {
     const url = `${this.apiUrl}/customer/${id}`;
 
     return this.http.get<Cliente>(url)
+      .pipe(
+        catchError(() => of()),
+      )
+  }
+
+  findDiscountParams(id: string) {
+    const url = `${this.apiUrl}/customer/discount-params/${id}`;
+
+    return this.http.get<DiscountParameterClient[]>(url)
       .pipe(
         catchError(() => of()),
       )

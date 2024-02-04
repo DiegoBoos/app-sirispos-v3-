@@ -54,7 +54,6 @@ import { Customer } from '../../interfaces/customer.interface';
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,
     MatDialogModule,
     PipesModule,
     FormsModule,

@@ -25,6 +25,8 @@ export class ValidatorsService {
       switch (key) {
         case 'min':
           return 'Valor NO Válido ';
+        case 'max':
+          return 'Valor NO Válido ';
         case 'required':
           return 'Requerido *';
         case 'notValidDate':

@@ -3,7 +3,7 @@
     <!-- <div class="modal-overlay absolute w-full h-full max-w-xl" > -->
     <div class="relative p-4 w-full max-w-xl">
         <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+        <div class="w-[500px] relative bg-white rounded-lg shadow dark:bg-gray-700">
             <!-- Modal header -->
             <div class="flex items-center justify-between p-4 md:p-3 border-b rounded-t dark:border-gray-600">
                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
@@ -40,7 +40,7 @@
                     
                     <p class="ml-auto text-lg font-medium text-gray-400 dark:text-white">Vr. Base:
                         <span class="text-gray-900 font-extrabold">
-                            {{baseAmount | currency}}
+                            ${{baseAmount | number}}
                         </span>
     
                     </p>
@@ -132,7 +132,7 @@
                 <p class="text-right text-lg font-medium text-gray-400 dark:text-white">Subtotal:
                     <span class="text-gray-900 font-extrabold">
 
-                        {{subtotal() | currency}}
+                        ${{subtotal() | number}}
                         <!-- @if (totalsInvoice()) {
                         $ {{totalsInvoice()!.total | number}}
                         } -->

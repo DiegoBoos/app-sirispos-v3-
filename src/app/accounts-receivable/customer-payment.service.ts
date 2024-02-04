@@ -6,6 +6,8 @@ import { SearchParam } from '@shared/interfaces/search-param.interface';
 import { PaginationCustomer } from './interfaces/pagination-customer.interface';
 import { MonthValue } from '../statistics/interfaces/month-value.interface';
 import { PaginationCustomerMaster } from './interfaces/pagination-customer-master.interface';
+import { TransacCustomerParams } from './interfaces/transac-customer-params.interface';
+import { VTransacCli } from './models/v-transaccli.model';
 
 @Injectable({
   providedIn: 'root'
@@ -40,12 +42,12 @@ export class CustomerPaymentService {
   searchCustomerPayments(searchParam: SearchParam): Observable<PaginationCustomerMaster> {
 
     this.#isLoading.set(true);
-    const { pagination, term = '', dateFrom = '', dateTo = '' } = searchParam;
+    const { pagination, term = '', dateFrom = '', dateTo = '', anuladas = false } = searchParam;
 
     const { pageIndex = 1, pageSize = 10 } = pagination!;
 
-    const url = `${this.apiUrl}/customer-payment/find-by-term?limit=${pageSize}&page=${pageIndex}&term=${term}&dateFrom=${dateFrom}&dateTo=${dateTo}`;
-
+    const url = `${this.apiUrl}/customer-payment/find-by-term?limit=${pageSize}&page=${pageIndex}&term=${term}&dateFrom=${dateFrom}&dateTo=${dateTo}&anuladas=${anuladas}`;
+    
     return this.http.get<PaginationCustomerMaster>(url)
       .pipe(
         catchError(() => of()),
@@ -61,6 +63,21 @@ export class CustomerPaymentService {
     const url = `${this.apiUrl}/customer-payment/statistics?dateFrom=${dateFrom}&dateTo=${dateTo}`;
 
     return this.http.get<MonthValue[]>(url)
+      .pipe(
+        catchError(() => of()),
+        finalize(() => this.#isLoading.set(false)) 
+      )
+
+  }
+
+  findTransacByClient(id: string, transacCustomerParams: TransacCustomerParams): Observable<VTransacCli[]> {
+
+    this.#isLoading.set(true);
+    const { isSaldo, includeAnulado } = transacCustomerParams;
+
+    const url = `${this.apiUrl}/customer-payment/find-transac-by-client/${id}?isSaldo=${isSaldo}&includeAnulado=${includeAnulado}`;
+
+    return this.http.get<VTransacCli[]>(url)
       .pipe(
         catchError(() => of()),
         finalize(() => this.#isLoading.set(false)) 
