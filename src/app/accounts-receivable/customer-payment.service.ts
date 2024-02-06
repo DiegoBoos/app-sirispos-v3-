@@ -8,6 +8,7 @@ import { MonthValue } from '../statistics/interfaces/month-value.interface';
 import { PaginationCustomerMaster } from './interfaces/pagination-customer-master.interface';
 import { TransacCustomerParams } from './interfaces/transac-customer-params.interface';
 import { VTransacCli } from './models/v-transaccli.model';
+import { PagoCli } from './models/pagocli.model';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,15 @@ export class CustomerPaymentService {
   public isLoading = computed(() => this.#isLoading());
 
   constructor() { }
+
+  payRegister(pagoCli: PagoCli) {
+    const url = `${this.apiUrl}/customer-payment`;
+
+    return this.http
+      .post<PagoCli>(url, pagoCli)
+      .pipe(catchError(() => of(false)));
+  }
+
 
   searchCustomerPaymentsByClient(id: string, searchParam: SearchParam): Observable<PaginationCustomer> {
 

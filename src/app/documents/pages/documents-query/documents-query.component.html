@@ -9,7 +9,7 @@
                     placeholder="Select date start">
             </div>
             <span class="mx-2 text-gray-500">hasta</span>
-            <div class="relative">
+            <div class="relative pr-4">
 
                 <input name="dateTo" type="date" [min]="dateFrom" [max]="maxDate | date:'yyyy-MM-dd'"
                     [(ngModel)]="dateTo"

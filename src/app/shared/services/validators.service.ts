@@ -31,6 +31,8 @@ export class ValidatorsService {
           return 'Requerido *';
         case 'notValidDate':
           return 'Fecha No Válida';
+        case 'notValidPay':
+          return 'Valor No Válido';
         case 'email':
           return 'Correo no válido *';
       }
@@ -103,5 +105,37 @@ export class ValidatorsService {
 
       return null;
     };
+  }
+
+  public payValueValidator (saldo: string, payVal: string, discountVal: string) {
+
+    return (formGroup: AbstractControl): ValidationErrors | null => {
+      const saldoValue = +formGroup.get(saldo)?.value;
+      const payValue = +formGroup.get(payVal)?.value;
+      const discountValue = +formGroup.get(discountVal)?.value;
+
+      if (saldoValue < (payValue + discountValue)) {
+        formGroup.get(payVal)?.setErrors({ notValidPay: true });
+        return { notValidPay: true };
+      }
+      return null;
+    };
+
+  }
+
+  public payRegisterValidator (saldo: string, payVal: string, discountVal: string) {
+
+    return (formGroup: AbstractControl): ValidationErrors | null => {
+      const saldoValue = +formGroup.get(saldo)?.value;
+      const payValue = +formGroup.get(payVal)?.value;
+      const discountValue = +formGroup.get(discountVal)?.value;
+
+      if (saldoValue < (payValue + discountValue)) {
+        formGroup.get(payVal)?.setErrors({ notValidPay: true });
+        return { notValidPay: true };
+      }
+      return null;
+    };
+
   }
 }

@@ -1,10 +1,25 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, LOCALE_ID, computed, inject, signal } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  LOCALE_ID,
+  OnInit,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
 import { VCliente } from '../../../customers/models/v-cliente.model';
 import { SelectCustomerComponent } from '../../../customers/components/select-customer/select-customer.component';
 import { DisplaySettingComponent } from '@shared/components/display-setting/display-setting.component';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { differenceInDays, format } from 'date-fns';
 import { ValidatorsService } from '@shared/services/validators.service';
 import { SelectTextDirective } from '@shared/directives/select-text.directive';
@@ -17,6 +32,11 @@ import { CustomerService } from '../../../customers/customer.service';
 import { DiscountParameterClient } from '../../../customers/models/discount-parameter-client.model';
 import { MatDialog } from '@angular/material/dialog';
 import { RegisterPaymentComponent } from '../../components/register-payment/register-payment.component';
+import { initFlowbite } from 'flowbite';
+import Swal from 'sweetalert2';
+import { PagoCli } from '../../models/pagocli.model';
+import { PagoscliTransac } from '../../models/pagocli-transac.model';
+import { Notascli } from '../../models/notascli.model';
 
 @Component({
   selector: 'app-new-customer-payment',
@@ -44,35 +64,38 @@ import { RegisterPaymentComponent } from '../../components/register-payment/regi
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class NewCustomerPaymentComponent {
+export default class NewCustomerPaymentComponent implements OnInit {
 
+  private router = inject(Router);
   @BlockUI('load-data') blockUILoadData!: NgBlockUI;
 
   private fb = inject(FormBuilder);
   private validatorsService = inject(ValidatorsService);
-  private customerPaymentService = inject(CustomerPaymentService)
-  private customerService = inject(CustomerService)
-  
+  private customerPaymentService = inject(CustomerPaymentService);
+  private customerService = inject(CustomerService);
+
   public customerSelected: VCliente = new VCliente();
   public maxDate: Date = new Date();
 
   private dialog = inject(MatDialog);
 
   public discountParameterClient = signal<DiscountParameterClient[]>([]);
-  
+
   #transacsCli = signal<VTransacCli[]>([]);
-  
-  public transacsCli = computed<VTransacCli[]>(() => {
-    const transacs:VTransacCli[] = this.#transacsCli();
-    transacs.map((transac: VTransacCli) => {
-      transac.diasFactura = differenceInDays(new Date(), transac.fechadcto);
-      transac.isSelected = false;
-      transac.descuentoPago = 0;
-      transac.vrPago = 0;
-    });
-    return transacs;
-  }
-  );
+
+  // public transacsCli = computed<VTransacCli[]>(() => {
+  //   const transacs:VTransacCli[] = this.#transacsCli();
+  //   transacs.map((transac: VTransacCli) => {
+  //     transac.diasFactura = differenceInDays(new Date(), transac.fechadcto);
+  //     transac.isSelected = false;
+  //     transac.descuentoPago = 0;
+  //     transac.vrPago = 0;
+  //   });
+  //   return transacs;
+  // }
+  // );
+
+  public transacsCli = computed<VTransacCli[]>(() => this.#transacsCli());
 
   totalPayment = signal<number>(0);
 
@@ -82,8 +105,7 @@ export default class NewCustomerPaymentComponent {
       fecha: [format(new Date(), 'yyyy-MM-dd'), [Validators.required]],
       recibo: ['', [Validators.required]],
       vrRecibo: [0, [Validators.required]],
-      observacion: ['']
-     
+      observacion: [''],
     },
     {
       validators: [
@@ -96,30 +118,51 @@ export default class NewCustomerPaymentComponent {
     }
   );
 
+  ngOnInit(): void {
+    initFlowbite();
+  }
+
   loadCustomer(e: any) {
     this.customerSelected = e;
     this.form.controls['clienteId'].setValue(this.customerSelected.cliente_id);
 
     const transacCustomerParams: TransacCustomerParams = {
       isSaldo: 1,
-      includeAnulado: 0
-    }
+      includeAnulado: 0,
+    };
 
-    this.customerService.findDiscountParams(this.customerSelected.cliente_id.toString()).subscribe(resp => { 
-      if (resp) {
-        this.discountParameterClient.set(resp);
-      }
-      
-    });
+    this.customerService
+      .findDiscountParams(this.customerSelected.cliente_id.toString())
+      .subscribe((resp) => {
+        if (resp) {
+          this.discountParameterClient.set(resp);
+        }
+      });
 
     this.blockUILoadData!.start('Consultando datos ...');
 
-    this.customerPaymentService.findTransacByClient(this.customerSelected.cliente_id.toString(), transacCustomerParams).subscribe( resp => {
-      if (resp) {
-        this.#transacsCli.set(resp);
-      }
-      this.blockUILoadData!.stop();
-    })
+    this.customerPaymentService
+      .findTransacByClient(
+        this.customerSelected.cliente_id.toString(),
+        transacCustomerParams
+      )
+      .subscribe((resp) => {
+        if (resp) {
+          const transacs: VTransacCli[] = [];
+          resp.map((transac: VTransacCli) => {
+            transac.diasFactura = differenceInDays(
+              new Date(),
+              transac.fechadcto
+            );
+            transac.isSelected = false;
+            transac.descuentoPago = 0;
+            transac.vrPago = 0;
+            transacs.push(transac);
+          });
+          this.#transacsCli.set(transacs);
+        }
+        this.blockUILoadData!.stop();
+      });
   }
 
   isValidField(field: string) {
@@ -130,36 +173,161 @@ export default class NewCustomerPaymentComponent {
     return this.validatorsService.getFieldError(this.form, field);
   }
 
+  generateSaveObject(): PagoCli {
+    const user = JSON.parse(localStorage.getItem('user-app-spv3') || '');
+    const tipo = this.totalPayment() > 0 ? 'P' : 'C';
+
+    const pagoCli: PagoCli = {
+      pagocliId: 0,
+      clienteId: this.customerSelected.cliente_id,
+      fecha: new Date(format(this.form.controls['fecha'].value, 'yyyy-MM-dd')),
+      tipo,
+      useridConfirma: user.user_id,
+      valor: this.totalPayment(),
+      vrRecibo: +this.form.controls['vrRecibo'].value,
+      recibo: this.form.controls['recibo'].value,
+      anulado: 0,
+      observacion: this.form.controls['observacion'].value,
+    };
+
+    let pagosCliTransac: PagoscliTransac[] = [];
+
+    this.#transacsCli().filter(i=>i.isSelected).map((transac) => {
+      const pagoTransacCli: PagoscliTransac = {
+        pagoclitransacId: 0,
+        pagocliId: 0,
+        tipoDcto: tipo,
+        transacId: transac.transaccliId,
+        subtotal: transac.valor,
+        descuento: transac.descuentoPago!,
+        vrPago: transac.vrPago!,
+        isGenerateNote: 0,
+      };
+      pagosCliTransac.push(pagoTransacCli);
+    });
+
+    pagoCli.pagosCliTransac = [...pagosCliTransac];
+
+    return pagoCli;
+  }
+
   onSave() {
+    const vrRecibo = +this.form.controls['vrRecibo'].value;
+
+    if (+this.totalPayment() > vrRecibo) {
+      this.form.controls['vrRecibo'].setErrors({ notValidPay: true });
+    }
+
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
+
+    if (+this.totalPayment() < vrRecibo) {
+      Swal.fire({
+        title: 'Advertencia',
+        text: 'El valor del recibo es mayor al total a pagar se generará una nota crédito. Desea continuar?',
+        icon: 'warning',
+        confirmButtonText: 'Si',
+        denyButtonText: `Cancelar`,
+      }).then((resutl) => {
+        if (resutl.isConfirmed) {
+          const user = JSON.parse(localStorage.getItem('user-app-spv3') || '');
+          const difRecibo = +vrRecibo - +this.totalPayment();
+          const notacli: Notascli = {
+            notascliId: 0,
+            nrodcto: null,
+            fechanota: new Date(format(this.form.controls['fecha'].value, 'yyyy-MM-dd')),
+            fechavence: null,
+            clienteId: this.customerSelected.cliente_id,
+            tipo: 'C',
+            cufe: null,
+            vrExcluido: 0,
+            vrGravado: 0,
+            iva: 0,
+            retefuente: 0,
+            reteiva: 0,
+            reteica: 0,
+            vrTotal: difRecibo,
+            saldo: difRecibo,
+            useridConfirma: user.user_id,
+            observa: `SOBRANTE RECIBO # ${this.form.controls['recibo'].value}`,
+            conceptonotacliId: -1,
+            recibo: this.form.controls['recibo'].value,
+            anulado: null,
+            observaanula: null,
+            dctoElectronico: 0,
+            factura: null
+          }
+
+          // TODO:GUARDAR NOTACLI
+        }
+        return;
+      });
+    }
+
+    const pagoCli = this.generateSaveObject();
+    console.log(pagoCli);
+    this.customerPaymentService.payRegister(pagoCli).subscribe(resp=>{
+      if (resp) {
+        Swal.fire('Transacción exitosa', 'Pago registrado correctamente','success');
+        this.router.navigateByUrl('/dashboard/customer-payments');
+      }
+    })
+  }
+
+  totalize() {
+    let total = 0;
+    this.#transacsCli().map((i) => {
+      total += i.vrPago!;
+    });
+    this.totalPayment.set(total);
   }
 
   toggleSelection(transac: VTransacCli) {
+    const transacIndex = this.#transacsCli().findIndex(
+      (i) => i.transaccliId === transac.transaccliId
+    );
+    const transacs = this.#transacsCli();
 
     if (transac.isSelected) {
-      
-      let total = 0;
-      this.transacsCli().map((i) => {
-        total += i.vrPago!;
-      }) 
-      
-      this.totalPayment.set(total);
-  
-      const dialogRef = this.dialog.open(RegisterPaymentComponent, { data: { transac, discountsParameterClient: this.discountParameterClient() } });
-  
-      dialogRef.afterClosed().subscribe((result) => {
-       
-        if (result) {
-          // this.loadData();
+      if (transac.tipodcto === 'FV') {
+        const dialogRef = this.dialog.open(RegisterPaymentComponent, {
+          data: {
+            transac,
+            discountsParameterClient: this.discountParameterClient(),
+          },
+          disableClose: true,
+        });
+        dialogRef.afterClosed().subscribe((result) => {
+          if (result) {
+            const { action, data } = result;
+
+            const transac: VTransacCli = data;
+            // const transacs = this.#transacsCli();
+
+            if (action === 'ok') {
+              transacs[transacIndex] = transac;
+            } else {
+              transacs[transacIndex].isSelected = false;
+            }
+
+            this.#transacsCli.set([...transacs]);
+            this.totalize();
+          }
+        });
+      } else {
+        if (transac.tipodcto === 'DV' || transac.tipodcto === 'NC') {
+          transacs[transacIndex].vrPago = +transacs[transacIndex].saldo * -1;
+          this.#transacsCli.set([...transacs]);
+          this.totalize();
         }
-      });
+      }
+    } else {
+      transacs[transacIndex].descuentoPago = 0;
+      transacs[transacIndex].vrPago = 0;
+      this.#transacsCli.set([...transacs]);
+      this.totalize();
     }
-    
-
-    
   }
-
- }
+}

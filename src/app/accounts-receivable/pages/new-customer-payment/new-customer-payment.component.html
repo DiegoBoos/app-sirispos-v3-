@@ -86,23 +86,6 @@
                         
                     </div>
                 </div>
-
-                <br>
-                <div class="flex flex-row">
-                    <div class="basis-2/12">
-                        <p class="mb-0 text-gray-500 dark:text-gray-400 text-lg">
-                            <strong class="font-semibold text-gray-900 dark:text-white">
-                                Total a Pagar:
-                            </strong>
-                        </p>
-                    </div>
-                    <div class="basis-10/12">
-                        <p class="mb-0 text-gray-500 dark:text-gray-400 text-xl">
-                            ${{totalPayment() | number}}
-                    </div>
-                </div>
-
-
             </div>
 
             <div class="basis-1/2 border border-solid border-gray-300 p-4 rounded ">
@@ -146,11 +129,29 @@
                 <p class="text-xs pr-10 text-red-600 dark:text-red-500">
                     {{getFieldError('vrRecibo')}}</p>
                 }
+
+                <button type="submit" 
+                    class=" mt-2 px-5 py-3 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    Registrar
+                </button>
             </div>
         </div>
         <div class="mt-1 flex items-center rounded border border-solid border-gray-300 p-4">
             <input formControlName="observacion" type="text" placeholder="Observación" id="snotes"
                 class="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        </div>
+        <div class=" p-2 flex flex-row bg-blue-100 border border-solid">
+            <div class="basis-2/12">
+                <p class="mb-0 text-gray-500 dark:text-gray-400 text-lg">
+                    <strong class="font-semibold text-gray-900 dark:text-white">
+                        Total a Pagar:
+                    </strong>
+                </p>
+            </div>
+            <div class="basis-10/12 text-right">
+                <p class="mb-0 text-gray-500 dark:text-gray-400 text-xl">
+                    ${{totalPayment() | number}}
+            </div>
         </div>    
     </form>
 
@@ -169,13 +170,13 @@
                         Tipo
                     </th>
 
-                    <th scope="col" class="px-6 py-2">
+                    <th scope="col" class="px-3 py-2">
                         No. Dcto
                     </th>
-                    <th scope="col" class="px-6 py-2">
+                    <th scope="col" class="px-3 py-2">
                         Fecha
                     </th>
-                    <th scope="col" class="px-6 py-2">
+                    <th scope="col" class="px-3 py-2">
                         Vence
                     </th>
                     <th scope="col" class="px-3 py-2 text-right">
@@ -203,14 +204,14 @@
                         Vr. Pago
                     </th>
                     <th scope="col" class="px-3 py-2 text-right">
-                        
+                        Saldo Final
                     </th>
                 </tr>
             </thead>
 
             <tbody class="relative">
-                @for (transacCli of transacsCli(); track transacCli.transaccli_id) {
-                <tr class=" bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                @for (transacCli of transacsCli(); track transacCli.transaccliId) {
+                <tr class=" border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                     [ngClass]="{
                         'bg-red-200 hover:bg-red-100': transacCli.vencida === '1'        
                         
@@ -225,13 +226,13 @@
                     <td class="px-3 py-1">
                         {{transacCli.tipodcto}}
                     </td>
-                    <td class="px-6 py-2">
+                    <td class="px-3 py-2">
                         {{transacCli.dcto}}
                     </td>
-                    <td class="px-6 py-2">
+                    <td class="px-3 py-2">
                         {{transacCli.fechadcto | date:'dd/MMM/yyyy'}}
                     </td>
-                    <td class="px-6 py-2">
+                    <td class="px-3 py-2">
                         {{transacCli.fechavence | date:'dd/MMM/yyyy'}}
                     </td>
                     <td class="px-3 py-2 text-right">
@@ -258,8 +259,21 @@
                     <td class="px-6 py-2 text-right">
                         ${{transacCli.vrPago | number}}
                     </td>
-                    <td class="px-3 py-1">
+                    <td class="px-3 py-1 text-right">
 
+                        @switch (transacCli.tipodcto) {
+                          @case ('F') {
+                              ${{+transacCli.saldo - transacCli.descuentoPago! - transacCli.vrPago! | number}}
+                          }
+                          @case ('DV') {
+                              ${{+transacCli.saldo + +transacCli.vrPago! | number}}
+                          }
+                          @default {
+                            ${{+transacCli.saldo - +transacCli.descuentoPago! - +transacCli.vrPago! | number}}
+                          }
+                        }
+
+                       
                     </td>
 
                 </tr>

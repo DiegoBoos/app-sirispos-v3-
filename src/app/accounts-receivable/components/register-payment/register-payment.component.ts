@@ -71,15 +71,15 @@ export class RegisterPaymentComponent implements OnInit {
       payValue: [0, [Validators.required, Validators.min(1)]],
       discountValue: [0, [Validators.required]],
       rateValue: [0, [Validators.required, Validators.max(100)]],
+      saldo: [0],
     },
     {
       validators: [
-        // this.validatorsService.tipoPersonaValidator(
-        //   'tipoPersonaId',
-        //   'apellido1',
-        //   'nombre1',
-        //   'tributaryIdentificationName'
-        // ),
+        this.validatorsService.payValueValidator(
+          'saldo',
+          'payValue',
+          'discountValue',
+        ),
       ],
     }
   );
@@ -114,6 +114,7 @@ export class RegisterPaymentComponent implements OnInit {
     this.form.controls['rateValue'].setValue(this.#rateDiscount());
     this.form.controls['payValue'].setValue(payValue);
     this.form.controls['discountValue'].setValue(discountValue);
+    this.form.controls['saldo'].setValue(+this.transac().saldo);
     this.newSaldo.set(this.transac().saldo - payValue - discountValue);
   }
 
@@ -165,11 +166,7 @@ export class RegisterPaymentComponent implements OnInit {
     } else {
       const abono = +this.form.controls['payValue'].value
       this.#rateDiscount.set(this.form.controls['rateValue'].value);
-      // const discountValue =
-      //   (abono * this.#rateDiscount()) / 100;
-      // this.form.controls['discountValue'].setValue(discountValue);
-      const discountValue =
-      (abono * 100) / (100 - this.#rateDiscount()) - abono;
+      const discountValue = (abono * 100) / (100 - this.#rateDiscount()) - abono;
       this.form.controls['discountValue'].setValue(discountValue);
       this.newSaldo.set(this.transac().saldo - (discountValue + abono));
     }
@@ -220,10 +217,17 @@ export class RegisterPaymentComponent implements OnInit {
 
       return;
     }
+
+    const transac: VTransacCli = this.transac();
+
+    transac.vrPago = +this.form.controls['payValue'].value;
+    transac.descuentoPago = +this.form.controls['discountValue'].value;
+
+    this.closeDialog('ok');
+
   }
 
-  closeDialog(): void {
-    const data = null;
-    this.dialogRef.close({ data });
+  closeDialog(action: string): void {
+    this.dialogRef.close({ action, data: this.transac() });
   }
 }
