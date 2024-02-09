@@ -25,6 +25,7 @@
     "flowbite": "^2.2.1",
     "ng-apexcharts": "^1.8.0",
     "ng-block-ui": "^4.0.1",
+    "ng2-pdf-viewer": "^10.0.0",
     "ngx-mask": "^17.0.4",
     "ngx-socket-io": "^4.6.1",
     "rxjs": "~7.8.0",

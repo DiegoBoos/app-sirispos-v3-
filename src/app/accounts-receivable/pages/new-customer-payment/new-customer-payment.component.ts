@@ -17,7 +17,6 @@ import {
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
-  ValidationErrors,
   Validators,
 } from '@angular/forms';
 import { differenceInDays, format } from 'date-fns';
@@ -37,6 +36,7 @@ import Swal from 'sweetalert2';
 import { PagoCli } from '../../models/pagocli.model';
 import { PagoscliTransac } from '../../models/pagocli-transac.model';
 import { Notascli } from '../../models/notascli.model';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-new-customer-payment',
@@ -173,7 +173,7 @@ export default class NewCustomerPaymentComponent implements OnInit {
     return this.validatorsService.getFieldError(this.form, field);
   }
 
-  generateSaveObject(): PagoCli {
+  saveObject(notasCli?: Notascli): void {
     const user = JSON.parse(localStorage.getItem('user-app-spv3') || '');
     const tipo = this.totalPayment() > 0 ? 'P' : 'C';
 
@@ -196,9 +196,9 @@ export default class NewCustomerPaymentComponent implements OnInit {
       const pagoTransacCli: PagoscliTransac = {
         pagoclitransacId: 0,
         pagocliId: 0,
-        tipoDcto: tipo,
+        tipoDcto: transac.tipodcto,
         transacId: transac.transaccliId,
-        subtotal: transac.valor,
+        subtotal: +transac.vrPago! + +transac.descuentoPago!,
         descuento: transac.descuentoPago!,
         vrPago: transac.vrPago!,
         isGenerateNote: 0,
@@ -208,7 +208,30 @@ export default class NewCustomerPaymentComponent implements OnInit {
 
     pagoCli.pagosCliTransac = [...pagosCliTransac];
 
-    return pagoCli;
+    if (notasCli) {
+      pagoCli.notasCli = notasCli;
+    }
+
+    this.customerPaymentService.payRegister(pagoCli).subscribe((resp: any)=>{
+      if (resp) {
+        // const { data } = resp;
+        // const pagoCli: PagoCli = data;
+        
+        // this.customerPaymentService.getPayReport(pagoCli.pagocliId).subscribe((data) => {
+        //   const base64 = data;
+        //   const fileName = `${pagoCli.nrodcto}.pdf`;
+          
+        //   const dialogRef = this.dialog.open(PdfViewerComponent, {
+        //     data: { base64, fileName }, disableClose: true,
+        //   });
+        //   dialogRef.afterClosed().subscribe(() => {
+        //     this.router.navigateByUrl('/dashboard/customer-payments');
+        //   });
+        // });
+        Swal.fire('Transacción exitosa', 'Pago registrado correctamente','success');
+        this.router.navigateByUrl('/dashboard/customer-payments');
+      }
+    })
   }
 
   onSave() {
@@ -228,8 +251,9 @@ export default class NewCustomerPaymentComponent implements OnInit {
         title: 'Advertencia',
         text: 'El valor del recibo es mayor al total a pagar se generará una nota crédito. Desea continuar?',
         icon: 'warning',
+        showDenyButton: true,
         confirmButtonText: 'Si',
-        denyButtonText: `Cancelar`,
+        denyButtonText: `No`,
       }).then((resutl) => {
         if (resutl.isConfirmed) {
           const user = JSON.parse(localStorage.getItem('user-app-spv3') || '');
@@ -254,26 +278,21 @@ export default class NewCustomerPaymentComponent implements OnInit {
             observa: `SOBRANTE RECIBO # ${this.form.controls['recibo'].value}`,
             conceptonotacliId: -1,
             recibo: this.form.controls['recibo'].value,
-            anulado: null,
+            anulado: 0,
             observaanula: null,
             dctoElectronico: 0,
             factura: null
           }
 
-          // TODO:GUARDAR NOTACLI
+          this.saveObject(notacli);
         }
-        return;
       });
+    } else {
+      this.saveObject();
     }
 
-    const pagoCli = this.generateSaveObject();
-    console.log(pagoCli);
-    this.customerPaymentService.payRegister(pagoCli).subscribe(resp=>{
-      if (resp) {
-        Swal.fire('Transacción exitosa', 'Pago registrado correctamente','success');
-        this.router.navigateByUrl('/dashboard/customer-payments');
-      }
-    })
+
+    
   }
 
   totalize() {
@@ -281,7 +300,7 @@ export default class NewCustomerPaymentComponent implements OnInit {
     this.#transacsCli().map((i) => {
       total += i.vrPago!;
     });
-    this.totalPayment.set(total);
+    this.totalPayment.set(parseFloat(total.toFixed(2)));
   }
 
   toggleSelection(transac: VTransacCli) {

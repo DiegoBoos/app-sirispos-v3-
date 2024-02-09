@@ -95,5 +95,18 @@ export class CustomerPaymentService {
 
   }
 
+  cancel(id: number, observation: any) {
+    const url = `${this.apiUrl}/customer-payment/cancel/${id}`;
+
+    return this.http.patch(url, observation)
+      .pipe(
+        catchError(() => of()),
+      )
+  }
+
+  getPayReport(id: number) {
+    const url = `${this.apiUrl}/customer-payment/print/${id}`;
+    return this.http.get(url, { responseType: 'text' });
+  }
 
 }

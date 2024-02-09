@@ -1,3 +1,4 @@
+import { Notascli } from "./notascli.model";
 import { PagoscliTransac } from "./pagocli-transac.model";
 
 export class PagoCli {
@@ -17,6 +18,7 @@ export class PagoCli {
     anulado: number = 0;
     observaanula?: string | null = null;
     pagosCliTransac?: PagoscliTransac[] = [];
+    notasCli?: Notascli | null = null;
   
     constructor(data: Partial<PagoCli> = {}) {
       Object.assign(this, data);

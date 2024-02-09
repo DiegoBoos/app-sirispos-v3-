@@ -389,7 +389,7 @@ export class NewEditCustomerComponent implements OnInit, AfterViewInit {
       this.customerService.update(customer).subscribe((resp: any) => {
         if (resp.ok) {
           Swal.fire('Transacción exitosa.','Cliente actualizado satisfactoriamente.','success');
-          // this.vCliente = resp.data;
+          this.vCliente = resp.data;
           this.closeDialog();
         }
         

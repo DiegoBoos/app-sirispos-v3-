@@ -1,5 +1,7 @@
 <div class="p-4 md:p-5">
-    <h1 class="pb-4 font-bold text-xl"><a [routerLink]="['/dashboard/accounts-receivable']" routerLinkActive="router-link-active"  class="cursor-pointer underline">Cuentas por Cobrar</a> - Módulo de Pagos</h1>
+    <h1 class="pb-4 font-bold text-xl"><a [routerLink]="['/dashboard/accounts-receivable']"
+            routerLinkActive="router-link-active" class="cursor-pointer underline">Cuentas por Cobrar</a> - Módulo de
+        Pagos</h1>
     <form class="space-y-4" action="#">
         <div class="flex items-center">
 
@@ -92,7 +94,8 @@
     </form>
     <div class="relative">
 
-        <div class="mt-4 min-h-[410px] max-h-52  overflow-y-auto pt-2 relative overflow-x-auto shadow-md sm:rounded-lg">
+        <div class="mt-4 min-h-[410px] max-h-52  overflow-y-auto pt-2 relative overflow-x-auto shadow-md sm:rounded-lg"
+            *blockUI="'load-data'">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
 
@@ -128,20 +131,16 @@
 
                 <tbody class="relative">
                     @for (customerPayment of customerPayments(); track customerPayment.pagocli_id) {
-                    <tr class=" bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                    <tr class=" border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                         [ngClass]="{
-                        'bg-red-200 ver:bg-red-100': customerPayment.anulado === 1
+                        'bg-red-200 hover:bg-red-100': customerPayment.anulado === 1
                       }">
-
                         <td class="px-6 py-1">
                             {{customerPayment.tipo_doc}} {{customerPayment.identificacion}}
                         </td>
                         <td class="px-6 py-2 truncate" style="max-width: 400px;">
                             {{customerPayment.nombre_comercial}}
                         </td>
-                        <!-- <td class="px-6 py-2">
-                            {{customerPayment.desc_tipo}}
-                        </td> -->
                         <td class="px-6 py-2">
                             {{customerPayment.dcto}}
                         </td>
@@ -157,10 +156,33 @@
 
 
                         <td class="px-6 py-2">
-                            <!-- <span (click)="editCustomer(customer.cliente_id)"
-                                class="mr-2 p-1 cursor-pointer rounded text-white font-bold bg-green-500">
-                                Editar
-                            </span> -->
+                            @if ( customerPayment.anulado === 0 ) {
+                            <button title="Anular Comprobante" (click)="cancelPayment(customerPayment.pagocli_id)"
+                                type="button">
+                                <svg class="text-red-500 cursor-pointer icon icon-tabler icon-tabler-circle-minus"
+                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                                    <path d="M9 12l6 0" />
+                                </svg>
+
+                            </button>
+                            }
+                            <button title="Imprimir Comprobante" (click)="printPayment(customerPayment.pagocli_id, customerPayment.dcto)"
+                                class="pl-2"
+                                type="button">
+                                <svg class="text-green-500 cursor-pointer icon icon-tabler icon-tabler-printer"
+                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path
+                                        d="M17 17h2a2 2 0 0 0 2 -2v-4a2 2 0 0 0 -2 -2h-14a2 2 0 0 0 -2 2v4a2 2 0 0 0 2 2h2" />
+                                    <path d="M17 9v-4a2 2 0 0 0 -2 -2h-6a2 2 0 0 0 -2 2v4" />
+                                    <path
+                                        d="M7 13m0 2a2 2 0 0 1 2 -2h6a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-6a2 2 0 0 1 -2 -2z" />
+                                </svg>
+                            </button>
                         </td>
 
                     </tr>
@@ -198,3 +220,5 @@
 
         </div>
     </div>
+
+    
