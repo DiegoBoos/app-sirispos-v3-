@@ -1,0 +1,10 @@
+<google-map height="700px" width="1240px" [center]="center" [zoom]="zoom">
+
+    @for (info of positionsInfo(); track info) {
+    <map-marker #marker="mapMarker" [position]="info.position" [options]="markerOptions"
+        (mapClick)="positionInfo(marker, info)">
+    </map-marker>
+    }
+    <map-info-window>{{userInfo().nombre}}</map-info-window>
+
+</google-map>

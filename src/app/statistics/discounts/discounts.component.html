@@ -2,8 +2,10 @@
     <h1 class="pb-4 font-bold text-xl"><a [routerLink]="['/dashboard/statistics']" routerLinkActive="router-link-active"
         class="cursor-pointer underline">Estadísticas</a></h1>
 
-    <h2 class="text-center text-xl text-gray-500 ">Estadística de descuentos al pago</h2>
+         <!-- Para activar el uso de la signal -->
+         <span class="hidden">{{isLoading()}}</span>
 
+    <h2 class="text-center text-xl text-gray-500 ">Estadística de descuentos al pago</h2>
     <br>
     <div class="flex justify-between mb-5">
         <div class="grid gap-4 grid-cols-2">

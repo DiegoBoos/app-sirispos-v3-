@@ -4,6 +4,7 @@ import {
   Component,
   OnInit,
   ViewChild,
+  computed,
   inject,
   signal,
 } from '@angular/core';
@@ -102,6 +103,15 @@ export default class StatisticsDiscountsComponent implements OnInit {
   private customerPaymentService = inject(CustomerPaymentService);
   private exportService = inject(ExportService);
 
+  public isLoading = computed(() => {
+    if (this.customerPaymentService.isLoading()) {
+      this.blockUILoadData!.start('Consultando datos ...');
+    } else {
+      this.blockUILoadData!.stop();
+    }
+    return this.customerPaymentService.isLoading()
+  })
+
   series = signal<ApexAxisChartSeries>([]);
   xaxis = signal<ApexXAxis>({});
   count = signal<number>(0);
@@ -126,18 +136,20 @@ export default class StatisticsDiscountsComponent implements OnInit {
   }
 
   loadData() {
-    this.blockUILoadData!.start('Consultando datos ...');
+    // this.blockUILoadData!.start('Consultando datos ...');
 
     this.customerPaymentService
-      .getStatisticsNoDocumentEmit(this.dateFrom, this.dateTo)
+      .getStatisticsDocumentWhithDiscount(this.dateFrom, this.dateTo)
       .subscribe((resp: any) => {
         if (resp) {
           const { count, detailData, statistics } = resp;
 
+          this.count.set(count);
+          
+
           this.detailData = detailData;
 
           const monthValues: MonthValue[] = statistics;
-          this.count.set(count);
 
           const categories: string[] = [];
           const dataEmit: number[] = [];
@@ -147,6 +159,7 @@ export default class StatisticsDiscountsComponent implements OnInit {
           let totalEmit: number = 0;
           let countNotEmit: number = 0;
           let countEmit: number = 0;
+
 
           monthValues.map((i) => {
             if (i.isGenerateNote === 0) {
@@ -159,42 +172,44 @@ export default class StatisticsDiscountsComponent implements OnInit {
               dataEmit.push(+i.value);
             }
             total += +i.value;
+            const lastTwoDigits = i.year % 100;
+            const formattedYear = lastTwoDigits.toString().padStart(2, '0');
             switch (i.month) {
               case 1:
-                categories.push('Ene');
+                categories.push(`Ene '${formattedYear}`);
                 break;
               case 2:
-                categories.push('Feb');
+                categories.push(`Feb '${formattedYear}`);
                 break;
               case 3:
-                categories.push('Mar');
+                categories.push(`Mar '${formattedYear}`);
                 break;
               case 4:
-                categories.push('Abr');
+                categories.push(`Abr '${formattedYear}`);
                 break;
               case 5:
-                categories.push('May');
+                categories.push(`May '${formattedYear}`);
                 break;
               case 6:
-                categories.push('Jun');
+                categories.push(`Jun '${formattedYear}`);
                 break;
               case 7:
-                categories.push('Jul');
+                categories.push(`Jul '${formattedYear}`);
                 break;
               case 8:
-                categories.push('Ago');
+                categories.push(`Ago '${formattedYear}`);
                 break;
               case 9:
-                categories.push('Sep');
+                categories.push(`Sep '${formattedYear}`);
                 break;
               case 10:
-                categories.push('Oct');
+                categories.push(`Oct '${formattedYear}`);
                 break;
               case 11:
-                categories.push('Nov');
+                categories.push(`Nov '${formattedYear}`);
                 break;
               case 12:
-                categories.push('Dic');
+                categories.push(`Dic '${formattedYear}`);
                 break;
             }
           });
@@ -215,7 +230,7 @@ export default class StatisticsDiscountsComponent implements OnInit {
           this.countNotEmit.set(countNotEmit);
         }
 
-        this.blockUILoadData!.stop();
+        // this.blockUILoadData!.stop();
       });
   }
 

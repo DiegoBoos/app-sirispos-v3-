@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   OnInit,
+  computed,
   inject,
   signal,
 } from '@angular/core';
@@ -43,6 +44,16 @@ export default class CustomerPaymentsComponent implements OnInit {
   private dialog = inject(MatDialog);
 
   public customerPayments = signal<VPagoCli[]>([]);
+
+  public isLoading = computed(() => {    
+    if (this.customerPaymentService.isLoading()) {
+      this.blockUILoadData!.start('Consultando datos ...');
+    } else {
+      this.blockUILoadData!.stop();
+    }
+    return this.customerPaymentService.isLoading()
+  })
+
   public maxDate: Date = new Date();
   public dateFrom: string = format(new Date(new Date().getFullYear(), 0, 1), 'yyyy-MM-dd');
   public dateTo: string = format(new Date(), 'yyyy-MM-dd');
@@ -77,7 +88,6 @@ export default class CustomerPaymentsComponent implements OnInit {
     this.searchParam.anuladas = this.anuladas;
     let previousLength: number = this.searchParam.pagination!.length;
 
-    this.blockUILoadData!.start('Consultando datos ...');
     this.customerPaymentService
       .searchCustomerPayments(this.searchParam)
       .subscribe((resp) => {
@@ -92,7 +102,6 @@ export default class CustomerPaymentsComponent implements OnInit {
         if (previousLength !== this.searchParam.pagination.length) {
           this.searchParam.pagination.pageIndex = 0;
         }
-        this.blockUILoadData!.stop();
       });
   }
 
@@ -151,15 +160,31 @@ export default class CustomerPaymentsComponent implements OnInit {
   }
 
   printPayment(id: number, dcto: string) {
-    this.blockUILoadData!.start('Generando comprobante ...');
+    // this.blockUILoadData!.start('Generando comprobante ...');
     this.customerPaymentService.getPayReport(id).subscribe((data) => {
       const base64 = data;
-      const fileName = `${dcto}.pdf`;
-      this.blockUILoadData!.stop();
+      const fileName = `${dcto}`;
+      // this.blockUILoadData!.stop();
       const dialogRef = this.dialog.open(PdfViewerComponent, {
         data: { base64, fileName }, disableClose: true,
       });
       dialogRef.afterClosed().subscribe(() => {});
     });
   }
+
+  listDocumentDownload() {
+    this.searchParam.dateFrom = this.dateFrom;
+    this.searchParam.dateTo = this.dateTo;
+    this.searchParam.term = this.term;
+    this.searchParam.anuladas = this.anuladas;
+    this.customerPaymentService.getReportExcelBase64(this.searchParam);
+  }
+
+  listDetailDocumentDownload() {
+    this.searchParam.dateFrom = this.dateFrom;
+    this.searchParam.dateTo = this.dateTo;
+    this.searchParam.term = this.term;
+    this.customerPaymentService.getReportDetailExcelBase64(this.searchParam);
+  }
+
 }

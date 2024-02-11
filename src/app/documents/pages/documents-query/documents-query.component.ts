@@ -39,6 +39,7 @@ import { RouterModule } from '@angular/router';
 })
 export default class DocumentsQueryComponent implements OnInit {
   @BlockUI() blockUI?: NgBlockUI;
+  
   private documentService = inject(DocumentService);
   private invoiceTypeService = inject(InvoiceTypeService);
   public invoiceTypes = computed(() => this.invoiceTypeService.invoiceTypes());

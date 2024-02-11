@@ -54,6 +54,12 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./accounts-receivable/pages/new-customer-payment/new-customer-payment.component'),
       },
+      {
+        path: 'geolocation',
+        title: 'Geolocalización',
+        loadComponent: () =>
+          import('./geolocation/geolocation.component'),
+      },
     ],
   },
   {

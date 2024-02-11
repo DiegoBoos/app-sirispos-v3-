@@ -10,6 +10,7 @@ import { InterceptorService } from './interceptors/interceptor.service';
 import { registerLocaleData } from '@angular/common';
 import localeEsCO from '@angular/common/locales/es';
 
+
 const token = localStorage.getItem('token-app-spv3') || '';
 
 const config: SocketIoConfig = { url: environment.wsUrl, options: {
