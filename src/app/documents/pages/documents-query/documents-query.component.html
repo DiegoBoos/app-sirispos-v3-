@@ -1,221 +1,229 @@
-<div class="p-4 md:p-5">
-    <h1 class="pb-4 font-bold text-xl"><a [routerLink]="['/dashboard/documents']" routerLinkActive="router-link-active"  class="cursor-pointer underline">Documentos</a> - Consultar documentos electrónicos</h1>
-    <form class="space-y-4" action="#">
-        <div class="flex items-center">
-            <span class="mx-2 text-gray-500">Desde</span>
+<div class="w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
+    <div class="p-4 md:p-5">
+        <h1 class="pb-4 font-bold text-xl"><a [routerLink]="['/dashboard/documents']"
+                routerLinkActive="router-link-active" class="cursor-pointer underline">Documentos</a> - Consultar
+            documentos electrónicos</h1>
+        <form class="space-y-4" action="#">
+            <div class="flex items-center">
+                <span class="mx-2 text-gray-500">Desde</span>
+                <div class="relative">
+                    <input name="dateIni" type="date" [(ngModel)]="dateFrom" [max]="maxDate | date:'yyyy-MM-dd'"
+                        class="mt-1 w-36 pt-0 peer block min-h-[auto] rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                        placeholder="Select date start">
+                </div>
+                <span class="mx-2 text-gray-500">hasta</span>
+                <div class="relative pr-4">
+
+                    <input name="dateTo" type="date" [min]="dateFrom" [max]="maxDate | date:'yyyy-MM-dd'"
+                        [(ngModel)]="dateTo"
+                        class="mt-1 w-36 pt-0 peer block min-h-[auto] rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                        placeholder="Select date end">
+                </div>
+
+
+                <select [(ngModel)]="typeServiceCode" [ngModelOptions]="{standalone: true}"
+                    class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    @for (operationType of invoiceTypesFilter ; track operationType.code) {
+                    <option [value]="operationType.code">
+                        {{operationType.description}}</option>
+                    }
+                </select>
+
+                <select [(ngModel)]="status" [ngModelOptions]="{standalone: true}"
+                    class="mx-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    @for (operationType of documentStatus ; track operationType.code) {
+                    <option [value]="operationType.code">
+                        {{operationType.description}}</option>
+                    }
+                </select>
+
+
+                <button data-tooltip-target="tooltip-bottom" data-tooltip-placement="bottom" type="button"
+                    (click)="listDocumentDownload(false)"
+                    class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                    <svg class="w-6 h-6 text-white-800 dark:text-white" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 15v2a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-2m-8 1V4m0 12-4-4m4 4 4-4" />
+                    </svg>
+
+                </button>
+
+                <div id="tooltip-bottom" role="tooltip"
+                    class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                    Descargar listado de documentos
+                    <div class="tooltip-arrow" data-popper-arrow></div>
+                </div>
+
+
+                <button data-tooltip-target="tooltip-bottom2" data-tooltip-placement="bottom" type="button"
+                    (click)="listDocumentDownload(true)"
+                    class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                    <svg class="w-6 h-6 text-white-800 dark:text-white" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 15v2a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-2m-8 1V4m0 12-4-4m4 4 4-4" />
+                    </svg>
+
+                </button>
+
+                <div id="tooltip-bottom2" role="tooltip"
+                    class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                    Descargar listado detallado
+                    <div class="tooltip-arrow" data-popper-arrow></div>
+                </div>
+
+            </div>
+
+            <label for="default-search"
+                class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Buscar</label>
             <div class="relative">
-                <input name="dateIni" type="date" [(ngModel)]="dateFrom" [max]="maxDate | date:'yyyy-MM-dd'"
-                    class="mt-1 w-36 pt-0 peer block min-h-[auto] rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-                    placeholder="Select date start">
-            </div>
-            <span class="mx-2 text-gray-500">hasta</span>
-            <div class="relative pr-4">
+                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                    </svg>
+                </div>
+                <input type="search" id="default-search" [(ngModel)]="term" name="default-search"
+                    class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Buscar Identificación, Nombre, Referencia..." required>
+                <button type="submit" (click)="loadData()"
+                    class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Buscar</button>
 
-                <input name="dateTo" type="date" [min]="dateFrom" [max]="maxDate | date:'yyyy-MM-dd'"
-                    [(ngModel)]="dateTo"
-                    class="mt-1 w-36 pt-0 peer block min-h-[auto] rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-                    placeholder="Select date end">
-            </div>
 
-
-            <select [(ngModel)]="typeServiceCode" [ngModelOptions]="{standalone: true}"
-                class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                @for (operationType of invoiceTypesFilter ; track operationType.code) {
-                <option [value]="operationType.code">
-                    {{operationType.description}}</option>
-                }
-            </select>
-
-            <select [(ngModel)]="status" [ngModelOptions]="{standalone: true}"
-                class="mx-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                @for (operationType of documentStatus ; track operationType.code) {
-                <option [value]="operationType.code">
-                    {{operationType.description}}</option>
-                }
-            </select>
-
-            
-            <button data-tooltip-target="tooltip-bottom" data-tooltip-placement="bottom" type="button"
-                (click)="listDocumentDownload(false)"
-                class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                <svg class="w-6 h-6 text-white-800 dark:text-white" aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M4 15v2a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-2m-8 1V4m0 12-4-4m4 4 4-4" />
-                </svg>
-
-            </button>
-
-            <div id="tooltip-bottom" role="tooltip"
-                class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
-                Descargar listado de documentos
-                <div class="tooltip-arrow" data-popper-arrow></div>
             </div>
 
-            
-            <button data-tooltip-target="tooltip-bottom2" data-tooltip-placement="bottom" type="button"
-                (click)="listDocumentDownload(true)"
-                class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                <svg class="w-6 h-6 text-white-800 dark:text-white" aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M4 15v2a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-2m-8 1V4m0 12-4-4m4 4 4-4" />
-                </svg>
 
-            </button>
-
-            <div id="tooltip-bottom2" role="tooltip"
-                class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
-                Descargar listado detallado
-                <div class="tooltip-arrow" data-popper-arrow></div>
-            </div>
-
-        </div>
-
-        <label for="default-search"
-            class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Buscar</label>
+        </form>
         <div class="relative">
-            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                </svg>
-            </div>
-            <input type="search" id="default-search" [(ngModel)]="term" name="default-search"
-                class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Buscar Identificación, Nombre, Referencia..." required>
-            <button type="submit" (click)="loadData()"
-                class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Buscar</button>
 
+            <div
+                class="mt-4 min-h-[410px] max-h-52  overflow-y-auto pt-2 relative overflow-x-auto shadow-md sm:rounded-lg">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
 
-        </div>
+                        <tr>
 
+                            <th scope="col" class="text-center px-1 py-1">
 
-    </form>
-    <div class="relative">
+                            </th>
+                            <th scope="col" class="px-6 py-1">
+                                Fecha
+                            </th>
+                            <th scope="col" class="px-6 py-2">
+                                Referencia
+                            </th>
+                            <th scope="col" class="px-6 py-2">
+                                Cliente
+                            </th>
+                            <th scope="col" class="text-right px-6 py-2">
+                                Valor
+                            </th>
+                            <th scope="col" class="px-6 py-2">
+                                Status
+                            </th>
+                            <th scope="col" class="px-6 py-2">
 
-        <div class="mt-4 min-h-[410px] max-h-52  overflow-y-auto pt-2 relative overflow-x-auto shadow-md sm:rounded-lg">
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            </th>
+                        </tr>
+                    </thead>
 
-                    <tr>
-
-                        <th scope="col" class="text-center px-1 py-1">
-
-                        </th>
-                        <th scope="col" class="px-6 py-1">
-                            Fecha
-                        </th>
-                        <th scope="col" class="px-6 py-2">
-                            Referencia
-                        </th>
-                        <th scope="col" class="px-6 py-2">
-                            Cliente
-                        </th>
-                        <th scope="col" class="text-right px-6 py-2">
-                            Valor
-                        </th>
-                        <th scope="col" class="px-6 py-2">
-                            Status
-                        </th>
-                        <th scope="col" class="px-6 py-2">
-
-                        </th>
-                    </tr>
-                </thead>
-
-                <tbody class="relative">
-                    @for (document of documents(); track document.id) {
-                    <tr class=" bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-                        [ngClass]="{
+                    <tbody class="relative">
+                        @for (document of documents(); track document.id) {
+                        <tr class=" bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                            [ngClass]="{
                         'bg-red-100 hover:bg-red-50': document.responseEmit?.statusCode === '400',
                         'bg-yellow-100 hover:bg-yellow-50': !document.responseEmit
                       }">
-                        <td class="px-1 py-1 text-center" (click)="printDocument(document.responseEmit?.cufe || '')">
-                            <span class="p-1 cursor-pointer rounded text-white font-bold" [ngClass]="{
+                            <td class="px-1 py-1 text-center"
+                                (click)="printDocument(document.responseEmit?.cufe || '')">
+                                <span class="p-1 cursor-pointer rounded text-white font-bold" [ngClass]="{
                                 'bg-green-500': document.operationType.invoiceType?.code! === '91',
                                 'bg-yellow-500': document.operationType.invoiceType?.code! === '92',
                                 'bg-red-500': document.operationType.invoiceType?.code! === '01',
                                 'bg-gray-500': !document.operationType.invoiceType?.code! }">
-                                {{document.operationType.invoiceType?.code! | invoicetype}}
+                                    {{document.operationType.invoiceType?.code! | invoicetype}}
 
-                            </span>
-                        </td>
-                        <td class="px-6 py-1">
-                            {{document.dueDate | date: 'yyyy-MM-dd':'+0:00':'es-CO'}}
-                        </td>
-                        <td class="px-6 py-2 font-extrabold">
-                            {{document.documentPrefix}}{{document.documentSuffix}}
-                        </td>
-                        <td class="px-6 py-2">
-                            {{document.buyer.costumerName}}
-                        </td>
-                        <td class="text-right px-6 py-2 font-extrabold">
-                            $ {{document.paylableAmount | number}}
-                        </td>
-                        <td class="px-6 py-2">
-                            {{ (document.responseEmit ? document.responseEmit.statusCode : 'NE') | statuscode }}
-                        </td>
+                                </span>
+                            </td>
+                            <td class="px-6 py-1">
+                                {{document.dueDate | date: 'yyyy-MM-dd':'+0:00':'es-CO'}}
+                            </td>
+                            <td class="px-6 py-2 font-extrabold">
+                                {{document.documentPrefix}}{{document.documentSuffix}}
+                            </td>
+                            <td class="px-6 py-2">
+                                {{document.buyer.costumerName}}
+                            </td>
+                            <td class="text-right px-6 py-2 font-extrabold">
+                                $ {{document.paylableAmount | number}}
+                            </td>
+                            <td class="px-6 py-2">
+                                {{ (document.responseEmit ? document.responseEmit.statusCode : 'NE') | statuscode }}
+                            </td>
 
-                        <td class="px-6 py-2">
-                            @if (document.responseEmit ) {
+                            <td class="px-6 py-2">
+                                @if (document.responseEmit ) {
 
-                            <span (click)="printDocument(document.responseEmit.cufe)"
-                                class="mr-2 p-1 cursor-pointer rounded text-white font-bold bg-green-500">
-                                PDF
-                            </span>
-                            }
-                            @if (!document.responseEmit ) {
+                                <span (click)="printDocument(document.responseEmit.cufe)"
+                                    class="mr-2 p-1 cursor-pointer rounded text-white font-bold bg-green-500">
+                                    PDF
+                                </span>
+                                }
+                                @if (!document.responseEmit ) {
 
-                            <span (click)="documentEmit(document.id)"
-                                class="mr-2 p-1 cursor-pointer rounded text-white font-bold bg-gray-500">
-                                Emitir
+                                <span (click)="documentEmit(document.id)"
+                                    class="mr-2 p-1 cursor-pointer rounded text-white font-bold bg-gray-500">
+                                    Emitir
 
-                            </span>
-                            }
-                            @if (document.responseEmit && document.responseEmit.statusCode !== '201' ) {
+                                </span>
+                                }
+                                @if (document.responseEmit && document.responseEmit.statusCode !== '201' ) {
 
-                            <span (click)="viewError(document)"
-                                class="mr-2 p-1 cursor-pointer rounded text-white font-bold bg-red-500">
-                                Ver Error
+                                <span (click)="viewError(document)"
+                                    class="mr-2 p-1 cursor-pointer rounded text-white font-bold bg-red-500">
+                                    Ver Error
 
-                            </span>
-                            }
-                        </td>
+                                </span>
+                                }
+                            </td>
 
-                    </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-
-        <div
-            class="flex items-center justify-between p-2 md:p-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-
-            <!-- Help text -->
-            <span class="text-sm text-gray-700 dark:text-gray-400">
-                Página <span class="font-semibold text-gray-900 dark:text-white">{{searchParam.pagination!.pageIndex +
-                    1}}</span> de <span class="font-semibold text-gray-900 dark:text-white">
-                    {{searchParam.pagination?.pages}}</span> de <span
-                    class="font-semibold text-gray-900 dark:text-white">
-                    {{searchParam.pagination?.length}}</span> Registros
-            </span>
-            <!-- Buttons -->
-            <div class="inline-flex mt-0 xs:mt-0">
-                <button (click)="previousPage()" [disabled]="searchParam.pagination?.pageIndex === 0"
-                    class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 rounded-s hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                    [ngStyle]="{'opacity': searchParam.pagination?.pageIndex === 0 ? 0.5 : 1}">
-
-                    Anterior
-                </button>
-                <button (click)="nextPage()"
-                    [disabled]="searchParam.pagination!.pageIndex + 1 === searchParam.pagination?.pages"
-                    class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 border-0 border-s border-gray-700 rounded-e hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                    [ngStyle]="{'opacity': searchParam.pagination!.pageIndex + 1 === searchParam.pagination?.pages ? 0.5 : 1}">
-                    Siguiente
-                </button>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
 
+            <div
+                class="flex items-center justify-between p-2 md:p-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+
+                <!-- Help text -->
+                <span class="text-sm text-gray-700 dark:text-gray-400">
+                    Página <span class="font-semibold text-gray-900 dark:text-white">{{searchParam.pagination!.pageIndex
+                        +
+                        1}}</span> de <span class="font-semibold text-gray-900 dark:text-white">
+                        {{searchParam.pagination?.pages}}</span> de <span
+                        class="font-semibold text-gray-900 dark:text-white">
+                        {{searchParam.pagination?.length}}</span> Registros
+                </span>
+                <!-- Buttons -->
+                <div class="inline-flex mt-0 xs:mt-0">
+                    <button (click)="previousPage()" [disabled]="searchParam.pagination?.pageIndex === 0"
+                        class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 rounded-s hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                        [ngStyle]="{'opacity': searchParam.pagination?.pageIndex === 0 ? 0.5 : 1}">
+
+                        Anterior
+                    </button>
+                    <button (click)="nextPage()"
+                        [disabled]="searchParam.pagination!.pageIndex + 1 === searchParam.pagination?.pages"
+                        class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 border-0 border-s border-gray-700 rounded-e hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                        [ngStyle]="{'opacity': searchParam.pagination!.pageIndex + 1 === searchParam.pagination?.pages ? 0.5 : 1}">
+                        Siguiente
+                    </button>
+                </div>
+
+            </div>
         </div>
     </div>
+</div>

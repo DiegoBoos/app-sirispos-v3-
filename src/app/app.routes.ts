@@ -60,6 +60,17 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./geolocation/geolocation.component'),
       },
+      {
+        path: 'pedidos',
+        title: 'Pedidos',
+        loadComponent: () =>
+          import('./pedidos/pedidos.component'),
+      },
+      {
+        path: 'pedidos-query',
+        loadComponent: () =>
+          import('./pedidos/pages/pedidos-query/pedidos-query.component'),
+      },
     ],
   },
   {

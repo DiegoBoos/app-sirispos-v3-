@@ -1,5 +1,41 @@
 <div class="w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
     <h1 class="font-bold text-xl">Geolocalización</h1>
+    
+    @if (pedido) {
+        <hr>
+        <div class="pt-2 basis-10/12">
+            <div class="flex items-center">
+                <h2 class="font-bold text-lg">Orden de Pedido</h2><span class="text-gray-500">(Geolocalización del registro del pedido)</span>
 
-    <app-map-view class="pt-4"></app-map-view>
+            </div>
+            <p class="mb-0 text-gray-500 dark:text-gray-400">
+              <strong class="font-semibold text-gray-900 dark:text-white">
+                No. Orden:
+              </strong>
+              {{ pedido.orden }}
+            </p>
+            <p class="mb-0 text-gray-500 dark:text-gray-400 text-sm">
+              <strong class="font-semibold text-gray-900 dark:text-white">
+                Cliente:
+              </strong>
+              {{ pedido.cliente.nombreComercial }} -
+              {{ pedido.cliente.direccion1 }}
+            </p>
+            <p class="mb-0 text-gray-500 dark:text-gray-400 text-sm">
+              <strong class="font-semibold text-gray-900 dark:text-white">
+                Vendedor:
+              </strong>
+              {{ pedido.vendedor.nombre }}
+            </p>
+      
+            <p class="mb-0 text-gray-500 dark:text-gray-400 text-sm">
+              <strong class="font-semibold text-gray-900 dark:text-white">
+                Fecha Hora:
+              </strong>
+              {{ pedido.fecha | date:'yyyy-MMM-dd hh:mm' }}
+            </p>
+          </div>
+    }
+
+    <app-map-view [pedido]="this.pedido" class="pt-4"></app-map-view>
 </div>
