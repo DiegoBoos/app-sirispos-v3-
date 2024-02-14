@@ -57,7 +57,6 @@ export class MapViewComponent implements AfterViewInit {
   @Input() pedido?: Pedido;
 
   ngAfterViewInit(): void {
-
     if (this.pedido) {
       this.positionsInfo.update((arr: PositionInfo[]) => {
         this.zoom = 20;
@@ -67,7 +66,7 @@ export class MapViewComponent implements AfterViewInit {
           position: this.center,
         });
         return arr.slice(0);
-    });
+      });
     } else {
       this.positionsInfo.update((arr: PositionInfo[]) => {
         arr.push({
@@ -109,7 +108,6 @@ export class MapViewComponent implements AfterViewInit {
         return arr.slice(0);
       });
     }
-
   }
 
   positionInfo(position: MapMarker, info: PositionInfo) {

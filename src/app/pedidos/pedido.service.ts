@@ -1,9 +1,12 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Injectable, inject, signal } from '@angular/core';
 import { environment } from '@environment/environment';
 import { PedidoSearchParam } from './interfaces/pedido-search-param.interface';
 import { PaginationPedido } from './interfaces/pagination-pedido.interface';
 import { Observable, catchError, finalize, of } from 'rxjs';
+import { downloadBlob } from '@utils/download-blob';
+import Swal from 'sweetalert2';
+import { SearchParam } from '@shared/interfaces/search-param.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +37,47 @@ export class PedidoService {
         catchError(() => of()),
         finalize(() => this.isLoading.set(false))  
       );
+  }
+
+  getPedidoReport(id: number) {
+    const url = `${this.apiUrl}/pedidos/print/${id}`;
+    this.isLoading.set(true);
+    return this.http.get(url, { responseType: 'text' }).pipe(
+      catchError(() => of()),
+      finalize(() => this.isLoading.set(false))
+    );
+  }
+
+  getByOrden(orden: string) {
+    const url = `${this.apiUrl}/pedidos/by-orden/${orden}`;
+    this.isLoading.set(true);
+    return this.http.get(url).pipe(
+      catchError(() => of()),
+      finalize(() => this.isLoading.set(false))
+    );
+  }
+
+  getReportExcelBase64(searchParam: SearchParam) {
+    const { term, dateFrom, dateTo, anuladas } = searchParam;
+
+    const url = `${this.apiUrl}/pedidos/export-excel?term=${term}&dateFrom=${dateFrom}&dateTo=${dateTo}&anuladas=${anuladas}`;
+    this.isLoading.set(true);
+    return this.http
+      .get(url, { responseType: 'blob', observe: 'response' })
+      .subscribe({
+        next: (response: HttpResponse<Blob>) => {
+          downloadBlob(response);
+          this.isLoading.set(false);
+        },
+        error: (resp: HttpErrorResponse) => {
+          this.isLoading.set(false);
+          const message =
+            resp.status === 404
+              ? 'La consulta no retornó datos'
+              : 'Error desconocido';
+          Swal.fire('No hay datos', message, 'warning');
+        },
+      });
   }
 
 }

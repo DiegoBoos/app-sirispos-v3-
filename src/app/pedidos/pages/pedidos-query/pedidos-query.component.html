@@ -22,7 +22,7 @@
                         placeholder="Select date end">
                 </div>
 
-                <div class="flex ">
+                <div class="flex pr-4">
                     <div class="flex items-center h-5">
                         <input [(ngModel)]="anuladas" [ngModelOptions]="{standalone: true}" ngModel id="helper-checkbox"
                             aria-describedby="helper-checkbox-text" type="checkbox" value=""
@@ -34,6 +34,23 @@
                     </div>
                 </div>
 
+                <button data-tooltip-target="tooltip-bottom" data-tooltip-placement="bottom" type="button"
+                    (click)="listPedidosDownload()"
+                    class=" text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                    <svg class="w-6 h-6 text-white-800 dark:text-white" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 15v2a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-2m-8 1V4m0 12-4-4m4 4 4-4" />
+                    </svg>
+
+                </button>
+
+                <div id="tooltip-bottom" role="tooltip"
+                    class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                    Descargar listado de pedidos
+                    <div class="tooltip-arrow" data-popper-arrow></div>
+                </div>
+
                 <!-- <select [(ngModel)]="typeServiceCode" [ngModelOptions]="{standalone: true}"
                 class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 @for (operationType of invoiceTypesFilter ; track operationType.code) {
@@ -42,6 +59,7 @@
                 }
             </select>
 
+            
             <select [(ngModel)]="status" [ngModelOptions]="{standalone: true}"
                 class="mx-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 @for (operationType of pedidoStatus ; track operationType.code) {
@@ -51,22 +69,7 @@
             </select> -->
 
 
-                <!-- <button data-tooltip-target="tooltip-bottom" data-tooltip-placement="bottom" type="button"
-                (click)="listDocumentDownload(false)"
-                class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                <svg class="w-6 h-6 text-white-800 dark:text-white" aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M4 15v2a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-2m-8 1V4m0 12-4-4m4 4 4-4" />
-                </svg>
-
-            </button>
-
-            <div id="tooltip-bottom" role="tooltip"
-                class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
-                Descargar listado de pedidos
-                <div class="tooltip-arrow" data-popper-arrow></div>
-            </div>
+                <!-- 
 
             
             <button data-tooltip-target="tooltip-bottom2" data-tooltip-placement="bottom" type="button"
@@ -111,8 +114,8 @@
         </form>
         <div class="relative">
 
-            <div
-                class="mt-4 min-h-[410px] max-h-52  overflow-y-auto pt-2 relative overflow-x-auto shadow-md sm:rounded-lg" *blockUI="'load-data'">
+            <div class="mt-4 min-h-[410px] max-h-52  overflow-y-auto pt-2 relative overflow-x-auto shadow-md sm:rounded-lg"
+                *blockUI="'load-data'">
                 <table class="w-full text-xs text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
 
@@ -161,7 +164,7 @@
                                 {{pedido.orden}}
                             </td>
                             <td class="px-6 py-2">
-                                {{pedido.cliente.tercero?.identificacion}}
+                                {{pedido.cliente.tercero?.tipoDocumento?.codigoAlterno}}&nbsp;{{pedido.cliente.tercero?.identificacion}}
                             </td>
                             <td class="px-6 py-2">
                                 {{pedido.cliente.nombreComercial}}
@@ -178,40 +181,39 @@
 
                             <td class="text-center px-6 py-1">
                                 @if (pedido.fromMovil === 1) {
-                                    <div  title="Aplicación Móvil">
-                                        <svg 
-                                            class="icon icon-tabler icon-tabler-device-mobile-pin" width="24" height="24"
-                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M12.5 21h-4.5a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v6" />
-                                            <path d="M11 4h2" />
-                                            <path
-                                                d="M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879z" />
-                                            <path d="M19 18v.01" />
-                                            <path d="M12 17v.01" />
-                                        </svg>
+                                <div title="Aplicación Móvil">
+                                    <svg class="icon icon-tabler icon-tabler-device-mobile-pin" width="24" height="24"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M12.5 21h-4.5a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v6" />
+                                        <path d="M11 4h2" />
+                                        <path
+                                            d="M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879z" />
+                                        <path d="M19 18v.01" />
+                                        <path d="M12 17v.01" />
+                                    </svg>
 
-                                    </div>
+                                </div>
                                 } @else {
-                                    <div  title="Aplicación WEB">
-                                        <svg class="icon icon-tabler icon-tabler-device-desktop-pin" width="24" height="24"
-                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M12.5 16h-8.5a1 1 0 0 1 -1 -1v-10a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v6" />
-                                            <path
-                                                d="M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879z" />
-                                            <path d="M19 18v.01" />
-                                            <path d="M7 20h5" />
-                                            <path d="M9 16v4" />
-                                        </svg>
-                                    </div>
+                                <div title="Aplicación WEB">
+                                    <svg class="icon icon-tabler icon-tabler-device-desktop-pin" width="24" height="24"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M12.5 16h-8.5a1 1 0 0 1 -1 -1v-10a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v6" />
+                                        <path
+                                            d="M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879z" />
+                                        <path d="M19 18v.01" />
+                                        <path d="M7 20h5" />
+                                        <path d="M9 16v4" />
+                                    </svg>
+                                </div>
                                 }
                             </td>
 
                             <td class="flex items-center px-6 py-2">
-                                <span (click)="printDocument(pedido.pedidoId)"
+                                <span (click)="printPedido(pedido.pedidoId,pedido.orden)"
                                     class="mr-2 p-1 cursor-pointer rounded text-white font-bold bg-green-500">
                                     PDF
                                 </span>

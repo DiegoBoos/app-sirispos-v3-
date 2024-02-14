@@ -6,9 +6,33 @@ export const routes: Routes = [
     loadComponent: () => import('./dashboard/dashboard.component'),
     children: [
       {
+        path: 'customers',
+        title: 'Clientes',
+        loadComponent: () =>
+          import('./customers/pages/customers/customers.component'),
+      },
+      {
         path: 'documents',
         title: 'Documentos',
         loadComponent: () => import('./documents/pages/documents.component'),
+      },
+      {
+        path: 'statistics',
+        title: 'Estadísticas',
+        loadComponent: () =>
+          import('./statistics/statistics.component'),
+      },
+      {
+        path: 'geolocation',
+        title: 'Geolocalización',
+        loadComponent: () =>
+          import('./geolocation/geolocation.component'),
+      },
+      {
+        path: 'pedidos',
+        title: 'Pedidos',
+        loadComponent: () =>
+          import('./pedidos/pedidos.component'),
       },
       {
         path: 'emit-document',
@@ -20,23 +44,13 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./documents/pages/documents-query/documents-query.component'),
       },
-      {
-        path: 'statistics',
-        title: 'Estadísticas',
-        loadComponent: () =>
-          import('./statistics/statistics.component'),
-      },
+      
       {
         path: 'discounts',
         loadComponent: () =>
           import('./statistics/discounts/discounts.component'),
       },
-      {
-        path: 'customers',
-        title: 'Clientes',
-        loadComponent: () =>
-          import('./customers/pages/customers/customers.component'),
-      },
+      
       {
         path: 'customer-payments',
         loadComponent: () =>
@@ -55,21 +69,14 @@ export const routes: Routes = [
           import('./accounts-receivable/pages/new-customer-payment/new-customer-payment.component'),
       },
       {
-        path: 'geolocation',
-        title: 'Geolocalización',
-        loadComponent: () =>
-          import('./geolocation/geolocation.component'),
-      },
-      {
-        path: 'pedidos',
-        title: 'Pedidos',
-        loadComponent: () =>
-          import('./pedidos/pedidos.component'),
-      },
-      {
         path: 'pedidos-query',
         loadComponent: () =>
           import('./pedidos/pages/pedidos-query/pedidos-query.component'),
+      },
+      {
+        path: 'pedidos-separacion',
+        loadComponent: () =>
+          import('./pedidos/pages/separacion/separacion.component'),
       },
     ],
   },

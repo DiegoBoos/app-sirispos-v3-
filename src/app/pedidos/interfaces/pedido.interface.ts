@@ -55,46 +55,6 @@ export interface Pedido {
 }
 
 
-// export interface Cliente {
-//     clienteId:            number;
-//     codigo:               string;
-//     terceroId:            number;
-//     tipoPrecioId:         number;
-//     vendedorId:           number;
-//     zonaId:               number;
-//     actividadeconomicaId: number;
-//     nombreComercial:      string;
-//     direccion1:           string;
-//     direccion2:           string;
-//     direccion3:           string;
-//     email:                string;
-//     telefono:             string;
-//     celular:              string;
-//     cumpleanios:          string;
-//     fechaCreacion:        string;
-//     cupoCredito:          number;
-//     ultimaVenta:          null;
-//     contactoCliente:      string;
-//     ultimaDevolucion:     null;
-//     ventaAcumulaAnio:     null;
-//     ventaAcumulaMes:      null;
-//     activo:               number;
-//     plazoCredito:         number;
-//     latitud:              null;
-//     longitud:             null;
-//     aplicaFe:             number;
-//     nombreContacto1:      string;
-//     cargo1:               string;
-//     emailReceptor1:       string;
-//     telefonoContacto1:    string;
-//     nombreContacto2:      string;
-//     cargo2:               string;
-//     emailReceptor2:       string;
-//     telefonoContacto2:    string;
-//     municipioId:          number;
-//     diasBloqueoMora:      number;
-// }
-
 export interface PedidoDetalle {
     pedidodetalleId:           number;
     pedidoId:                  number;
@@ -192,15 +152,10 @@ export interface Producto {
     est2:                 null;
     facturaUnimed:        boolean;
     medida:               string;
+    marca:                Marca;
 }
 
-// export interface User {
-//     user_id:  number;
-//     email:    string;
-//     nombre:   string;
-//     password: string;
-//     img:      null;
-//     google:   null;
-//     activo:   number;
-//     bodegaId: null;
-// }
+export interface Marca {
+    marca_id:  number;
+    nombre:    string;
+}

@@ -1,13 +1,12 @@
 <div class="w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
-    <h1 class="font-bold text-xl">Geolocalización</h1>
-    
+    <h1 class="font-bold text-xl">Geolocalización</h1> 
     @if (pedido) {
-        <hr>
+      <div class="flex items-center">
+        <span class="text-gray-500">Registro de&nbsp;</span>
+        <span [routerLink]="['/dashboard/pedidos-query']" title="Ir a consulta de pedidos" class="text-gray-500 underline cursor-pointer">Pedidos</span>
+      </div>
+      <hr>
         <div class="pt-2 basis-10/12">
-            <div class="flex items-center">
-                <h2 class="font-bold text-lg">Orden de Pedido</h2><span class="text-gray-500">(Geolocalización del registro del pedido)</span>
-
-            </div>
             <p class="mb-0 text-gray-500 dark:text-gray-400">
               <strong class="font-semibold text-gray-900 dark:text-white">
                 No. Orden:
@@ -35,6 +34,8 @@
               {{ pedido.fecha | date:'yyyy-MMM-dd hh:mm' }}
             </p>
           </div>
+    } @else {
+      <span class="text-gray-500">Posicionamiento de vendedores</span>
     }
 
     <app-map-view [pedido]="this.pedido" class="pt-4"></app-map-view>

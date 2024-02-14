@@ -17,6 +17,8 @@ import { PedidoService } from '../../pedido.service';
 import { PedidoSearchParam } from '../../interfaces/pedido-search-param.interface';
 import { Pedido } from '../../interfaces/pedido.interface';
 import { PipesModule } from '../../../pipes/pipes.module';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { PdfViewerComponent } from '@shared/components/pdf-viewer/pdf-viewer.component';
 
 @Component({
   selector: 'app-pedidos-query',
@@ -27,6 +29,7 @@ import { PipesModule } from '../../../pipes/pipes.module';
     BlockUIModule,
     FormsModule,
     PipesModule,
+    MatDialogModule
   ],
   templateUrl: './pedidos-query.component.html',
   styles: `
@@ -38,6 +41,7 @@ import { PipesModule } from '../../../pipes/pipes.module';
 })
 export default class PedidosQueryComponent implements OnInit {
   @BlockUI('load-data') blockUILoadData!: NgBlockUI;
+  private dialog = inject(MatDialog);
 
   private pedidoService = inject(PedidoService);
   private router = inject(Router);
@@ -129,8 +133,25 @@ export default class PedidosQueryComponent implements OnInit {
     this.loadData();
   }
 
-  printDocument(id: number) {
-    console.log(id);
+  listPedidosDownload() {
+    this.searchParam.dateFrom = this.dateFrom;
+    this.searchParam.dateTo = this.dateTo;
+    this.searchParam.term = this.term;
+    this.searchParam.anuladas = this.anuladas;
+    this.pedidoService.getReportExcelBase64(this.searchParam);
+  }
+
+  printPedido(id: number, name: string) {
+    // this.blockUILoadData!.start('Generando comprobante ...');
+    this.pedidoService.getPedidoReport(id).subscribe((data) => {
+      const base64 = data;
+      const fileName = `${name}`;
+      // this.blockUILoadData!.stop();
+      const dialogRef = this.dialog.open(PdfViewerComponent, {
+        data: { base64, fileName }, disableClose: true,
+      });
+      dialogRef.afterClosed().subscribe(() => {});
+    });
   }
 
   geolocationShow(pedido: Pedido) {

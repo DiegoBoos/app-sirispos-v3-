@@ -1,16 +1,13 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { SidemenuComponent } from '@shared/sidemenu/sidemenu.component';
-
+import { DashboardService } from './dashboard.service';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [
-    RouterModule,
-    SidemenuComponent
-  ],
+  imports: [RouterModule, SidemenuComponent],
   templateUrl: './dashboard.component.html',
   styles: `
     :host {
@@ -19,4 +16,6 @@ import { SidemenuComponent } from '@shared/sidemenu/sidemenu.component';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class DashboardComponent { }
+export default class DashboardComponent {
+  public dashboardService = inject(DashboardService);
+}

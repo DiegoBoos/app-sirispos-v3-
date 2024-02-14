@@ -1,3 +1,4 @@
+import { TipoDocumento } from "@shared/models/tipo-documento.model";
 import { Cliente } from "./cliente-model";
 
 export class Tercero {
@@ -29,6 +30,7 @@ export class Tercero {
     responsabilidadesFiscales: string = 'R-99-PN';
     isResident: number = 1;
     clientes?: Cliente[];
+    tipoDocumento?: TipoDocumento
   
     constructor(data: Partial<Tercero> = {}) {
       Object.assign(this, data);

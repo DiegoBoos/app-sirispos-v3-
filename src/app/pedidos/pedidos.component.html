@@ -5,21 +5,10 @@
         class="mt-1 bg-white border-gray-200 shadow-sm border-y dark:bg-gray-800 dark:border-gray-600">
         <div
             class="grid max-w-screen-xl px-4 py-5 mx-auto text-gray-900 dark:text-white sm:grid-cols-2 md:grid-cols-3 md:px-6">
-    
-            <!-- <ul aria-labelledby="mega-menu-full-dropdown-button">
-    
-                <li>
-                    <a [routerLink]="['/dashboard/discounts']" routerLinkActive="router-link-active"
-                        class="block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <div class="font-semibold">Cartera</div>
-                        <span class="text-sm text-gray-500 dark:text-gray-400">Datos estadísticos de cartera de clientes
-                        </span>
-                    </a>
-                </li>
-    
-            </ul> -->
+
+
             <ul aria-labelledby="mega-menu-full-dropdown-button">
-    
+
                 <li>
                     <a [routerLink]="['/dashboard/pedidos-query']" routerLinkActive="router-link-active"
                         class="block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
@@ -27,9 +16,20 @@
                         <span class="text-sm text-gray-500 dark:text-gray-400">Consultar Pedidos</span>
                     </a>
                 </li>
-    
+
             </ul>
-    
+            <ul aria-labelledby="mega-menu-full-dropdown-button">
+
+                <li>
+                    <a [routerLink]="['/dashboard/pedidos-separacion']" routerLinkActive="router-link-active"
+                        class="block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
+                        <div class="font-semibold">Separación</div>
+                        <span class="text-sm text-gray-500 dark:text-gray-400">Separación de Pedidos
+                        </span>
+                    </a>
+                </li>
+
+            </ul>
         </div>
     </div>
 </div>
