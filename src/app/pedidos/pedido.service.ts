@@ -7,6 +7,7 @@ import { Observable, catchError, finalize, of } from 'rxjs';
 import { downloadBlob } from '@utils/download-blob';
 import Swal from 'sweetalert2';
 import { SearchParam } from '@shared/interfaces/search-param.interface';
+import { Pedido } from './interfaces/pedido.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,9 @@ export class PedidoService {
   private http = inject(HttpClient);
 
   public isLoading = signal<boolean>(false);
+
+  public pedidosFinalizados = signal<Pedido[]>([]);
+
 
   constructor() { }
 
@@ -43,6 +47,15 @@ export class PedidoService {
     const url = `${this.apiUrl}/pedidos/print/${id}`;
     this.isLoading.set(true);
     return this.http.get(url, { responseType: 'text' }).pipe(
+      catchError(() => of()),
+      finalize(() => this.isLoading.set(false))
+    );
+  }
+
+  getFinalizados() {
+    const url = `${this.apiUrl}/pedidos/finalizados`;
+    this.isLoading.set(true);
+    return this.http.get(url).pipe(
       catchError(() => of()),
       finalize(() => this.isLoading.set(false))
     );

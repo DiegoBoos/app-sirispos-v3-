@@ -3,6 +3,8 @@ import { EventSocket } from '@shared/models/event-socket.model';
 import { Socket } from 'ngx-socket-io';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { Pedido } from '../../pedidos/interfaces/pedido.interface';
+import { PedidoService } from '../../pedidos/pedido.service';
 
 
 @Injectable({
@@ -13,7 +15,7 @@ export class WebsocketService {
   
   private router = inject(Router);
   private socket = inject(Socket);
-  // private authService = inject(AuthService);
+  private pedidoService = inject(PedidoService);
 
 
   #isSocketConnected = signal<boolean>(true);
@@ -23,6 +25,7 @@ export class WebsocketService {
   constructor() { 
     this.checkStatus();
     this.listen();
+    this.listenPedidosFinalizados();
   }
 
   private checkStatus() {
@@ -43,6 +46,14 @@ export class WebsocketService {
     this.socket.on(EventSocket.FAILED_AUTH, () => {
       this.logout();
     });
+  }
+
+  private listenPedidosFinalizados() {
+    this.socket.on(EventSocket.GET_PEDIDOS_FINALIZADOS, (data: any) => {
+      const { payload } = data;
+      const pedidos: Pedido[] = payload;
+      this.pedidoService.pedidosFinalizados.set(pedidos);
+    })
   }
   
   emit( event: string, payload?: any, callback?: Function): void {

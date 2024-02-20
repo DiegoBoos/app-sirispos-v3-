@@ -35,6 +35,7 @@ export class SidemenuComponent implements OnInit {
     && route.path !== 'new-customer-payment'
     && route.path !== 'pedidos-query'
     && route.path !== 'pedidos-separacion'
+    && route.path !== 'messengers-query'
     )
     .filter((route) => !route.path?.includes(':'));
 

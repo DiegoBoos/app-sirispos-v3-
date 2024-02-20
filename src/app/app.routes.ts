@@ -12,6 +12,12 @@ export const routes: Routes = [
           import('./customers/pages/customers/customers.component'),
       },
       {
+        path: 'accounts-receivable',
+        title: 'Cuentas por Cobrar',
+        loadComponent: () =>
+          import('./accounts-receivable/accounts-receivable.component'),
+      },
+      {
         path: 'documents',
         title: 'Documentos',
         loadComponent: () => import('./documents/pages/documents.component'),
@@ -27,6 +33,17 @@ export const routes: Routes = [
         title: 'Geolocalización',
         loadComponent: () =>
           import('./geolocation/geolocation.component'),
+      },
+      {
+        path: 'messengers',
+        title: 'Mensajeros',
+        loadComponent: () =>
+          import('./messengers/pages/messengers.component'),
+      },
+      {
+        path: 'messengers-query',
+        loadComponent: () =>
+          import('./messengers/pages/messengers-query/messengers-query.component'),
       },
       {
         path: 'pedidos',
@@ -56,12 +73,7 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./accounts-receivable/pages/customer-payments/customer-payments.component'),
       },
-      {
-        path: 'accounts-receivable',
-        title: 'Cuentas por Cobrar',
-        loadComponent: () =>
-          import('./accounts-receivable/accounts-receivable.component'),
-      },
+      
       {
         path: 'new-customer-payment',
        
