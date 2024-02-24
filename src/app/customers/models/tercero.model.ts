@@ -1,5 +1,6 @@
 import { TipoDocumento } from "@shared/models/tipo-documento.model";
 import { Cliente } from "./cliente-model";
+import { VMunicipio } from "@shared/models/v-municipio.model";
 
 export class Tercero {
     terceroId?: number;
@@ -31,6 +32,7 @@ export class Tercero {
     isResident: number = 1;
     clientes?: Cliente[];
     tipoDocumento?: TipoDocumento
+    municipio?: VMunicipio
   
     constructor(data: Partial<Tercero> = {}) {
       Object.assign(this, data);

@@ -36,7 +36,7 @@ export const routes: Routes = [
       },
       {
         path: 'messengers',
-        title: 'Mensajeros',
+        title: 'Mensajería',
         loadComponent: () =>
           import('./messengers/pages/messengers.component'),
       },
@@ -44,6 +44,16 @@ export const routes: Routes = [
         path: 'messengers-query',
         loadComponent: () =>
           import('./messengers/pages/messengers-query/messengers-query.component'),
+      },
+      {
+        path: 'events-query',
+        loadComponent: () =>
+          import('./messengers/pages/events-query/events-query.component'),
+      },
+      {
+        path: 'record-deliveries',
+        loadComponent: () =>
+          import('./messengers/pages/record-deliveries/record-deliveries.component'),
       },
       {
         path: 'pedidos',

@@ -39,6 +39,7 @@ export class NewEditMessengerComponent {
     id: [null],
     identification: ['', [Validators.required]],
     name: ['', [Validators.required]],
+    isActive: [1, [Validators.required]],
   });
 
 
@@ -109,7 +110,7 @@ export class NewEditMessengerComponent {
     this.messengerService.saveMessenger(messenger).subscribe((resp: any) => {
 
       if (resp) {
-        Swal.fire('Transacción exitosa.','Mensagero registrado satisfactoriamente.','success');
+        Swal.fire('Transacción exitosa.','Mensajero registrado satisfactoriamente.','success');
 
         this.closeDialog();
       }

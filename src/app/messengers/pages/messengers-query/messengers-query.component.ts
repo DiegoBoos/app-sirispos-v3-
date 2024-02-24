@@ -115,11 +115,7 @@ export default class MessengersQueryComponent implements OnInit {
     const dialogRef = this.dialog.open(NewEditMessengerComponent, { data: { action: 'add' } });
 
     dialogRef.afterClosed().subscribe((result) => {
-     
-      if (result) {
-        this.loadData();
-
-      }
+      this.loadData();
     });
   }
 
@@ -129,11 +125,7 @@ export default class MessengersQueryComponent implements OnInit {
     const dialogRef = this.dialog.open(NewEditMessengerComponent, { data: { action: 'update', messenger } });
 
     dialogRef.afterClosed().subscribe((result) => {
-     
       this.loadData();
-      // if (result) {
-      //   this.loadData();
-      // }
     });
   }
 

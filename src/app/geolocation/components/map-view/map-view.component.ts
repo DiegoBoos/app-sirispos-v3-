@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import {
   GoogleMap,
-  GoogleMapsModule,
   MapInfoWindow,
   MapMarker,
   MapMarkerClusterer,

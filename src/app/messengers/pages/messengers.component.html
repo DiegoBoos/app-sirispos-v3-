@@ -1,7 +1,7 @@
 
 <div class="w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
 
-    <h1 class="pb-4 font-bold text-xl">Mensajeros</h1>
+    <h1 class="pb-4 font-bold text-xl">Mensajería</h1>
     <div id="mega-menu-full-dropdown"
         class="mt-1 bg-white border-gray-200 shadow-sm border-y dark:bg-gray-800 dark:border-gray-600">
         <div
@@ -12,25 +12,37 @@
                 <li>
                     <a [routerLink]="['/dashboard/messengers-query']" routerLinkActive="router-link-active"
                         class="block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <div class="font-semibold">Consultar</div>
+                        <div class="font-semibold">Mensajeros</div>
                         <span class="text-sm text-gray-500 dark:text-gray-400">Consultar, crear, editar, eliminar mensajeros
                             </span>
                     </a>
                 </li>
     
             </ul>
-            <!-- <ul aria-labelledby="mega-menu-full-dropdown-button">
+            <ul aria-labelledby="mega-menu-full-dropdown-button">
     
                 <li>
-                    <a [routerLink]="['/dashboard/emit-document']" routerLinkActive="router-link-active"
+                    <a [routerLink]="['/dashboard/record-deliveries']" routerLinkActive="router-link-active"
                         class="block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <div class="font-semibold">Emitir</div>
-                        <span class="text-sm text-gray-500 dark:text-gray-400">Emisión de documentos electrónicos
+                        <div class="font-semibold">Eventos</div>
+                        <span class="text-sm text-gray-500 dark:text-gray-400">Registro de enventos de mensajeria
                             </span>
                     </a>
                 </li>
     
-            </ul> -->
+            </ul>
+            <ul aria-labelledby="mega-menu-full-dropdown-button">
+    
+                <li>
+                    <a [routerLink]="['/dashboard/events-query']" routerLinkActive="router-link-active"
+                        class="block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
+                        <div class="font-semibold">Consultar</div>
+                        <span class="text-sm text-gray-500 dark:text-gray-400">Consultar eventos de mensajería
+                            </span>
+                    </a>
+                </li>
+    
+            </ul>
     
         </div>
     </div>
