@@ -21,7 +21,6 @@ export class PedidoService {
 
   public pedidosFinalizados = signal<Pedido[]>([]);
 
-
   constructor() { }
 
   searchDocuments(

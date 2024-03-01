@@ -10,6 +10,7 @@ import { CheckTokenResponse } from '../interfaces/check-token.response';
 import { WebsocketService } from '@shared/services/websocket.service';
 import { EventSocket } from '@shared/models/event-socket.model';
 import { environment } from '@environment/environment';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
@@ -36,7 +37,6 @@ export class AuthService {
   private setAuthentication(user: User, token: string): boolean {
 
     this.#currentUser.set(user);
-    
     this.#authStatus.set(AuthStatus.authenticated);
     localStorage.setItem('token-app-spv3', token);
     localStorage.setItem('user-app-spv3', JSON.stringify(user));
@@ -58,12 +58,62 @@ export class AuthService {
       );
   }
 
+
+  checkRole(route: any): boolean {
+
+    const { path, title } = route;
+    const userLocalStorage = localStorage.getItem('user-app-spv3');
+
+    const user: User = JSON.parse(userLocalStorage!);
+
+    if (!user) {
+      return false;
+    }
+
+    let status: boolean = true;
+    let nameRole: string = '';
+
+    switch (path) {
+      case 'accounts-receivable':
+      case 'customers':
+      case 'documents':
+      case 'documents-query':
+      case 'emit-document':
+      case 'discounts':
+        status = user!.userRoles!.findIndex(i=>i.role.name === 'cxc') > 0;
+        nameRole = 'Cuentas por Cobrar';
+        break;
+      case 'discounts':
+      case 'messengers-query':
+      case 'events-query':
+        status = user!.userRoles!.findIndex(i=>i.role.name === 'Administración') > 0;
+        nameRole = 'Administrador';
+        break;
+      case 'pedidos-query':
+        status = user!.userRoles!.findIndex(i=>i.role.name === 'Pedidos') > 0;
+        nameRole = 'Pedidos';
+        break;
+      case 'pedidos-separacion':
+        status = user!.userRoles!.findIndex(i=>i.role.name === 'verifica') > 0;
+        nameRole = 'Verificar';
+        break;
+    }
+
+    if (!status) {
+      this.logout();
+      Swal.fire('Acceso No Autorizado', `No tiene permisos para acceder. Necesita rol de ${nameRole}`,'error');
+    }
+
+    return status;
+  }
+
   checkAuthStatus(): Observable<boolean> {
 
     const url = `${this.baseUrl}/auth/check-token`;
     const token = localStorage.getItem('token-app-spv3') || null;
     const userLocalStorage = localStorage.getItem('user-app-spv3');
 
+    
     if (!token) {
       this.logout();
       return of(false);
@@ -72,9 +122,9 @@ export class AuthService {
     if (this.router.url !== '/') {
       
       return this.http.get<CheckTokenResponse>(url)
-        .pipe(
-          map(({ user, token }) => this.setAuthentication(user, token)),
-          catchError((err) => {
+      .pipe(
+        map(({ user, token }) => this.setAuthentication(user, token)),
+        catchError((err) => {
             this.#authStatus.set(AuthStatus.notAuthenticated);
             this.websocketService.emit(EventSocket.LOGGED, token);
             return of(false);

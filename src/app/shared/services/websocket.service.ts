@@ -34,7 +34,7 @@ export class WebsocketService {
 
     this.socket.on(EventSocket.CONNECT, () => {
       this.#isSocketConnected.set(true);
-      if (token?.trim() === '') this.emit(EventSocket.LOGGED, token);
+      // if (token?.trim() === '') this.emit(EventSocket.LOGGED, token);
     });
     
     this.socket.on(EventSocket.DISCONNECT, () => {

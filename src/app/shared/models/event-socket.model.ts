@@ -7,4 +7,5 @@ export enum EventSocket {
     GET_PEDIDOS_FINALIZADOS = 'pedidos-finalizados',
     SELECT_PEDIDO_FINALIZADO = 'select-pedido-finalizado',
     SEND_TO_VERIFICATION = 'send-to-verification',
+    RESET_PEDIDOS = 'reset-pedidos',
 }

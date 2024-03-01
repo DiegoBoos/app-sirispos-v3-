@@ -3,7 +3,7 @@ import {
   HttpErrorResponse,
   HttpResponse,
 } from '@angular/common/http';
-import { Injectable, computed, inject, signal } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { environment } from '../environments/environment';
 import { Observable, catchError, finalize, of } from 'rxjs';
 import { SearchParam } from '@shared/interfaces/search-param.interface';

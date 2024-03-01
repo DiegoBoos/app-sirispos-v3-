@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  OnDestroy,
   OnInit,
   computed,
   inject,
@@ -29,7 +30,7 @@ import Swal from 'sweetalert2';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class SeparacionComponent implements OnInit {
+export default class SeparacionComponent implements OnInit, OnDestroy {
   public dashboardService = inject(DashboardService);
   private webSocketService = inject(WebsocketService);
   public pedidoService = inject(PedidoService);
@@ -47,17 +48,26 @@ export default class SeparacionComponent implements OnInit {
     this.pedidoService.pedidosFinalizados()
   );
 
+  // public isExit = true;
   constructor() {
     this.dashboardService.displayMenu.set(false);
   }
+  
+  ngOnDestroy(): void {
+    this.dashboardService.displayMenu.set(true);
+  }
   ngOnInit(): void {
     initFlowbite();
-    this.emitSocket();
+    this.emitSocketFinalizados();
     // this.webSocketService.emit('pedidos-finalizados');
   }
   
-  emitSocket() {
-    this.webSocketService.emit('pedidos-finalizados');
+  emitSocketFinalizados() {
+    this.webSocketService.emit(EventSocket.GET_PEDIDOS_FINALIZADOS);
+  }
+
+  emitSocketReset() {
+    this.webSocketService.emit(EventSocket.RESET_PEDIDOS);
   }
 
   // loadPedidosFinalizados() {
@@ -65,7 +75,7 @@ export default class SeparacionComponent implements OnInit {
   // }
 
   exit() {
-    this.dashboardService.displayMenu.set(true);
+    
     this.router.navigateByUrl('/dashboard/pedidos');
   }
 
@@ -87,8 +97,8 @@ export default class SeparacionComponent implements OnInit {
     this.pendientes.set([]);
     this.separados.set([]);
 
-    this.pedido.set(pedido);
-    if (pedido.estado !== 'Z') {
+   
+    if (pedido.estado !== 'V') {
       let estado = '';
       switch (pedido.estado) {
         case 'A': {
@@ -128,10 +138,11 @@ export default class SeparacionComponent implements OnInit {
         `No es posible separar pedido se encuentra en estado ${estado}`
       );
     } else {
-      this.pendientes.set(this.pedido()?.pedidoDetalles!);
+      this.pendientes.set(pedido.pedidoDetalles!);
       this.pendientes().sort(this.orderDetalles);
     }
     this.webSocketService.emit(EventSocket.SELECT_PEDIDO_FINALIZADO, { pedidoSelected: pedido, pedidoActual: this.pedido() });
+    this.pedido.set(pedido);
   }
 
   toSeparado(item: PedidoDetalle) {
@@ -198,7 +209,7 @@ export default class SeparacionComponent implements OnInit {
 
   sendPedido() {
     if (this.pedido()) {
-      if (this.pendientes().length === 0 && this.pedido()?.estado === 'Z') {
+      if (this.pendientes().length === 0 && this.pedido()?.estado === 'V') {
         this.webSocketService.emit(EventSocket.SEND_TO_VERIFICATION, { pedido: this.pedido() });
         this.pedido.set(null);
         this.separados.set([]);
@@ -211,4 +222,6 @@ export default class SeparacionComponent implements OnInit {
       Swal.fire('No es posible enviar a verificación','Debe seleccionar un pedido','warning');
     
   }
+
+
 }

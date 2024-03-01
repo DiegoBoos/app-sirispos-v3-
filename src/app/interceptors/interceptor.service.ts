@@ -12,7 +12,7 @@ export class InterceptorService implements HttpInterceptor {
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-        const token = localStorage.getItem('token-app-siv2') || '';
+        const token = localStorage.getItem('token-app-spv3') || '';
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
         const reqClone = req.clone({

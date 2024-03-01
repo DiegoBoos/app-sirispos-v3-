@@ -142,11 +142,9 @@ export default class PedidosQueryComponent implements OnInit {
   }
 
   printPedido(id: number, name: string) {
-    // this.blockUILoadData!.start('Generando comprobante ...');
     this.pedidoService.getPedidoReport(id).subscribe((data) => {
       const base64 = data;
       const fileName = `${name}`;
-      // this.blockUILoadData!.stop();
       const dialogRef = this.dialog.open(PdfViewerComponent, {
         data: { base64, fileName }, disableClose: true,
       });
