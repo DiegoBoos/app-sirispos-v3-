@@ -5,6 +5,7 @@ import { User } from "../../auth/interfaces/user.interface";
 import { Cliente } from "../../customers/models/cliente-model";
 
 export interface Pedido {
+    id?:                    number;
     pedidoId:               number;
     orden:                  string;
     clienteId:              number;
@@ -52,7 +53,13 @@ export interface Pedido {
     user:                   User;
     vendedor:               Vendedor;
     feHdr?:                 FeHdr;
+    separationUserId?:      number;
+    separationTimeStart?:   Date;
+    separationTimeEnd?:     Date;
     pedidoDetalles:         PedidoDetalle[];
+    separados?:             PedidoDetalle[];
+    pendientes?:            PedidoDetalle[];
+    userSeparation?:        User;
 }
 
 

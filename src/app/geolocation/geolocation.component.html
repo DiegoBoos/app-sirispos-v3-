@@ -1,5 +1,5 @@
 <div class="w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
-    <h1 class="font-bold text-xl">Geolocalización</h1> 
+    <h1 class="font-bold text-xl dark:text-white">Geolocalización</h1> 
     @if (pedido) {
       <div class="flex items-center">
         <span class="text-gray-500">Registro de&nbsp;</span>
@@ -35,7 +35,7 @@
             </p>
           </div>
     } @else {
-      <span class="text-gray-500">Posicionamiento de vendedores</span>
+      <span class="text-gray-500 dark:text-gray-200">Posicionamiento de vendedores</span>
     }
 
     <app-map-view [pedido]="this.pedido" class="pt-4"></app-map-view>

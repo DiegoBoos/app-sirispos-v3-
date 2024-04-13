@@ -17,7 +17,7 @@ import { PDFDocumentProxy, PdfViewerModule } from 'ng2-pdf-viewer';
   standalone: true,
   imports: [CommonModule, PdfViewerModule],
   template: `
-    <div class="top-10 h-full max-w-[800px] flex items-center justify-center">
+    <div class="top-10 h-full max-w-[800px] flex items-center justify-center dark:bg-gray-700">
       <!-- <div class="modal-overlay absolute w-full h-full max-w-xl" > -->
       <div class="relative p-4 w-full">
         <!-- Modal content -->
@@ -26,7 +26,7 @@ import { PDFDocumentProxy, PdfViewerModule } from 'ng2-pdf-viewer';
           <div
             class="flex items-center justify-between p-4 md:p-2 border-b rounded-t dark:border-gray-600"
           >
-            <button title="Descargar Comprobante" type="button" (click)="downloadReport()">
+            <button title="Descargar Comprobante" type="button" (click)="downloadReport()" class="text-blue-600 hover:text-blue-800 dark:text-blue-300 dark:hover:text-blue-500">
               <svg
                 class="icon icon-tabler icon-tabler-download"
                 width="24"
@@ -46,7 +46,7 @@ import { PDFDocumentProxy, PdfViewerModule } from 'ng2-pdf-viewer';
             </button>
 
 
-            <button title="Imprimir Comprobante" type="button" (click)="printReport()" class="pl-4">
+            <button title="Imprimir Comprobante" type="button" (click)="printReport()" class="pl-4 text-blue-600 hover:text-blue-800 dark:text-blue-300 dark:hover:text-blue-500">
               <svg
                 class="icon icon-tabler icon-tabler-printer"
                 width="24"
@@ -73,7 +73,7 @@ import { PDFDocumentProxy, PdfViewerModule } from 'ng2-pdf-viewer';
             <button
               type="button"
               (click)="closeDialog()"
-              class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              class="end-2.5 text-gray-400 bg-transparent hover:bg-blue-200 hover:text-blue-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-red-600 dark:hover:text-white"
             >
               <svg
                 class="w-3 h-3"

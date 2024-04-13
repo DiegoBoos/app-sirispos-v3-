@@ -1,26 +1,26 @@
+
 <div class="w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
     <div class="p-4 md:p-5">
-        <h1 class="pb-4 font-bold text-xl"><a [routerLink]="['/dashboard/pedidos']"
+        <h1 class="pb-4 font-bold text-xl dark:text-white"><a [routerLink]="['/dashboard/pedidos']"
                 routerLinkActive="router-link-active" class="cursor-pointer underline">Pedidos</a> - Consultar pedidos
         </h1>
         <!-- Para activar el uso de la signal -->
         <span class="hidden">{{isLoading()}}</span>
         <form class="space-y-4" action="#">
             <div class="flex items-center">
-                <span class="mx-2 text-gray-500">Desde</span>
-                <div class="relative">
-                    <input name="dateIni" type="date" [(ngModel)]="dateFrom" [max]="maxDate | date:'yyyy-MM-dd'"
-                        class="mt-1 w-36 pt-0 peer block min-h-[auto] rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-                        placeholder="Select date start">
-                </div>
-                <span class="mx-2 text-gray-500">hasta</span>
-                <div class="relative pr-4">
-
-                    <input name="dateTo" type="date" [min]="dateFrom" [max]="maxDate | date:'yyyy-MM-dd'"
-                        [(ngModel)]="dateTo"
-                        class="mt-1 w-36 pt-0 peer block min-h-[auto] rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-                        placeholder="Select date end">
-                </div>
+                <span class="mx-2 text-gray-500 dark:text-gray-300">Desde</span>
+            <div class="relative">
+                <input name="dateIni" type="date" [(ngModel)]="dateFrom" [max]="maxDate | date:'yyyy-MM-dd'"
+                    class="mt-1 w-36 pt-0 peer block min-h-[auto] rounded-lg border border-blue-300 bg-blue-50 px-3 py-2 leading-[1.6] outline-none transition-all duration-200 ease-linear focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-blue-700 dark:bg-gray-700 dark:text-white dark:focus:border-blue-500"
+                    placeholder="Select date start">
+            </div>
+            <span class="mx-2 text-gray-500 dark:text-gray-300">hasta</span>
+            <div class="relative pr-4">
+                <input name="dateTo" type="date" [min]="dateFrom" [max]="maxDate | date:'yyyy-MM-dd'"
+                    [(ngModel)]="dateTo"
+                    class="mt-1 w-36 pt-0 peer block min-h-[auto] rounded-lg border border-blue-300 bg-blue-50 px-3 py-2 leading-[1.6] outline-none transition-all duration-200 ease-linear focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-blue-700 dark:bg-gray-700 dark:text-white dark:focus:border-blue-500"
+                    placeholder="Select date end">
+            </div>
 
                 <div class="flex pr-4">
                     <div class="flex items-center h-5">
@@ -36,7 +36,7 @@
 
                 <button data-tooltip-target="tooltip-bottom" data-tooltip-placement="bottom" type="button"
                     (click)="listPedidosDownload()"
-                    class=" text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                    class=" text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                     <svg class="w-6 h-6 text-white-800 dark:text-white" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -74,7 +74,7 @@
             
             <button data-tooltip-target="tooltip-bottom2" data-tooltip-placement="bottom" type="button"
                 (click)="listDocumentDownload(true)"
-                class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                 <svg class="w-6 h-6 text-white-800 dark:text-white" aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -136,6 +136,9 @@
                             <th scope="col" class="px-6 py-2">
                                 Vendedor
                             </th>
+                            <th scope="col" class="px-6 py-2">
+                                Separador
+                            </th>
                             <th scope="col" class="text-right px-6 py-2">
                                 Valor
                             </th>
@@ -171,6 +174,9 @@
                             </td>
                             <td class="px-6 py-2">
                                 {{pedido.vendedor.nombre}}
+                            </td>
+                            <td class="px-6 py-2">
+                                {{pedido.userSeparation?.nombre}}
                             </td>
                             <td class="text-right px-6 py-2 font-extrabold">
                                 $ {{pedido.subtotal | number}}
@@ -214,7 +220,7 @@
 
                             <td class="flex items-center px-6 py-2">
                                 <span (click)="printPedido(pedido.pedidoId,pedido.orden)"
-                                    class="mr-2 p-1 cursor-pointer rounded text-white font-bold bg-green-500">
+                                    class="mr-2 p-1 cursor-pointer rounded text-white font-bold bg-blue-500">
                                     PDF
                                 </span>
 

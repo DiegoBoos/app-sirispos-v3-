@@ -69,6 +69,24 @@ export class PedidoService {
     );
   }
 
+  startSeparation(id: number, objSeparation: any) {
+    const url = `${this.apiUrl}/pedidos/start-separation/${id}`;
+    this.isLoading.set(true);
+    return this.http.patch(url, objSeparation).pipe(
+      catchError(() => of()),
+      finalize(() => this.isLoading.set(false))
+    );
+  }
+
+  endSeparation(id: number, objSeparation: any) {
+    const url = `${this.apiUrl}/pedidos/end-separation/${id}`;
+    this.isLoading.set(true);
+    return this.http.patch(url, objSeparation).pipe(
+      catchError(() => of()),
+      finalize(() => this.isLoading.set(false))
+    );
+  }
+
   getReportExcelBase64(searchParam: SearchParam) {
     const { term, dateFrom, dateTo, anuladas } = searchParam;
 

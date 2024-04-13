@@ -1,6 +1,6 @@
 <!-- component -->
 <!-- This is an example component -->
-<div
+<!-- <div
 
     class='flex items-center justify-center min-h-screen border border-gray-200 bg-white shadow'>
     <div class='w-full max-w-lg px-10 py-8 mx-auto bg-white border rounded-lg shadow-2xl'>
@@ -32,8 +32,55 @@
                 <button
                     class="border hover:border-indigo-600 px-4 py-2 rounded-lg shadow ring-1 ring-inset ring-gray-300">Iniciar
                     Sesión</button>
-                <!-- <a href="#">Forgot Password</a> -->
+
             </div>
+        </form>
+    </div>
+</div> -->
+<div class='flex items-center justify-center min-h-screen bg-blue-900'>
+    <div class='w-full max-w-lg px-10 py-8 mx-auto bg-white border-0 rounded-lg shadow-2xl'>
+        <form [formGroup]="form" (ngSubmit)="submit()" class='max-w-md mx-auto space-y-6'>
+            <img  srcset="/assets/images/sirishorizontal1.png 400w,
+          /assets/images/logomallamas200pxalto.png 200w" sizes="(max-width: 768px) 200px, 400px"
+                alt="Descripción de la imagen" class="block mx-auto mb-6" style="max-width: 70%; height: auto;">
+
+            <h2 class="text-xl text-center font-semibold text-gray-800">SIRIS POS v3</h2> 
+           
+            
+            <br>
+            <h3 class="text-lg font-semibold text-gray-800">Inicio de Sesión</h3>
+            <div>
+                <label class="block py-1 text-gray-700">Usuario</label>
+                <input formControlName="email" type="email"
+                    class="border w-full py-2 px-3 rounded shadow focus:border-yellow-500 focus:ring focus:ring-yellow-200 font-mono transition-colors">
+
+                @if (f['email'].touched && f['email'].errors) {
+                <span class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
+                    Usuario No Válido !
+                </span>
+                }
+            </div>
+            <div>
+                <label class="block py-1 text-gray-700">Contraseña</label>
+                <input formControlName="password" type="password"
+                    class="border w-full py-2 px-3 rounded shadow focus:border-yellow-500 focus:ring focus:ring-yellow-200 font-mono transition-colors">
+
+                @if (f['password'].touched && f['password'].errors) {
+                <span class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
+                    Constraseña No Válida !
+                </span>
+                }
+            </div>
+            <div class="flex flex-col gap-3 pt-3 items-center">
+                <button
+                    class="w-full bg-blue-800 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-opacity-50 transition-colors">
+                    Iniciar Sesión
+                </button>
+               
+            </div>
+
+
+
         </form>
     </div>
 </div>

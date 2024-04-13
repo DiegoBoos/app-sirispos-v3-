@@ -1,155 +1,145 @@
-<!-- Main modal -->
-<div class="top-10 h-full w-full flex items-center justify-center">
-    <!-- <div class="modal-overlay absolute w-full h-full max-w-xl" > -->
-    <div class="relative p-4 w-full max-w-xl">
-        <!-- Modal content -->
-        <div class="w-[500px] relative bg-white rounded-lg shadow dark:bg-gray-700">
-            <!-- Modal header -->
-            <div class="flex items-center justify-between p-4 md:p-3 border-b rounded-t dark:border-gray-600">
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                    Seleccione los Cargos y/o Descuentos
+<!-- Modal content -->
+<div class="w-[500px] relative bg-white rounded-lg shadow dark:bg-gray-700">
+    <!-- Modal header -->
+    <div class="flex items-center justify-between p-4 md:p-3 border-b rounded-t dark:border-gray-600">
+        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+            Seleccione los Cargos y/o Descuentos
 
 
-                </h3>
-                <button type="button" (click)="closeDialog()"
-                    class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
-                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                    </svg>
-                    <span class="sr-only">Cerrar</span>
-                </button>
-            </div>
-            <!-- Modal body -->
-            <div class="p-4 md:p-3">
-                <p class=" font-extralight italic text-gray-500 text-sm dark:text-gray-400">NOTA: Para el caso de
-                    <strong class="font-semibold text-gray-900 dark:text-white">DESCUENTOS</strong> registre el valor en
-                    negativo.
-                </p>
+        </h3>
+        <button type="button" (click)="closeDialog()"
+            class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+            </svg>
+            <span class="sr-only">Cerrar</span>
+        </button>
+    </div>
+    <!-- Modal body -->
+    <div class="p-4 md:p-3">
+        <p class=" font-extralight italic text-gray-500 text-sm dark:text-gray-400">NOTA: Para el caso de
+            <strong class="font-semibold text-gray-900 dark:text-white">DESCUENTOS</strong> registre el valor en
+            negativo.
+        </p>
 
-                <div class="mt-4 flex bg-blue-100 h-14 items-center rounded border border-solid border-gray-300 p-4">
-                    <button type="button" (click)="addItem()"
-                        class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500">
-                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                            viewBox="0 0 18 18">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 1v16M1 9h16" />
-                        </svg>
-                    </button>
-                    
-                    <p class="ml-auto text-lg font-medium text-gray-400 dark:text-white">Vr. Base:
-                        <span class="text-gray-900 font-extrabold">
-                            ${{baseAmount | number}}
-                        </span>
-    
-                    </p>
-                </div>
+        <div class="mt-4 flex bg-blue-100 h-14 items-center rounded border border-solid border-gray-300 p-4">
+            <button type="button" (click)="addItem()"
+                class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500">
+                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                    viewBox="0 0 18 18">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 1v16M1 9h16" />
+                </svg>
+            </button>
+
+            <p class="ml-auto text-lg font-medium text-gray-400 dark:text-white">Vr. Base:
+                <span class="text-gray-900 font-extrabold">
+                    ${{baseAmount | number}}
+                </span>
+
+            </p>
+        </div>
 
 
-                <div
-                    class="min-h-[208px] max-h-52  overflow-y-auto pt-2 relative overflow-x-auto shadow-md sm:rounded-lg">
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                            <tr>
-                                <th class="px-2 w-7/12">
-                                    CONCEPTO
-                                </th>
-                                <th class="px-2 w-2/12">
-                                    %
-                                </th>
-                                <th class="px-1 w-3/12">
-                                    VALOR
-                                </th>
-                                <th class="px-1 w-1/12">
+        <div class="min-h-[208px] max-h-52  overflow-y-auto pt-2 relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th class="px-2 w-7/12">
+                            CONCEPTO
+                        </th>
+                        <th class="px-2 w-2/12">
+                            %
+                        </th>
+                        <th class="px-1 w-3/12">
+                            VALOR
+                        </th>
+                        <th class="px-1 w-1/12">
 
-                                </th>
-                            </tr>
-                        </thead>
+                        </th>
+                    </tr>
+                </thead>
 
 
 
-                        <tbody [formGroup]="form">
+                <tbody [formGroup]="form">
 
-                            <ng-container formArrayName="items" *ngFor="let item of items.controls; let $index = index">
+                    <ng-container formArrayName="items" *ngFor="let item of items.controls; let $index = index">
 
-                                <tr [formGroupName]="$index">
+                        <tr [formGroupName]="$index">
 
-                                    <td class="px-1">
+                            <td class="px-1">
 
-                                        <select formControlName="code" (change)="changueCode($index, $event.target)"
-                                            class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <select formControlName="code" (change)="changueCode($index, $event.target)"
+                                    class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
 
-                                            @for (item of allowanceChargueCodes() ; track item.id) {
-                                            <option [value]="item.code">
-                                                {{item.description}}
-                                            </option>
-                                            }
+                                    @for (item of allowanceChargueCodes() ; track item.id) {
+                                    <option [value]="item.code">
+                                        {{item.description}}
+                                    </option>
+                                    }
 
-                                        </select>
-                                    </td>
+                                </select>
+                            </td>
 
 
-                                    <td class="px-1">
-                                        <input selectText formControlName="rate" type="text" mask="separator.2"
-                                            [allowNegativeNumbers]="true" thousandSeparator="," separatorLimit="100"
-                                            (blur)="calculateAmount($index)"
-                                            class=" text-right rounded-md bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            [ngClass]="{
+                            <td class="px-1">
+                                <input selectText formControlName="rate" type="text" mask="separator.2"
+                                    [allowNegativeNumbers]="true" thousandSeparator="," separatorLimit="100"
+                                    (blur)="calculateAmount($index)"
+                                    class=" text-right rounded-md bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    [ngClass]="{
                                         'rounded bg-red-50 border border-red-500 text-red-900 placeholder-red-700   focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500': isValidField(item,'rate')
                                     }">
-                                        @if (isValidField(item, 'rate')) {
-                                        <p class="text-xs text-red-600 dark:text-red-500">{{getFieldError(item,
-                                            'rate')}}</p>
-                                        }
-                                    </td>
+                                @if (isValidField(item, 'rate')) {
+                                <p class="text-xs text-red-600 dark:text-red-500">{{getFieldError(item,
+                                    'rate')}}</p>
+                                }
+                            </td>
 
-                                    <td class="px-1">
-                                        <input selectText formControlName="amount" type="text" (blur)="calculateRate($index)"
-                                            prefix="$ " mask="separator.2" [allowNegativeNumbers]="true" thousandSeparator=","
-                                            class=" text-right rounded-md bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            [ngClass]="{
+                            <td class="px-1">
+                                <input selectText formControlName="amount" type="text" (blur)="calculateRate($index)"
+                                    prefix="$ " mask="separator.2" [allowNegativeNumbers]="true" thousandSeparator=","
+                                    class=" text-right rounded-md bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    [ngClass]="{
                                         'rounded bg-red-50 border border-red-500 text-red-900 placeholder-red-700   focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500': isValidField(item,'amount')
                                     }">
-                                        @if (isValidField(item, 'amount')) {
-                                        <p class="text-xs text-red-600 dark:text-red-500">{{getFieldError(item,
-                                            'amount')}}</p>
-                                        }
-                                    </td>
+                                @if (isValidField(item, 'amount')) {
+                                <p class="text-xs text-red-600 dark:text-red-500">{{getFieldError(item,
+                                    'amount')}}</p>
+                                }
+                            </td>
 
-                                    <td class="px-1">
-                                        <button (click)="removeItem($index)" type="button"
-                                            class="mt-2 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">X</button>
-                                    </td>
-                                </tr>
-                            </ng-container>
-                        </tbody>
-                    </table>
-                </div>
+                            <td class="px-1">
+                                <button (click)="removeItem($index)" type="button"
+                                    class="mt-2 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">X</button>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </div>
 
-                <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
+        <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
 
-                <p class="text-right text-lg font-medium text-gray-400 dark:text-white">Subtotal:
-                    <span class="text-gray-900 font-extrabold">
+        <p class="text-right text-lg font-medium text-gray-400 dark:text-white">Subtotal:
+            <span class="text-gray-900 font-extrabold">
 
-                        ${{subtotal() | number}}
-                        <!-- @if (totalsInvoice()) {
+                ${{subtotal() | number}}
+                <!-- @if (totalsInvoice()) {
                         $ {{totalsInvoice()!.total | number}}
                         } -->
-                    </span>
+            </span>
 
-                </p>
-            </div>
-            <!-- Modal footer -->
-            <div
-                    class="flex items-center justify-between p-2 md:p-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+        </p>
+    </div>
+    <!-- Modal footer -->
+    <div class="flex items-center justify-between p-2 md:p-2 border-t border-gray-200 rounded-b dark:border-gray-600">
 
-                <button [disabled]="allowanceChargueCodes().length===0" (click)="selectAllowanceChargues()"
-                    type="button"
-                    [ngStyle]="{'background-color': allowanceChargueCodes().length === 0 ? '#808080' : '#3490dc', 'opacity': allowanceChargueCodes().length === 0 ? 0.5 : 1}"
-                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Seleccionar</button>
-            </div>
-        </div>
+        <button [disabled]="allowanceChargueCodes().length===0" (click)="selectAllowanceChargues()" type="button"
+            [ngStyle]="{'background-color': allowanceChargueCodes().length === 0 ? '#808080' : '#3490dc', 'opacity': allowanceChargueCodes().length === 0 ? 0.5 : 1}"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            Seleccionar</button>
     </div>
 </div>

@@ -1,32 +1,28 @@
-<div class="top-10 h-full max-w-2xl flex items-center justify-center">
-    <!-- <div class="modal-overlay absolute w-full h-full max-w-xl" > -->
-    <div class="relative p-4 w-full max-w-xl">
-        <!-- Modal content -->
-        <div class="w-[500px] relative bg-white rounded-lg shadow dark:bg-gray-700">
-            <!-- Modal header -->
-            <div class="flex items-center justify-between p-4 md:p-2 border-b rounded-t dark:border-gray-600">
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                    {{action | action}} Cliente
-                </h3>
-                <button type="button" (click)="closeDialog()"
-                    class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
-                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                    </svg>
-                    <span class="sr-only">Close modal</span>
-                </button>
-            </div>
+<!-- Modal content -->
+<div class="w-[500px] relative rounded shadow dark: dark:bg-gray-700">
+    <!-- Modal header -->
+    <div class="flex items-center justify-between p-4 md:p-2 border-b rounded-t dark:border-gray-600">
+        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+            {{action | action}} Cliente
+        </h3>
+        <button type="button" (click)="closeDialog()"
+            class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+            </svg>
+            <span class="sr-only">Close modal</span>
+        </button>
+    </div>
 
-            <!-- Modal body -->
-            <form [formGroup]="form" (ngSubmit)="onSave()" class="space-y-4 w-full" action="#">
+    <!-- Modal body -->
+    <form [formGroup]="form" (ngSubmit)="onSave()" class="space-y-4 w-full" action="#">
 
-                <!-- Seleccionar Tercero -->
-                <!-- <div class="grid md:grid-cols-6 md:gap-6">
+        <!-- Seleccionar Tercero -->
+        <!-- <div class="grid md:grid-cols-6 md:gap-6">
                     <div class="relative col-span-6 z-0 mb-5 group"> -->
 
-                <!-- <select formControlName="personType"
+        <!-- <select formControlName="personType"
                     class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
 
                     @for (item of personTypes ; track item.value) {
@@ -36,735 +32,777 @@
                     }
 
                 </select> -->
-                <!-- </div>
+        <!-- </div>
                 </div> -->
 
-                <div class="mb-1 border-b border-gray-200 dark:border-gray-700">
-                    <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-tab"
-                        data-tabs-toggle="#default-tab-content" role="tablist">
-                        <li class="me-2" role="presentation">
-                            <button class="inline-block p-4 border-b-2 rounded-t-lg" id="basic-tab"
-                                data-tabs-target="#basic" type="button" role="tab" aria-controls="basic"
-                                aria-selected="false">Datos Básicos</button>
-                        </li>
-                        <li class="me-2" role="presentation">
-                            <button
-                                class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-                                id="advance-tab" data-tabs-target="#advance" type="button" role="tab"
-                                aria-controls="advance" aria-selected="false">Parametrización</button>
-                        </li>
-                    </ul>
-                </div>
-                <div id="default-tab-content">
-                    <!-- Datos básicos -->
-                    <div class="hidden p-0 rounded-lg bg-gray-50 dark:bg-gray-800" id="basic" role="tabpanel"
-                        aria-labelledby="basic-tab">
-                        <div class="h-96 max-w-2xl mx-auto p-4 md:p-5 overflow-y-scroll">
+        <div class="mb-1 border-b border-gray-200 dark:border-gray-700">
+            <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-tab"
+                data-tabs-toggle="#default-tab-content" role="tablist">
+                <li class="me-2" role="presentation">
+                    <button class="inline-block p-4 border-b-2 rounded-t-lg" id="basic-tab" data-tabs-target="#basic"
+                        type="button" role="tab" aria-controls="basic" aria-selected="false">Datos Básicos</button>
+                </li>
+                <li class="me-2" role="presentation">
+                    <button
+                        class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                        id="advance-tab" data-tabs-target="#advance" type="button" role="tab" aria-controls="advance"
+                        aria-selected="false">Parametrización</button>
+                </li>
+            </ul>
+        </div>
+        <div id="default-tab-content">
+            <!-- Datos básicos -->
+            <div class="hidden p-0 rounded-lg bg-gray-50 dark:bg-gray-800" id="basic" role="tabpanel"
+                aria-labelledby="basic-tab">
+                <div class="h-96 max-w-2xl mx-auto p-4 md:p-5 overflow-y-scroll">
 
-                            <div class="grid md:grid-cols-6 md:gap-6">
+                    <div class="grid md:grid-cols-6 md:gap-6">
 
-                                <!-- Tipos Documento -->
-                                <div class="relative col-span-3 z-0 mb-5 group">
-                                    <!-- <p class="text-sm pr-2 pt-1 text-gray-500 dark:text-white">
+                        <!-- Tipos Documento -->
+                        <div class="relative col-span-3 z-0 mb-5 group">
+                            <!-- <p class="text-sm pr-2 pt-1 text-gray-500 dark:text-white">
                                         Tipo Documento
                                     </p> -->
-                                    <select id="identificationType" formControlName="identificationType"
-                                        class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <select id="identificationType" formControlName="identificationType"
+                                class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
 
-                                        @for (item of tiposDocumento() ; track item.tipodocumentoId) {
-                                        <option [value]="item.tipodocumentoId">
-                                            {{item.nombre}}
-                                        </option>
-                                        }
+                                @for (item of tiposDocumento() ; track item.tipodocumentoId) {
+                                <option [value]="item.tipodocumentoId">
+                                    {{item.nombre}}
+                                </option>
+                                }
 
-                                    </select>
+                            </select>
 
-                                </div>
+                        </div>
 
-                                <!-- Identification -->
-                                <div class="relative col-span-2 z-0 mb-5 group">
+                        <!-- Identification -->
+                        <div class="relative col-span-2 z-0 mb-5 group">
 
-                                    <input selectText type="text" name="identification" id="identification"
-                                        formControlName="identification" (blur)="dvCalc()"
-                                        class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                        placeholder=" " />
-                                    <label for="identification"
-                                        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Identificación</label>
-                                    @if (isValidField('identification')) {
-                                    <p class="text-xs text-red-600 dark:text-red-500">
-                                        {{getFieldError('identification')}}</p>
-                                    }
-                                </div>
-
-                                <!-- Digito Verificación -->
-                                <div class="relative z-0 mb-5 group">
-                                    <input [readOnly]="true" type="text" name="dv" id="dv" formControlName="dv" mask="9"
-                                        class="w-full block py-2.5 px-0 text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                        placeholder=" " />
-                                    <label for="dv"
-                                        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">DV</label>
-                                    @if (isValidField('dv')) {
-                                    <p class="text-xs text-red-600 dark:text-red-500">{{getFieldError('dv')}}</p>
-                                    }
-                                </div>
-                            </div>
-
-
-                            <!-- customerName -->
-                            <div class="grid md:grid-cols-6 md:gap-6">
-                                <div class="relative col-span-6 z-0 mb-5 group">
-                                    <input type="text" name="customerName" id="customerName"
-                                        formControlName="customerName"
-                                        class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                        placeholder=" " />
-                                    <label for="customerName"
-                                        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Nombre
-                                        Comercial</label>
-                                    @if (isValidField('customerName')) {
-                                    <p class="text-xs text-red-600 dark:text-red-500">{{getFieldError('customerName')}}
-                                    </p>
-                                    }
-                                </div>
-                            </div>
-
-                            <div class="grid md:grid-cols-6 md:gap-6">
-
-                                <!-- electronicMail -->
-                                <div class="relative col-span-4 z-0 mb-5 group">
-                                    <input type="text" name="electronicMail" id="electronicMail"
-                                        formControlName="electronicMail"
-                                        class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                        placeholder=" " />
-                                    <label for="electronicMail"
-                                        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Correo
-                                        electrónico</label>
-                                    @if (isValidField('electronicMail')) {
-                                    <p class="text-xs text-red-600 dark:text-red-500">
-                                        {{getFieldError('electronicMail')}}</p>
-                                    }
-                                </div>
-
-                                <!-- telephone -->
-                                <div class="relative col-span-2 z-0 mb-5 group">
-                                    <input type="text" name="telephone" id="telephone" formControlName="telephone"
-                                        class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                        placeholder=" " />
-                                    <label for="telephone"
-                                        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Teléfono</label>
-                                    @if (isValidField('telephone')) {
-                                    <p class="text-xs text-red-600 dark:text-red-500">{{getFieldError('telephone')}}</p>
-                                    }
-                                </div>
-                            </div>
-
-                            <div class="grid md:grid-cols-6 md:gap-6">
-
-                                <!-- Paises -->
-                                <div class="relative col-span-2 z-0 mb-5 group">
-                                    <p class="text-sm pr-2 pt-1 text-gray-500 dark:text-white">
-                                        Pais
-                                    </p>
-                                    <select id="paisId" formControlName="paisId"
-                                        class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-
-                                        @for (item of paises() ; track item.paisId) {
-                                        <option [value]="item.paisId">
-                                            {{item.nombre}}
-                                        </option>
-                                        }
-
-                                    </select>
-
-                                </div>
-
-                                <!-- Municipios -->
-                                <div class="relative col-span-4 z-0 mb-5 group">
-                                    <p class="text-sm pr-2 pt-1 text-gray-500 dark:text-white">
-                                        Ciudad
-                                    </p>
-                                    <select id="municipioId" formControlName="municipioId"
-                                        class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-
-                                        @for (item of municipios() ; track item.municipioId) {
-                                        <option [value]="item.municipioId">
-                                            {{item.nombre}}
-                                        </option>
-                                        }
-
-                                    </select>
-
-                                </div>
-                            </div>
-
-                            <!-- addressLine1 -->
-                            <div class="grid md:grid-cols-6 md:gap-6">
-
-
-                                <div class="relative col-span-1 z-0 mb-5 group">
-
-                                    <div class="flex mt-3">
-                                        <div class="flex items-center h-5">
-                                            <input formControlName="isResident" id="helper-checkbox"
-                                                aria-describedby="helper-checkbox-text" type="checkbox" value=""
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                        </div>
-                                        <div class="ms-2 text-sm">
-                                            <label for="helper-checkbox"
-                                                class="font-medium text-gray-900 dark:text-gray-300">Residente</label>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="relative pl-4 col-span-5 z-0 mb-5 group">
-                                    <input inputAddress type="text" name="addressLine1" id="addressLine1"
-                                        formControlName="addressLine1"
-                                        class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                        placeholder=" " />
-                                    <label for="addressLine1"
-                                        class="pl-3 peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Dirección</label>
-                                    @if (isValidField('addressLine1')) {
-                                    <p class="text-xs text-red-600 dark:text-red-500">{{getFieldError('addressLine1')}}
-                                    </p>
-                                    }
-                                </div>
-
-
-                            </div>
-
-                            <!-- Tipos Persona -->
-                            <div class="grid md:grid-cols-6 md:gap-6">
-
-                                <div class="relative col-span-6 z-0 mb-5 group">
-                                    <p class="text-sm pr-2 pt-1 text-gray-500 dark:text-white">
-                                        Tipo Persona
-                                    </p>
-                                    <select id="tipoPersonaId" formControlName="tipoPersonaId"
-                                        (change)="onChangeTipoPersona($event.target)"
-                                        class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-
-                                        @for (item of tiposPersona() ; track item.tipoPersonaId) {
-                                        <option [value]="item.tipoPersonaId">
-                                            {{item.descripcion}}
-                                        </option>
-                                        }
-
-                                    </select>
-                                </div>
-                            </div>
-
-
-
-
-                            @if ( tipoPersonaId === 2) {
-
-                            <!-- Nombres Persona Natural -->
-
-                            <!-- Apellidos -->
-                            <div class="grid md:grid-cols-6 md:gap-6">
-                                <div class="relative col-span-3 z-0 mb-5 group">
-                                    <input type="text" name="apellido1" id="apellido1" formControlName="apellido1"
-                                        class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                        placeholder=" " />
-                                    <label for="apellido1"
-                                        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                                        Primer Apellido
-                                    </label>
-                                    @if (isValidField('apellido1')) {
-                                    <p class="text-xs text-red-600 dark:text-red-500">{{getFieldError('apellido1')}}
-                                    </p>
-                                    }
-                                </div>
-                                <div class="relative col-span-3 z-0 mb-5 group">
-                                    <input type="text" name="apellido2" id="apellido2" formControlName="apellido2"
-                                        class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                        placeholder=" " />
-                                    <label for="apellido2"
-                                        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                                        Segundo Apellido
-                                    </label>
-                                    @if (isValidField('apellido2')) {
-                                    <p class="text-xs text-red-600 dark:text-red-500">{{getFieldError('apellido2')}}
-                                    </p>
-                                    }
-                                </div>
-                            </div>
-
-                            <!-- Nombres -->
-                            <div class="grid md:grid-cols-6 md:gap-6">
-                                <div class="relative col-span-3 z-0 mb-5 group">
-                                    <input type="text" name="nombre1" id="nombre1" formControlName="nombre1"
-                                        class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                        placeholder=" " />
-                                    <label for="nombre1"
-                                        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                                        Primer Nombre
-                                    </label>
-                                    @if (isValidField('nombre1')) {
-                                    <p class="text-xs text-red-600 dark:text-red-500">{{getFieldError('nombre1')}}
-                                    </p>
-                                    }
-                                </div>
-                                <div class="relative col-span-3 z-0 mb-5 group">
-                                    <input type="text" name="nombre2" id="nombre2" formControlName="nombre2"
-                                        class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                        placeholder=" " />
-                                    <label for="nombre2"
-                                        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                                        Segundo Nombre
-                                    </label>
-                                    @if (isValidField('nombre2')) {
-                                    <p class="text-xs text-red-600 dark:text-red-500">{{getFieldError('nombre2')}}
-                                    </p>
-                                    }
-                                </div>
-                            </div>
-                            } @else {
-                            <!-- tributaryIdentificationName -->
-
-                            <div class="grid md:grid-cols-6 md:gap-6">
-                                <div class="relative col-span-6 z-0 mb-5 group">
-                                    <input type="text" name="tributaryIdentificationName"
-                                        id="tributaryIdentificationName" formControlName="tributaryIdentificationName"
-                                        class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                        placeholder=" " />
-                                    <label for="tributaryIdentificationName"
-                                        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Razón
-                                        Social</label>
-                                    @if (isValidField('tributaryIdentificationName')) {
-                                    <p class="text-xs text-red-600 dark:text-red-500">
-                                        {{getFieldError('tributaryIdentificationName')}}</p>
-                                    }
-                                </div>
-                            </div>
+                            <input selectText type="text" name="identification" id="identification"
+                                formControlName="identification" (blur)="dvCalc()"
+                                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                placeholder=" " />
+                            <label for="identification"
+                                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Identificación</label>
+                            @if (isValidField('identification')) {
+                            <p class="text-xs text-red-600 dark:text-red-500">
+                                {{getFieldError('identification')}}</p>
                             }
+                        </div>
 
-                            <!-- Tipos Regimen -->
-                            <div class="grid md:grid-cols-6 md:gap-6">
+                        <!-- Digito Verificación -->
+                        <div class="relative z-0 mb-5 group">
+                            <input [readOnly]="true" type="text" name="dv" id="dv" formControlName="dv" mask="9"
+                                class="w-full block py-2.5 px-0 text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                placeholder=" " />
+                            <label for="dv"
+                                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">DV</label>
+                            @if (isValidField('dv')) {
+                            <p class="text-xs text-red-600 dark:text-red-500">{{getFieldError('dv')}}</p>
+                            }
+                        </div>
+                    </div>
 
-                                <div class="relative col-span-6 z-0 mb-5 group">
-                                    <p class="text-sm pr-2 pt-1 text-gray-500 dark:text-white">
-                                        Tipo Regimen
-                                    </p>
-                                    <select id="tipoRegimenId" formControlName="tipoRegimenId"
-                                        class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
 
-                                        @for (item of tiposRegimen() ; track item.tipoRegimenId) {
-                                        {{item | json}}
-                                        <option [value]="item.tipoRegimenId">
-                                            {{item.descripcion}}
-                                        </option>
-                                        }
+                    <!-- customerName -->
+                    <div class="grid md:grid-cols-6 md:gap-6">
+                        <div class="relative col-span-6 z-0 mb-5 group">
+                            <input type="text" name="customerName" id="customerName" formControlName="customerName"
+                                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                placeholder=" " />
+                            <label for="customerName"
+                                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Nombre
+                                Comercial</label>
+                            @if (isValidField('customerName')) {
+                            <p class="text-xs text-red-600 dark:text-red-500">{{getFieldError('customerName')}}
+                            </p>
+                            }
+                        </div>
+                    </div>
 
-                                    </select>
-                                </div>
-                            </div>
+                    <div class="grid md:grid-cols-6 md:gap-6">
 
-                            <!-- Tipos Impuesto -->
-                            <div class="grid md:grid-cols-6 md:gap-6">
+                        <!-- electronicMail -->
+                        <div class="relative col-span-6 z-0 mb-5 group">
+                            <input type="text" name="electronicMail" id="electronicMail"
+                                formControlName="electronicMail"
+                                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                placeholder=" " />
+                            <label for="electronicMail"
+                                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Correo
+                                electrónico</label>
+                            @if (isValidField('electronicMail')) {
+                            <p class="text-xs text-red-600 dark:text-red-500">
+                                {{getFieldError('electronicMail')}}</p>
+                            }
+                        </div>
 
-                                <div class="relative col-span-6 z-0 mb-5 group">
-                                    <p class="text-sm pr-2 pt-1 text-gray-500 dark:text-white">
-                                        Tributos
-                                    </p>
-                                    <select id="schemeIdentifier" formControlName="schemeIdentifier"
-                                        class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
 
-                                        @for (item of taxSchemes() ; track item.identifier) {
-                                        {{item | json}}
-                                        <option [value]="item.identifier">
-                                            {{item.name}}
-                                        </option>
-                                        }
+                    </div>
 
-                                    </select>
-                                </div>
-                            </div>
+                    <div class="grid md:grid-cols-6 md:gap-6">
+                        <!-- telephone -->
+                        <div class="relative col-span-3 z-0 mb-5 group">
+                            <input type="text" name="telephone" id="telephone" formControlName="telephone"
+                                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                placeholder=" " />
+                            <label for="telephone"
+                                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Teléfono</label>
+                            @if (isValidField('telephone')) {
+                            <p class="text-xs text-red-600 dark:text-red-500">{{getFieldError('telephone')}}</p>
+                            }
+                        </div>
+                        <!-- mobile -->
+                        <div class="relative col-span-3 z-0 mb-5 group">
+                            <input type="text" name="mobile" id="mobile" formControlName="mobile"
+                                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                placeholder=" " />
+                            <label for="mobile"
+                                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Celular</label>
+                            @if (isValidField('mobile')) {
+                            <p class="text-xs text-red-600 dark:text-red-500">{{getFieldError('mobile')}}</p>
+                            }
+                        </div>
+                    </div>
 
-                            <!-- Tipos Impuesto -->
-                            <div class="grid md:grid-cols-6 md:gap-6">
+                    <div class="grid md:grid-cols-6 md:gap-6">
 
-                                <div class="relative col-span-6 z-0 mb-5 group">
-                                    <p class="text-sm pr-2 pt-1 text-gray-500 dark:text-white">
-                                        Responsabilidades Fiscales
-                                    </p>
-                                    <select multiple id="responsabilidadesFiscales"
-                                        formControlName="responsabilidadesFiscales"
-                                        class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <!-- Paises -->
+                        <div class="relative col-span-2 z-0 mb-5 group">
+                            <p class="text-sm pr-2 pt-1 text-gray-500 dark:text-white">
+                                Pais
+                            </p>
+                            <select id="paisId" formControlName="paisId"
+                                class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
 
-                                        @for (item of responsabilidadesFiscales() ; track item.codigo) {
-                                        {{item | json}}
-                                        <option [value]="item.codigo">
-                                            {{item.descripcion}}
-                                        </option>
-                                        }
+                                @for (item of paises() ; track item.paisId) {
+                                <option [value]="item.paisId">
+                                    {{item.nombre}}
+                                </option>
+                                }
 
-                                    </select>
-                                </div>
-                            </div>
+                            </select>
+
+                        </div>
+
+                        <!-- Municipios -->
+                        <div class="relative col-span-4 z-0 mb-5 group">
+                            <p class="text-sm pr-2 pt-1 text-gray-500 dark:text-white">
+                                Ciudad
+                            </p>
+                            <select id="municipioId" formControlName="municipioId"
+                                class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+
+                                @for (item of municipios() ; track item.municipioId) {
+                                <option [value]="item.municipioId">
+                                    {{item.nombre}}
+                                </option>
+                                }
+
+                            </select>
 
                         </div>
                     </div>
 
-                    <!-- Parametrizaciones -->
-                    <div class="hidden p-0 rounded-lg bg-gray-50 dark:bg-gray-800" id="advance" role="tabpanel"
-                        aria-labelledby="advance-tab">
-                        <div class="h-96 max-w-2xl mx-auto p-4 md:p-5 overflow-y-scroll">
-                            <div class="grid md:grid-cols-6 md:gap-6">
+                    <!-- addressLine1 -->
+                    <div class="grid md:grid-cols-6 md:gap-6">
 
-                                <!-- Plazo Crédito -->
-                                <div class="relative col-span-2 z-0 mb-5 group">
-                                    <input selectText type="text" name="plazoCredito" id="plazoCredito"
-                                        formControlName="plazoCredito" mask="999"
-                                        class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                        placeholder=" " />
-                                    <label for="plazoCredito"
-                                        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Plazo
-                                        Crédito en días</label>
-                                    @if (isValidField('plazoCredito')) {
-                                    <p class="text-xs text-red-600 dark:text-red-500">{{getFieldError('plazoCredito')}}
-                                    </p>
-                                    }
+
+                        <div class="relative col-span-1 z-0 mb-5 group">
+
+                            <div class="flex mt-3">
+                                <div class="flex items-center h-5">
+                                    <input formControlName="isResident" id="helper-checkbox"
+                                        aria-describedby="helper-checkbox-text" type="checkbox" value=""
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                 </div>
-
-                                <!-- Bloqueo mora -->
-                                <div class="relative col-span-2 z-0 mb-5 group">
-                                    <input selectText type="text" name="bloqueoMora" id="bloqueoMora"
-                                        formControlName="bloqueoMora" mask="999"
-                                        class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                        placeholder=" " />
-                                    <label for="bloqueoMora"
-                                        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Días
-                                        Bloqueo
-                                        mora</label>
-                                    @if (isValidField('bloqueoMora')) {
-                                    <p class="text-xs text-red-600 dark:text-red-500">{{getFieldError('bloqueoMora')}}
-                                    </p>
-                                    }
-                                </div>
-
-                                <!-- Cupo crédito -->
-                                <div class="relative col-span-2 z-0 mb-5 group">
-
-                                    <input selectText type="text" name="cupoCredito" id="cupoCredito"
-                                        formControlName="cupoCredito" prefix="$ " mask="separator.0"
-                                        thousandSeparator=","
-                                        class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                        placeholder=" " />
-                                    <label for="cupoCredito"
-                                        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                                        Cupo crédito</label>
-                                    @if (isValidField('cupoCredito')) {
-                                    <p class="text-xs text-red-600 dark:text-red-500">{{getFieldError('cupoCredito')}}
-                                    </p>
-                                    }
+                                <div class="ms-2 text-sm">
+                                    <label for="helper-checkbox"
+                                        class="font-medium text-gray-900 dark:text-gray-300">Residente</label>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="grid md:grid-cols-6 md:gap-6">
+                        <div class="relative pl-4 col-span-5 z-0 mb-5 group">
+                            <input inputAddress type="text" name="addressLine1" id="addressLine1"
+                                formControlName="addressLine1"
+                                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                placeholder=" " />
+                            <label for="addressLine1"
+                                class="pl-3 peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Dirección
+                                1</label>
+                            @if (isValidField('addressLine1')) {
+                            <p class="text-xs text-red-600 dark:text-red-500">{{getFieldError('addressLine1')}}
+                            </p>
+                            }
+                        </div>
 
-                                <!-- Tipos Precio -->
-                                <div class="relative col-span-3 z-0 mb-5 group">
-                                    <p class="text-sm pr-2 pt-1 text-gray-500 dark:text-white">
-                                        Tipo Precio
-                                    </p>
-                                    <select id="tipoPrecioId" formControlName="tipoPrecioId"
-                                        class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
 
-                                        @for (item of tiposPrecio() ; track item.tipoprecioId) {
-                                        <option [value]="item.tipoprecioId">
-                                            {{item.descripcion}}
-                                        </option>
-                                        }
+                    </div>
 
-                                    </select>
+                    <div class="grid md:grid-cols-6 md:gap-6">
 
-                                </div>
+                        <!-- addressLine2 -->
+                        <div class="relative col-span-3 z-0 mb-5 group">
+                            <input inputAddress type="text" name="addressLine2" id="addressLine2"
+                                formControlName="addressLine2"
+                                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                placeholder=" " />
+                            <label for="addressLine2"
+                                class="pl-3 peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Dirección
+                                2</label>
+                            @if (isValidField('addressLine2')) {
+                            <p class="text-xs text-red-600 dark:text-red-500">{{getFieldError('addressLine2')}}
+                            </p>
+                            }
+                        </div>
 
-                                <!-- Vendedor -->
-                                <div class="relative col-span-3 z-0 mb-5 group">
-                                    <p class="text-sm pr-2 pt-1 text-gray-500 dark:text-white">
-                                        Vendedor
-                                    </p>
-                                    <select id="vendedorId" formControlName="vendedorId"
-                                        class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <!-- addressLine3 -->
+                        <div class="relative col-span-3 z-0 mb-5 group">
+                            <input inputAddress type="text" name="addressLine3" id="addressLine3"
+                                formControlName="addressLine3"
+                                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                placeholder=" " />
+                            <label for="addressLine3"
+                                class="pl-3 peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Dirección
+                                3</label>
+                            @if (isValidField('addressLine3')) {
+                            <p class="text-xs text-red-600 dark:text-red-500">{{getFieldError('addressLine3')}}
+                            </p>
+                            }
+                        </div>
 
-                                        @for (item of vendedores() ; track item.vendedorId) {
-                                        <option [value]="item.vendedorId">
-                                            {{item.nombre}}
-                                        </option>
-                                        }
 
-                                    </select>
+                    </div>
 
-                                </div>
+                    <!-- Tipos Persona -->
+                    <div class="grid md:grid-cols-6 md:gap-6">
+
+                        <div class="relative col-span-6 z-0 mb-5 group">
+                            <p class="text-sm pr-2 pt-1 text-gray-500 dark:text-white">
+                                Tipo Persona
+                            </p>
+                            <select id="tipoPersonaId" formControlName="tipoPersonaId"
+                                (change)="onChangeTipoPersona($event.target)"
+                                class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+
+                                @for (item of tiposPersona() ; track item.tipoPersonaId) {
+                                <option [value]="item.tipoPersonaId">
+                                    {{item.descripcion}}
+                                </option>
+                                }
+
+                            </select>
+                        </div>
+                    </div>
+
+
+
+
+                    @if ( tipoPersonaId === 2) {
+
+                    <!-- Nombres Persona Natural -->
+
+                    <!-- Apellidos -->
+                    <div class="grid md:grid-cols-6 md:gap-6">
+                        <div class="relative col-span-3 z-0 mb-5 group">
+                            <input type="text" name="apellido1" id="apellido1" formControlName="apellido1"
+                                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                placeholder=" " />
+                            <label for="apellido1"
+                                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                                Primer Apellido
+                            </label>
+                            @if (isValidField('apellido1')) {
+                            <p class="text-xs text-red-600 dark:text-red-500">{{getFieldError('apellido1')}}
+                            </p>
+                            }
+                        </div>
+                        <div class="relative col-span-3 z-0 mb-5 group">
+                            <input type="text" name="apellido2" id="apellido2" formControlName="apellido2"
+                                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                placeholder=" " />
+                            <label for="apellido2"
+                                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                                Segundo Apellido
+                            </label>
+                            @if (isValidField('apellido2')) {
+                            <p class="text-xs text-red-600 dark:text-red-500">{{getFieldError('apellido2')}}
+                            </p>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Nombres -->
+                    <div class="grid md:grid-cols-6 md:gap-6">
+                        <div class="relative col-span-3 z-0 mb-5 group">
+                            <input type="text" name="nombre1" id="nombre1" formControlName="nombre1"
+                                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                placeholder=" " />
+                            <label for="nombre1"
+                                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                                Primer Nombre
+                            </label>
+                            @if (isValidField('nombre1')) {
+                            <p class="text-xs text-red-600 dark:text-red-500">{{getFieldError('nombre1')}}
+                            </p>
+                            }
+                        </div>
+                        <div class="relative col-span-3 z-0 mb-5 group">
+                            <input type="text" name="nombre2" id="nombre2" formControlName="nombre2"
+                                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                placeholder=" " />
+                            <label for="nombre2"
+                                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                                Segundo Nombre
+                            </label>
+                            @if (isValidField('nombre2')) {
+                            <p class="text-xs text-red-600 dark:text-red-500">{{getFieldError('nombre2')}}
+                            </p>
+                            }
+                        </div>
+                    </div>
+                    } @else {
+                    <!-- tributaryIdentificationName -->
+
+                    <div class="grid md:grid-cols-6 md:gap-6">
+                        <div class="relative col-span-6 z-0 mb-5 group">
+                            <input type="text" name="tributaryIdentificationName" id="tributaryIdentificationName"
+                                formControlName="tributaryIdentificationName"
+                                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                placeholder=" " />
+                            <label for="tributaryIdentificationName"
+                                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Razón
+                                Social</label>
+                            @if (isValidField('tributaryIdentificationName')) {
+                            <p class="text-xs text-red-600 dark:text-red-500">
+                                {{getFieldError('tributaryIdentificationName')}}</p>
+                            }
+                        </div>
+                    </div>
+                    }
+
+                    <!-- Tipos Regimen -->
+                    <div class="grid md:grid-cols-6 md:gap-6">
+
+                        <div class="relative col-span-6 z-0 mb-5 group">
+                            <p class="text-sm pr-2 pt-1 text-gray-500 dark:text-white">
+                                Tipo Regimen
+                            </p>
+                            <select id="tipoRegimenId" formControlName="tipoRegimenId"
+                                class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+
+                                @for (item of tiposRegimen() ; track item.tipoRegimenId) {
+                                {{item | json}}
+                                <option [value]="item.tipoRegimenId">
+                                    {{item.descripcion}}
+                                </option>
+                                }
+
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Tipos Impuesto -->
+                    <div class="grid md:grid-cols-6 md:gap-6">
+
+                        <div class="relative col-span-6 z-0 mb-5 group">
+                            <p class="text-sm pr-2 pt-1 text-gray-500 dark:text-white">
+                                Tributos
+                            </p>
+                            <select id="schemeIdentifier" formControlName="schemeIdentifier"
+                                class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+
+                                @for (item of taxSchemes() ; track item.identifier) {
+                                {{item | json}}
+                                <option [value]="item.identifier">
+                                    {{item.name}}
+                                </option>
+                                }
+
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Tipos Impuesto -->
+                    <div class="grid md:grid-cols-6 md:gap-6">
+
+                        <div class="relative col-span-6 z-0 mb-5 group">
+                            <p class="text-sm pr-2 pt-1 text-gray-500 dark:text-white">
+                                Responsabilidades Fiscales
+                            </p>
+                            <select multiple id="responsabilidadesFiscales" formControlName="responsabilidadesFiscales"
+                                class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+
+                                @for (item of responsabilidadesFiscales() ; track item.codigo) {
+                                {{item | json}}
+                                <option [value]="item.codigo">
+                                    {{item.descripcion}}
+                                </option>
+                                }
+
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Parametrizaciones -->
+            <div class="hidden p-0 rounded-lg bg-gray-50 dark:bg-gray-800" id="advance" role="tabpanel"
+                aria-labelledby="advance-tab">
+                <div class="h-96 max-w-2xl mx-auto p-4 md:p-5 overflow-y-scroll">
+                    <div class="grid md:grid-cols-6 md:gap-6">
+
+                        <!-- Plazo Crédito -->
+                        <div class="relative col-span-2 z-0 mb-5 group">
+                            <input selectText type="text" name="plazoCredito" id="plazoCredito"
+                                formControlName="plazoCredito" mask="999"
+                                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                placeholder=" " />
+                            <label for="plazoCredito"
+                                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Plazo
+                                Crédito en días</label>
+                            @if (isValidField('plazoCredito')) {
+                            <p class="text-xs text-red-600 dark:text-red-500">{{getFieldError('plazoCredito')}}
+                            </p>
+                            }
+                        </div>
+
+                        <!-- Bloqueo mora -->
+                        <div class="relative col-span-2 z-0 mb-5 group">
+                            <input selectText type="text" name="bloqueoMora" id="bloqueoMora"
+                                formControlName="bloqueoMora" mask="999"
+                                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                placeholder=" " />
+                            <label for="bloqueoMora"
+                                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Días
+                                Bloqueo
+                                mora</label>
+                            @if (isValidField('bloqueoMora')) {
+                            <p class="text-xs text-red-600 dark:text-red-500">{{getFieldError('bloqueoMora')}}
+                            </p>
+                            }
+                        </div>
+
+                        <!-- Cupo crédito -->
+                        <div class="relative col-span-2 z-0 mb-5 group">
+
+                            <input selectText type="text" name="cupoCredito" id="cupoCredito"
+                                formControlName="cupoCredito" prefix="$ " mask="separator.0" thousandSeparator=","
+                                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                placeholder=" " />
+                            <label for="cupoCredito"
+                                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                                Cupo crédito</label>
+                            @if (isValidField('cupoCredito')) {
+                            <p class="text-xs text-red-600 dark:text-red-500">{{getFieldError('cupoCredito')}}
+                            </p>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-6 md:gap-6">
+
+                        <!-- Tipos Precio -->
+                        <div class="relative col-span-3 z-0 mb-5 group">
+                            <p class="text-sm pr-2 pt-1 text-gray-500 dark:text-white">
+                                Tipo Precio
+                            </p>
+                            <select id="tipoPrecioId" formControlName="tipoPrecioId"
+                                class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+
+                                @for (item of tiposPrecio() ; track item.tipoprecioId) {
+                                <option [value]="item.tipoprecioId">
+                                    {{item.descripcion}}
+                                </option>
+                                }
+
+                            </select>
+
+                        </div>
+
+                        <!-- Vendedor -->
+                        <div class="relative col-span-3 z-0 mb-5 group">
+                            <p class="text-sm pr-2 pt-1 text-gray-500 dark:text-white">
+                                Vendedor
+                            </p>
+                            <select id="vendedorId" formControlName="vendedorId"
+                                class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+
+                                @for (item of vendedores() ; track item.vendedorId) {
+                                <option [value]="item.vendedorId">
+                                    {{item.nombre}}
+                                </option>
+                                }
+
+                            </select>
+
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-6 md:gap-6">
+
+                        <!-- Zona -->
+                        <div class="relative col-span-6 z-0 mb-5 group">
+                            <p class="text-sm pr-2 pt-1 text-gray-500 dark:text-white">
+                                Zona
+                            </p>
+                            <select id="zonaId" formControlName="zonaId"
+                                class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+
+                                @for (item of zonas() ; track item.zonaId) {
+                                <option [value]="item.zonaId">
+                                    {{item.descripcion}}
+                                </option>
+                                }
+
+                            </select>
+
+                        </div>
+                    </div>
+
+                    <!-- Descuentos -->
+                    <div class="grid md:grid-cols-6 md:gap-6">
+                        <div class="relative col-span-6 z-0 mb-5 group">
+                            <div
+                                class="flex bg-blue-100 h-14 items-center rounded border dark:bg-gray-800 border-solid dark:border-blue-700 border-gray-300 p-4">
+                                <button type="button" (click)="addItem()"
+                                    class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:bg-gray-800 dark:focus:ring-blue-800 dark:hover:bg-blue-500">
+                                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                        fill="currentColor" viewBox="0 0 18 18">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2" d="M9 1v16M1 9h16" />
+                                    </svg>
+                                </button>
+
+                                <p class="ml-auto text-sm font-medium text-gray-400 dark:text-white">
+                                    Parametrización de descuentos por pronto pago
+
+                                </p>
                             </div>
+                            <div
+                                class="min-h-[120px] max-h-52 overflow-y-auto pt-2 relative overflow-x-auto shadow-md sm:rounded-lg">
+                                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                    <thead
+                                        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                        <tr>
+                                            <th class="text-right px-1 w-1/2">
+                                                Días
+                                            </th>
+                                            <th class="text-right px-1 w-1/2">
+                                                %
+                                            </th>
 
-                            <div class="grid md:grid-cols-6 md:gap-6">
+                                            <th class="px-1 w-1/12">
 
-                                <!-- Zona -->
-                                <div class="relative col-span-6 z-0 mb-5 group">
-                                    <p class="text-sm pr-2 pt-1 text-gray-500 dark:text-white">
-                                        Zona
-                                    </p>
-                                    <select id="zonaId" formControlName="zonaId"
-                                        class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                            </th>
+                                        </tr>
+                                    </thead>
 
-                                        @for (item of zonas() ; track item.zonaId) {
-                                        <option [value]="item.zonaId">
-                                            {{item.descripcion}}
-                                        </option>
-                                        }
+                                    <tbody [formGroup]="formDescuentos">
 
-                                    </select>
+                                        <ng-container formArrayName="items"
+                                            *ngFor="let item of items.controls; let $index = index">
 
-                                </div>
-                            </div>
+                                            <tr [formGroupName]="$index">
 
-                            <!-- Descuentos -->
-                            <div class="grid md:grid-cols-6 md:gap-6">
-                                <div class="relative col-span-6 z-0 mb-5 group">
-                                    <div
-                                        class="flex bg-blue-100 h-14 items-center rounded border border-solid border-gray-300 p-4">
-                                        <button type="button" (click)="addItem()"
-                                            class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500">
-                                            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                                fill="currentColor" viewBox="0 0 18 18">
-                                                <path stroke="currentColor" stroke-linecap="round"
-                                                    stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
-                                            </svg>
-                                        </button>
+                                                <td class="px-1">
+                                                    <div class="relative flex w-full">
 
-                                        <p class="ml-auto text-sm font-medium text-gray-400 dark:text-white">
-                                            Parametrización de descuentos por pronto pago
-
-                                        </p>
-                                    </div>
-                                    <div
-                                        class="min-h-[120px] max-h-52 overflow-y-auto pt-2 relative overflow-x-auto shadow-md sm:rounded-lg">
-                                        <table
-                                            class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                            <thead
-                                                class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                                <tr>
-                                                    <th class="text-right px-1 w-1/2">
-                                                        Días
-                                                    </th>
-                                                    <th class="text-right px-1 w-1/2">
-                                                        %
-                                                    </th>
-
-                                                    <th class="px-1 w-1/12">
-
-                                                    </th>
-                                                </tr>
-                                            </thead>
-
-                                            <tbody [formGroup]="formDescuentos">
-
-                                                <ng-container formArrayName="items"
-                                                    *ngFor="let item of items.controls; let $index = index">
-
-                                                    <tr [formGroupName]="$index">
-
-                                                        <td class="px-1">
-                                                            <div class="relative flex w-full">
-
-                                                                <input selectText formControlName="days" type="text"
-                                                                    mask="999"
-                                                                    class="h-8 text-right rounded-md bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                                    [ngClass]="{
+                                                        <input selectText formControlName="days" type="text" mask="999"
+                                                            class="h-8 text-right rounded-md bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                            [ngClass]="{
                                                             'rounded bg-red-50 border border-red-500 text-red-900 placeholder-red-700   focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500': isValidFieldFormArray(item,'days')
                                                         }">
-                                                                @if (isValidFieldFormArray(item, 'days')) {
-                                                                <p class="text-xs text-red-600 dark:text-red-500">
-                                                                    {{getFieldErrorFormArray(item,
-                                                                    'days')}}</p>
-                                                                }
-                                                            </div>
-                                                        </td>
+                                                        @if (isValidFieldFormArray(item, 'days')) {
+                                                        <p class="text-xs text-red-600 dark:text-red-500">
+                                                            {{getFieldErrorFormArray(item,
+                                                            'days')}}</p>
+                                                        }
+                                                    </div>
+                                                </td>
 
 
-                                                        <td class="px-1">
-                                                            <div class="relative flex w-full">
+                                                <td class="px-1">
+                                                    <div class="relative flex w-full">
 
-                                                                <input selectText formControlName="rate" type="text"
-                                                                    mask="separator.2" suffix="%" thousandSeparator=","
-                                                                    separatorLimit="100"
-                                                                    class="h-8 text-right rounded-md bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                                    [ngClass]="{
+                                                        <input selectText formControlName="rate" type="text"
+                                                            mask="separator.2" suffix="%" thousandSeparator=","
+                                                            separatorLimit="100"
+                                                            class="h-8 text-right rounded-md bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                            [ngClass]="{
                                                             'rounded bg-red-50 border border-red-500 text-red-900 placeholder-red-700   focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500': isValidFieldFormArray(item,'rate')
                                                         }">
-                                                                @if (isValidFieldFormArray(item, 'rate')) {
-                                                                <p class="text-xs text-red-600 dark:text-red-500">
-                                                                    {{getFieldErrorFormArray(item,
-                                                                    'rate')}}</p>
-                                                                }
-                                                            </div>
-                                                        </td>
-                                                        <td class="px-1">
-                                                            <div class="relative flex w-full">
+                                                        @if (isValidFieldFormArray(item, 'rate')) {
+                                                        <p class="text-xs text-red-600 dark:text-red-500">
+                                                            {{getFieldErrorFormArray(item,
+                                                            'rate')}}</p>
+                                                        }
+                                                    </div>
+                                                </td>
+                                                <td class="px-1">
+                                                    <div class="relative flex w-full">
 
-                                                                <button (click)="removeItem($index)" type="button"
-                                                                    class="pt-2 h-8 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">X</button>
-                                                            </div>
+                                                        <button (click)="removeItem($index)" type="button"
+                                                            class="pt-2 h-8 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">X</button>
+                                                    </div>
 
-                                                        </td>
-                                                    </tr>
-                                                </ng-container>
-                                            </tbody>
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+                                    </tbody>
 
-                                        </table>
-                                    </div>
-                                </div>
+                                </table>
                             </div>
+                        </div>
+                    </div>
 
 
-                            <div class="grid md:grid-cols-6 md:gap-6">
+                    <div class="grid md:grid-cols-6 md:gap-6">
 
-                                <!-- ReteFuente -->
-                                <div class="relative col-span-2 z-0 mb-5 group">
-                                    <div class="flex">
-                                        <div class="flex items-center h-5">
-                                            <input formControlName="isReteFuente" id="helper-checkbox"
-                                                (change)="changueRetefuente()" aria-describedby="helper-checkbox-text"
-                                                type="checkbox" value=""
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                        </div>
-                                        <div class="ms-2 text-sm">
-                                            <label for="helper-checkbox"
-                                                class="font-medium text-gray-900 dark:text-gray-300">Aplica ReteFuente
-                                            </label>
-                                        </div>
-                                    </div>
+                        <!-- ReteFuente -->
+                        <div class="relative col-span-2 z-0 mb-5 group">
+                            <div class="flex">
+                                <div class="flex items-center h-5">
+                                    <input formControlName="isReteFuente" id="helper-checkbox"
+                                        (change)="changueRetefuente()" aria-describedby="helper-checkbox-text"
+                                        type="checkbox" value=""
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                 </div>
-
-                                @if (isRetefuente) {
-                                <div class="relative col-span-4 z-0 mb-5 group">
-                                    <div class="flex">
-                                        <div class="flex items-center h-5">
-                                            <select id="retefteId" formControlName="retefteId"
-                                                class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                @for (item of retefuentes() ; track item.retefteId) {
-                                                <option [value]="item.retefteId">
-                                                    ({{item.tarifa}}%) {{item.descripcion}}
-                                                </option>
-                                                }
-
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                }
-                            </div>
-                            <div class="grid md:grid-cols-6 md:gap-6">
-
-                                <!-- ReteICA -->
-                                <div class="relative col-span-2 z-0 mb-5 group">
-                                    <div class="flex">
-                                        <div class="flex items-center h-5">
-                                            <input formControlName="isReteICA" id="helper-checkbox"
-                                                (change)="changueReteICA()" aria-describedby="helper-checkbox-text"
-                                                type="checkbox" value=""
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                        </div>
-                                        <div class="ms-2 text-sm">
-                                            <label for="helper-checkbox"
-                                                class="font-medium text-gray-900 dark:text-gray-300">Aplica
-                                                ReteICA</label>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                @if (isReteICA) {
-                                <div class="relative col-span-4 z-0 mb-5 group">
-                                    <div class="flex">
-                                        <div class="flex items-center h-5">
-                                            <input selectText formControlName="porcreteica" type="text" mask="99"
-                                                mask="separator.2" suffix="%" thousandSeparator="," separatorLimit="99"
-                                                class="h-8 text-right rounded-md bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                [ngClass]="{
-                                                            'rounded bg-red-50 border border-red-500 text-red-900 placeholder-red-700   focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500': isValidField('porcreteica')
-                                                        }">
-                                            @if (isValidField('porcreteica')) {
-                                            <p class="text-xs text-red-600 dark:text-red-500">
-                                                {{getFieldError(
-                                                'porcreteica')}}</p>
-                                            }
-                                        </div>
-                                    </div>
-                                </div>
-                                }
-
-                            </div>
-                            <div class="grid md:grid-cols-6 md:gap-6">
-
-                                <!-- ReteIVA -->
-                                <div class="relative col-span-6 z-0 mb-5 group">
-                                    <div class="flex">
-                                        <div class="flex items-center h-5">
-                                            <input formControlName="isReteIVA" id="helper-checkbox"
-                                                aria-describedby="helper-checkbox-text" type="checkbox" value=""
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                        </div>
-                                        <div class="ms-2 text-sm">
-                                            <label for="helper-checkbox"
-                                                class="font-medium text-gray-900 dark:text-gray-300">Aplica
-                                                ReteIVA</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="grid md:grid-cols-6 md:gap-6">
-
-                                <!-- Factura Electrónica -->
-                                <div class="relative col-span-2 z-0 mb-5 group">
-                                    <div class="flex">
-                                        <div class="flex items-center h-5">
-                                            <input formControlName="aplicaFE" id="helper-checkbox"
-                                                aria-describedby="helper-checkbox-text" type="checkbox" value=""
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                        </div>
-                                        <div class="ms-2 text-sm">
-                                            <label for="helper-checkbox"
-                                                class="font-medium text-gray-900 dark:text-gray-300">Factura
-                                                Electrónica</label>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Activo -->
-                                <div class="relative col-span-2 z-0 mb-5 group">
-                                    <div class="flex">
-                                        <div class="flex items-center h-5">
-                                            <input formControlName="activo" id="helper-checkbox"
-                                                aria-describedby="helper-checkbox-text" type="checkbox" value=""
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                        </div>
-                                        <div class="ms-2 text-sm">
-                                            <label for="helper-checkbox"
-                                                class="font-medium text-gray-900 dark:text-gray-300">Activo</label>
-                                        </div>
-                                    </div>
+                                <div class="ms-2 text-sm">
+                                    <label for="helper-checkbox"
+                                        class="font-medium text-gray-900 dark:text-gray-300">Aplica ReteFuente
+                                    </label>
                                 </div>
                             </div>
                         </div>
 
+                        @if (isRetefuente) {
+                        <div class="relative col-span-4 z-0 mb-5 group">
+                            <div class="flex">
+                                <div class="flex items-center h-5">
+                                    <select id="retefteId" formControlName="retefteId"
+                                        class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        @for (item of retefuentes() ; track item.retefteId) {
+                                        <option [value]="item.retefteId">
+                                            ({{item.tarifa}}%) {{item.descripcion}}
+                                        </option>
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        }
+                    </div>
+                    <div class="grid md:grid-cols-6 md:gap-6">
+
+                        <!-- ReteICA -->
+                        <div class="relative col-span-2 z-0 mb-5 group">
+                            <div class="flex">
+                                <div class="flex items-center h-5">
+                                    <input formControlName="isReteICA" id="helper-checkbox" (change)="changueReteICA()"
+                                        aria-describedby="helper-checkbox-text" type="checkbox" value=""
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                </div>
+                                <div class="ms-2 text-sm">
+                                    <label for="helper-checkbox"
+                                        class="font-medium text-gray-900 dark:text-gray-300">Aplica
+                                        ReteICA</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        @if (isReteICA) {
+                        <div class="relative col-span-4 z-0 mb-5 group">
+                            <div class="flex">
+                                <div class="flex items-center h-5">
+                                    <input selectText formControlName="porcreteica" type="text" mask="99"
+                                        mask="separator.2" suffix="%" thousandSeparator="," separatorLimit="99"
+                                        class="h-8 text-right rounded-md bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        [ngClass]="{
+                                                            'rounded bg-red-50 border border-red-500 text-red-900 placeholder-red-700   focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500': isValidField('porcreteica')
+                                                        }">
+                                    @if (isValidField('porcreteica')) {
+                                    <p class="text-xs text-red-600 dark:text-red-500">
+                                        {{getFieldError(
+                                        'porcreteica')}}</p>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        }
+
+                    </div>
+                    <div class="grid md:grid-cols-6 md:gap-6">
+
+                        <!-- ReteIVA -->
+                        <div class="relative col-span-6 z-0 mb-5 group">
+                            <div class="flex">
+                                <div class="flex items-center h-5">
+                                    <input formControlName="isReteIVA" id="helper-checkbox"
+                                        aria-describedby="helper-checkbox-text" type="checkbox" value=""
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                </div>
+                                <div class="ms-2 text-sm">
+                                    <label for="helper-checkbox"
+                                        class="font-medium text-gray-900 dark:text-gray-300">Aplica
+                                        ReteIVA</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-6 md:gap-6">
+
+                        <!-- Factura Electrónica -->
+                        <div class="relative col-span-2 z-0 mb-5 group">
+                            <div class="flex">
+                                <div class="flex items-center h-5">
+                                    <input formControlName="aplicaFE" id="helper-checkbox"
+                                        aria-describedby="helper-checkbox-text" type="checkbox" value=""
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                </div>
+                                <div class="ms-2 text-sm">
+                                    <label for="helper-checkbox"
+                                        class="font-medium text-gray-900 dark:text-gray-300">Factura
+                                        Electrónica</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Activo -->
+                        <div class="relative col-span-2 z-0 mb-5 group">
+                            <div class="flex">
+                                <div class="flex items-center h-5">
+                                    <input formControlName="activo" id="helper-checkbox"
+                                        aria-describedby="helper-checkbox-text" type="checkbox" value=""
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                </div>
+                                <div class="ms-2 text-sm">
+                                    <label for="helper-checkbox"
+                                        class="font-medium text-gray-900 dark:text-gray-300">Activo</label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-
-                <!-- Modal footer -->
-                <div
-                    class="flex items-center justify-between p-2 md:p-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-
-                    <button type="submit"
-                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        {{action | action}}</button>
-                </div>
-            </form>
-
+            </div>
         </div>
-    </div>
+
+
+        <!-- Modal footer -->
+        <div
+            class="flex items-center justify-between p-2 md:p-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+
+            <button type="submit"
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                {{action | action}}</button>
+        </div>
+    </form>
+
 </div>

@@ -1,499 +1,496 @@
-<div class="p-4 md:p-5">
-    <h1 class="pb-4 font-bold text-xl"><a [routerLink]="['/dashboard/documents']" routerLinkActive="router-link-active"
-            class="cursor-pointer underline">Documentos</a> - Emisión de documentos electrónicos</h1>
-    <form [formGroup]="form" (ngSubmit)="onSave()">
+<div class="w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
 
-
-
-        <!-- Tipo de Documento -->
-
-        <label for="operationType" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione un
-            Documento</label>
-        <select formControlName="operationType" (change)="onChange($event.target)"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-
-            @for (invoiceType of invoiceTypes() ; track invoiceType.id) {
-            <optgroup [label]="invoiceType.description">
-                @for (operationType of invoiceType.operationTypes ; track operationType.id) {
-                <option [value]="operationType.code">
-                    {{operationType.description}}</option>
-                }
-            </optgroup>
-            }
-
-        </select>
-
-
-        <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
-
-
-        <div class="flex flex-row">
-            
-            <div class="basis-1/2">
-                <app-display-setting></app-display-setting>
-            </div>
-
-            <!-- Datos del Movimiento  -->
-            <div class="basis-1/2">
-                <p class="mb-0 text-gray-500 dark:text-gray-400">
-                    @if (invoiceType) {
-
-                    <strong class="font-semibold text-gray-900 dark:text-white">
-                        {{invoiceType.description}}
-                    </strong>
-
-
+    <div class="p-4 md:p-5">
+        <h1 class="pb-4 font-bold text-xl dark:text-white"><a [routerLink]="['/dashboard/documents']" routerLinkActive="router-link-active"
+                class="cursor-pointer underline">Documentos</a> - Emisión de documentos electrónicos</h1>
+        <form [formGroup]="form" (ngSubmit)="onSave()">
+    
+    
+    
+            <!-- Tipo de Documento -->
+    
+            <label for="operationType" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione un
+                Documento</label>
+            <select formControlName="operationType" (change)="onChange($event.target)"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+    
+                @for (invoiceType of invoiceTypes() ; track invoiceType.id) {
+                <optgroup [label]="invoiceType.description">
+                    @for (operationType of invoiceType.operationTypes ; track operationType.id) {
+                    <option [value]="operationType.code">
+                        {{operationType.description}}</option>
                     }
-
-                    @if (discrepancyResponsesList.length>0) {
-                    <select formControlName="discrepancyResponse"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-
-                        @for (discrepancyResponse of discrepancyResponsesList ; track discrepancyResponse.code) {
-
-                        <option [value]="discrepancyResponse.code">
-                            {{discrepancyResponse.description}}</option>
-
+                </optgroup>
+                }
+    
+            </select>
+    
+    
+            <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
+    
+    
+            <div class="flex flex-row">
+                
+                <div class="basis-1/2">
+                    <app-display-setting></app-display-setting>
+                </div>
+    
+                <!-- Datos del Movimiento  -->
+                <div class="basis-1/2">
+                    <p class="mb-0 text-gray-500 dark:text-gray-400">
+                        @if (invoiceType) {
+    
+                        <strong class="font-semibold text-gray-900 dark:text-white">
+                            {{invoiceType.description}}
+                        </strong>
+    
+    
                         }
-
-                    </select>
-                    @if (isValidField('discrepancyResponse')) {
-                <p class="text-sm pr-10 text-red-600 dark:text-red-500">
-                    {{getFieldError('discrepancyResponse')}}</p>
-                }
-
-                } @else {
-                <!-- @if (invoiceType && (invoiceType.code === '91' || invoiceType.code === '92')) { -->
-                <p class="mb-0 text-gray-500 dark:text-gray-400">
-                    Sin referencia a facturas
-                </p>
-                <!-- } -->
-                }
-
-            </div>
-        </div>
-
-        <app-select-customer (customerSelectEvent)="loadCustomer($event)" />
-        @if (isValidField('clienteId')) {
-        <p class="text-xs pr-10 text-red-600 dark:text-red-500">
-            {{getFieldError('clienteId')}} (Seleccione un cliente)</p>
-        }
-
-        <div class="mt-1 flex justify-between">
-
-            <div class="basis-11/12 border border-solid border-gray-300 p-4 rounded">
-
-                <div class="flex flex-row">
-                    <div class="basis-2/12">
-                        <p class="mb-0 text-gray-500 dark:text-gray-400 text-sm">
-                            <strong class="font-semibold text-gray-900 dark:text-white">
-                                Dirección:
-                            </strong>
-                        </p>
-                    </div>
-                    <div class="basis-10/12">
-                        <p class="mb-0 text-gray-500 dark:text-gray-400 text-sm">
-                            @if (customerSelected.cliente_id) {
-                            {{customerSelected.direccion1}} - {{customerSelected.municipio}},
-                            {{customerSelected.departamento}}, {{customerSelected.pais}}
+    
+                        @if (discrepancyResponsesList.length>0) {
+                        <select formControlName="discrepancyResponse"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+    
+                            @for (discrepancyResponse of discrepancyResponsesList ; track discrepancyResponse.code) {
+    
+                            <option [value]="discrepancyResponse.code">
+                                {{discrepancyResponse.description}}</option>
+    
                             }
-                        </p>
-                    </div>
+    
+                        </select>
+                        @if (isValidField('discrepancyResponse')) {
+                    <p class="text-sm pr-10 text-red-600 dark:text-red-500">
+                        {{getFieldError('discrepancyResponse')}}</p>
+                    }
+    
+                    } @else {
+                    <!-- @if (invoiceType && (invoiceType.code === '91' || invoiceType.code === '92')) { -->
+                    <p class="mb-0 text-gray-500 dark:text-gray-400">
+                        Sin referencia a facturas
+                    </p>
+                    <!-- } -->
+                    }
+    
                 </div>
-
-                <div class="flex flex-row">
-                    <div class="basis-2/12">
-                        <p class="mb-0 text-gray-500 dark:text-gray-400 text-sm">
-                            <strong class="font-semibold text-gray-900 dark:text-white">
-                                Teléfono:
-                            </strong>
-                        </p>
-                    </div>
-                    <div class="basis-10/12">
-                        <p class="mb-0 text-gray-500 dark:text-gray-400 text-sm">
-                            {{customerSelected.telefono}}
-                        </p>
-                    </div>
-                </div>
-
-                <div class="flex flex-row">
-                    <div class="basis-2/12">
-                        <p class="mb-0 text-gray-500 dark:text-gray-400 text-sm">
-                            <strong class="font-semibold text-gray-900 dark:text-white">
-                                e-mail:
-                            </strong>
-                        </p>
-                    </div>
-                    <div class="basis-10/12">
-                        <p class="mb-0 text-gray-500 dark:text-gray-400 text-sm">
-                            {{customerSelected.email}}
-                    </div>
-                </div>
-
             </div>
-            <div class="basis-1">
-            </div>
-            <div class="basis-1/2 border border-solid border-gray-300 p-4 rounded ">
-                <p class=" flex mb-2 text-gray-500 dark:text-gray-400 text-sm">
-                    <strong class="pr-2 pt- font-semibold text-gray-900 dark:text-white">
-                        Fecha Documento:
-                    </strong>
-                    <input type="date" formControlName="issueDate" [min]="minDate | date:'yyyy-MM-dd'"
-                        [max]="maxDate | date:'yyyy-MM-dd'"
-                        class="w-36 pt-0 peer block min-h-[auto] rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-                        [ngClass]="{
-                        'bg-red-50 border border-red-500 text-red-900 placeholder-red-700  rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500': isValidField('issueDate')
+    
+            <app-select-customer (customerSelectEvent)="loadCustomer($event)" />
+            @if (isValidField('clienteId')) {
+            <p class="text-xs pr-10 text-red-600 dark:text-red-500">
+                {{getFieldError('clienteId')}} (Seleccione un cliente)</p>
+            }
+    
+            <div class="mt-1 flex justify-between">
+    
+                <div class="basis-11/12 border border-solid border-gray-300 p-4 rounded">
+    
+                    <div class="flex flex-row">
+                        <div class="basis-2/12">
+                            <p class="mb-0 text-gray-500 dark:text-gray-400 text-sm">
+                                <strong class="font-semibold text-gray-900 dark:text-white">
+                                    Dirección:
+                                </strong>
+                            </p>
+                        </div>
+                        <div class="basis-10/12">
+                            <p class="mb-0 text-gray-500 dark:text-gray-400 text-sm">
+                                @if (customerSelected.cliente_id) {
+                                {{customerSelected.direccion1}} - {{customerSelected.municipio}},
+                                {{customerSelected.departamento}}, {{customerSelected.pais}}
+                                }
+                            </p>
+                        </div>
+                    </div>
+    
+                    <div class="flex flex-row">
+                        <div class="basis-2/12">
+                            <p class="mb-0 text-gray-500 dark:text-gray-400 text-sm">
+                                <strong class="font-semibold text-gray-900 dark:text-white">
+                                    Teléfono:
+                                </strong>
+                            </p>
+                        </div>
+                        <div class="basis-10/12">
+                            <p class="mb-0 text-gray-500 dark:text-gray-400 text-sm">
+                                {{customerSelected.telefono}}
+                            </p>
+                        </div>
+                    </div>
+    
+                    <div class="flex flex-row">
+                        <div class="basis-2/12">
+                            <p class="mb-0 text-gray-500 dark:text-gray-400 text-sm">
+                                <strong class="font-semibold text-gray-900 dark:text-white">
+                                    e-mail:
+                                </strong>
+                            </p>
+                        </div>
+                        <div class="basis-10/12">
+                            <p class="mb-0 text-gray-500 dark:text-gray-400 text-sm">
+                                {{customerSelected.email}}
+                        </div>
+                    </div>
+    
+                </div>
+                <div class="basis-1">
+                </div>
+                <div class="basis-1/2 border border-solid border-gray-300 p-4 rounded ">
+                    <p class=" flex mb-2 text-gray-500 dark:text-gray-400 text-sm">
+                        <strong class="pr-2 pt- font-semibold text-gray-900 dark:text-white">
+                            Fecha Documento:
+                        </strong>
+                        <input type="date" formControlName="issueDate" [min]="minDate | date:'yyyy-MM-dd'"
+                            [max]="maxDate | date:'yyyy-MM-dd'"
+                            class="w-36 pt-0 peer block min-h-[auto] rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                            [ngClass]="{
+                            'bg-red-50 border border-red-500 text-red-900 placeholder-red-700  rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500': isValidField('issueDate')
+                        }" />
+    
+                    </p>
+                    @if (isValidField('issueDate')) {
+                    <p class="text-sm pr-10 text-right text-red-600 dark:text-red-500"><span class="font-medium">!</span>
+                        {{getFieldError('issueDate')}}</p>
+                    }
+    
+                    <p class="flex mb-0 text-gray-500 dark:text-gray-400 text-sm">
+                        <strong class="pr-3 pt- font-semibold text-gray-900 dark:text-white">
+                            Fecha Expiración:
+                        </strong>
+                        <input type="date" formControlName="dueDate"
+                            class="w-36 pt-0 peer block min-h-[auto] rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                            [ngClass]="{
+                        'bg-red-50 border border-red-500 text-red-900 placeholder-red-700  rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500': isValidField('dueDate')
                     }" />
-
-                </p>
-                @if (isValidField('issueDate')) {
-                <p class="text-sm pr-10 text-right text-red-600 dark:text-red-500"><span class="font-medium">!</span>
-                    {{getFieldError('issueDate')}}</p>
-                }
-
-                <p class="flex mb-0 text-gray-500 dark:text-gray-400 text-sm">
-                    <strong class="pr-3 pt- font-semibold text-gray-900 dark:text-white">
-                        Fecha Expiración:
-                    </strong>
-                    <input type="date" formControlName="dueDate"
-                        class="w-36 pt-0 peer block min-h-[auto] rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-                        [ngClass]="{
-                    'bg-red-50 border border-red-500 text-red-900 placeholder-red-700  rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500': isValidField('dueDate')
-                }" />
-
-                </p>
-                @if (isValidField('dueDate')) {
-                <p class="text-sm pr-10 text-right text-red-600 dark:text-red-500"><span class="font-medium">!</span>
-                    {{getFieldError('dueDate')}}</p>
-                }
-
-
-            </div>
-
-        </div>
-
-        <div class="mt-1 flex h-14 items-center rounded border border-solid border-gray-300 p-4">
-            <div class="flex items-center">
-                <p class="">
-                    <strong class="pr-2 pt-1 font-semibold text-gray-900 dark:text-white">
-                        Forma de Pago
-                    </strong>
-
-                </p>
-                <select formControlName="paymentMethod"
-                    class="pl-4 w-52 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-
-                    @for (paymentMethod of paymentMethods() ; track paymentMethod.code) {
-
-                    <option [value]="paymentMethod.code">
-                        {{paymentMethod.description}}</option>
-
+    
+                    </p>
+                    @if (isValidField('dueDate')) {
+                    <p class="text-sm pr-10 text-right text-red-600 dark:text-red-500"><span class="font-medium">!</span>
+                        {{getFieldError('dueDate')}}</p>
                     }
-
-                </select>
-                <p class="pl-6">
-                    <strong class="pr-2 pt-1 font-semibold text-gray-900 dark:text-white">
-                        Medio de Pago
-                    </strong>
-
-                </p>
-                <select formControlName="paymentMean"
-                    class="pl-4 w-96 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-
-                    @for (paymentMean of paymentMeans() ; track paymentMean.code) {
-
-                    <option [value]="paymentMean.code">
-                        {{paymentMean.description}}</option>
-
-                    }
-
-                </select>
-
+    
+    
+                </div>
+    
             </div>
-
-        </div>
-        <div class="mt-1 flex h-16 items-center rounded border border-solid border-gray-300 p-4">
-            <input formControlName="notes" type="text" placeholder="Observación" id="snotes"
-                class="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-        </div>
-        <div class="mt-1 flex h-16 items-center rounded border border-solid border-gray-300 p-4">
-            <input formControlName="orderReference" type="text" placeholder="Nro de orden" id="sorderreference"
-                class="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-        </div>
-
-
-
-        <app-attach-file [maxSizeInMegaBytes]="20" (emitAttachedFileEvent)="loadAttachedFile($event)" />
-
-        <app-document-items (emitItemsEvent)="loadItems($event)" [clienteId]="customerSelected.cliente_id.toString()" />
-        @if (isValidField('documentItems')) {
-        <p class="text-xs pr-10 text-red-600 dark:text-red-500">
-            {{getFieldError('documentItems')}} (No hay items registrados)</p>
-        }
-
-
-        <div class="flex mt-1 flex-col space-y-0.5">
-            <div class="flex basis-1/4">
-                <div class="basis-11/12 my-2 text-right">
-                    <p class="mb-0 text-sm text-gray-500 dark:text-gray-400">
+    
+            <div class="mt-1 flex h-14 items-center rounded border border-solid border-gray-300 p-4">
+                <div class="flex items-center">
+                    <p class="">
                         <strong class="pr-2 pt-1 font-semibold text-gray-900 dark:text-white">
-                            Descuento Global:
+                            Forma de Pago
                         </strong>
+    
                     </p>
-                </div>
-                <div class="basis-1/12">
-                    <input selectText formControlName="globalAllowance" type="text" prefix="$ " mask="separator.2"
-                        (blur)="calculateTotal()" thousandSeparator=","
-                        class="text-right rounded-md bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        [ngClass]="{
-                    'rounded bg-red-50 border border-red-500 text-red-900 placeholder-red-700   focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500': isValidField('globalAllowance')
-                  }">
-                </div>
-            </div>
-
-            <div class="flex basis-1/4">
-                <div class="basis-11/12 my-2 text-right">
-                    <p class="mb-0 text-sm text-gray-500 dark:text-gray-400">
-                        <strong class="pr-2 pt-1 font-semibold text-gray-900 dark:text-white">
-                            Propina:
-                        </strong>
-                    </p>
-                </div>
-                <div class="basis-1/12">
-                    <input selectText formControlName="tip" type="text" prefix="$ " mask="separator.2"
-                        (blur)="calculateTotal()" thousandSeparator=","
-                        class="text-right rounded-md bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        [ngClass]="{
-                    'rounded bg-red-50 border border-red-500 text-red-900 placeholder-red-700   focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500': isValidField('tip')
-                  }">
-                </div>
-            </div>
-
-            <div class="flex basis-1/4">
-                <div class="basis-11/12 my-2 text-right">
-                    <p class="mb-0 text-sm text-gray-500 dark:text-gray-400">
-                        <strong class="pr-2 pt-1 font-semibold text-gray-900 dark:text-white">
-                            Domicilio:
-                        </strong>
-                    </p>
-                </div>
-                <div class="basis-1/12">
-                    <input selectText formControlName="delivery" type="text" prefix="$ " mask="separator.2"
-                        (blur)="calculateTotal()" thousandSeparator=","
-                        class="text-right rounded-md bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        [ngClass]="{
-                    'rounded bg-red-50 border border-red-500 text-red-900 placeholder-red-700   focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500': isValidField('delivery')
-                  }">
-                </div>
-            </div>
-        </div>
-
-
-
-        <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
-
-        <div class="flex flex-row">
-            <div class="basis-9/12">
-                <p class="mb-0 text-sm text-gray-500 dark:text-gray-400">
-                    <strong class="pr-2 pt-1 font-semibold text-gray-900 dark:text-white">
-                        Valor en letras:
-                    </strong>
-                    <span class="pt-1 italic">
-                        @if (totalsInvoice()) {
-                        {{totalsInvoice()!.totalInWords}}
+                    <select formControlName="paymentMethod"
+                        class="pl-4 w-52 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+    
+                        @for (paymentMethod of paymentMethods() ; track paymentMethod.code) {
+    
+                        <option [value]="paymentMethod.code">
+                            {{paymentMethod.description}}</option>
+    
                         }
-                    </span>
-                </p>
-                <p class="mb-0 text-sm text-gray-500 dark:text-gray-400">
-                    <strong class="pr-2 pt-1 font-semibold text-gray-900 dark:text-white">
-                        Número de líneas:
-                    </strong>
-                    <span class="pt-1">
-                        @if (totalsInvoice()) {
-                        {{totalsInvoice()!.lineCount}}
+    
+                    </select>
+                    <p class="pl-6">
+                        <strong class="pr-2 pt-1 font-semibold text-gray-900 dark:text-white">
+                            Medio de Pago
+                        </strong>
+    
+                    </p>
+                    <select formControlName="paymentMean"
+                        class="pl-4 w-96 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+    
+                        @for (paymentMean of paymentMeans() ; track paymentMean.code) {
+    
+                        <option [value]="paymentMean.code">
+                            {{paymentMean.description}}</option>
+    
                         }
-                    </span>
-                </p>
-
+    
+                    </select>
+    
+                </div>
+    
             </div>
-            <div class="basis-3/12">
-                <div class="flex flex-row">
-                    <div class="basis-1/2">
+            <div class="mt-1 flex h-16 items-center rounded border border-solid border-gray-300 p-4">
+                <input formControlName="notes" type="text" placeholder="Observación" id="snotes"
+                    class="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            </div>
+            <div class="mt-1 flex h-16 items-center rounded border border-solid border-gray-300 p-4">
+                <input formControlName="orderReference" type="text" placeholder="Nro de orden" id="sorderreference"
+                    class="block w-full p-3 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            </div>
+    
+    
+    
+            <app-attach-file [maxSizeInMegaBytes]="20" (emitAttachedFileEvent)="loadAttachedFile($event)" />
+    
+            <app-document-items (emitItemsEvent)="loadItems($event)" [clienteId]="customerSelected.cliente_id.toString()" />
+            @if (isValidField('documentItems')) {
+            <p class="text-xs pr-10 text-red-600 dark:text-red-500">
+                {{getFieldError('documentItems')}} (No hay items registrados)</p>
+            }
+    
+    
+            <div class="flex mt-1 flex-col space-y-0.5">
+                <div class="flex basis-1/4">
+                    <div class="basis-11/12 my-2 text-right">
                         <p class="mb-0 text-sm text-gray-500 dark:text-gray-400">
                             <strong class="pr-2 pt-1 font-semibold text-gray-900 dark:text-white">
-                                Subtotal:
+                                Descuento Global:
                             </strong>
                         </p>
                     </div>
-                    <div class="basis-1/2">
-                        <p class="mb-0 pr-1 text-right text-sm text-gray-500 dark:text-gray-400">
-                            <span class="uppercase">
-                                @if (totalsInvoice()) {
-                                $ {{totalsInvoice()!.subTotal | number}}
-                                }
-
-                            </span>
-                        </p>
+                    <div class="basis-1/12">
+                        <input selectText formControlName="globalAllowance" type="text" prefix="$ " mask="separator.2"
+                            (blur)="calculateTotal()" thousandSeparator=","
+                            class="text-right rounded-md bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            >
                     </div>
                 </div>
-                <div class="flex flex-row">
-                    <div class="basis-1/2">
+    
+                <div class="flex basis-1/4">
+                    <div class="basis-11/12 my-2 text-right">
                         <p class="mb-0 text-sm text-gray-500 dark:text-gray-400">
-                            Descuento:
+                            <strong class="pr-2 pt-1 font-semibold text-gray-900 dark:text-white">
+                                Propina:
+                            </strong>
                         </p>
                     </div>
-                    <div class="basis-1/2">
-                        <p class="mb-0 pr-1 text-right text-sm text-gray-500 dark:text-gray-400">
-                            <span class="uppercase">
-                                @if (totalsInvoice()) {
-                                ${{totalsInvoice().allowanceChangueTotal - totalsInvoice().globalAllowance |
-                                number}}
-                                }
-
-                            </span>
-                        </p>
+                    <div class="basis-1/12">
+                        <input selectText formControlName="tip" type="text" prefix="$ " mask="separator.2"
+                            (blur)="calculateTotal()" thousandSeparator=","
+                            class="text-right rounded-md bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            >
                     </div>
                 </div>
-                @if (totalsInvoice()) {
-
-                @for (item of totalsInvoice().itemsTax; track item.taxScheme.id) {
-                <div class="flex flex-row">
-                    <div class="basis-1/2">
+    
+                <div class="flex basis-1/4">
+                    <div class="basis-11/12 my-2 text-right">
                         <p class="mb-0 text-sm text-gray-500 dark:text-gray-400">
-
-                            {{item.taxScheme.name}} {{item.taxRate.rate}}%
-
-
+                            <strong class="pr-2 pt-1 font-semibold text-gray-900 dark:text-white">
+                                Domicilio:
+                            </strong>
                         </p>
                     </div>
-                    <div class="basis-1/2">
-                        <p class="mb-0 pr-1 text-right text-sm text-gray-500 dark:text-gray-400">
-                            <span class="uppercase">
-                                ${{item.totalRate | number}}
-
-                            </span>
-                        </p>
-                    </div>
-                </div>
-                }
-
-                }
-
-            </div>
-        </div>
-
-        @if (totalsInvoice().totalGenericsTax > 0) {
-        <div class="flex flex-row">
-            <div class="basis-9/12">
-            </div>
-            <div class="basis-3/12">
-                <div class="flex flex-row">
-                    <div class="basis-1/2">
-
-                        <p class="pl-1 bg-slate-200 text-lg font-medium text-gray-500 dark:text-white">Sin retenciones:
-
-                        </p>
-                    </div>
-                    <div class="basis-1/2">
-                        <p class="pr-1 text-right pl-1 bg-slate-200 text-lg font-medium text-gray-500 dark:text-white">
-                            <span class=" uppercase">
-                                @if (totalsInvoice()) {
-                                $ {{totalsInvoice().total | number}}
-                                }
-                            </span>
-                        </p>
-
+                    <div class="basis-1/12">
+                        <input selectText formControlName="delivery" type="text" prefix="$ " mask="separator.2"
+                            (blur)="calculateTotal()" thousandSeparator=","
+                            class="text-right rounded-md bg-gray-50 w-full border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block px-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            >
                     </div>
                 </div>
             </div>
-        </div>
-
-
-
-        <div class="flex flex-row">
-            <div class="basis-9/12">
-            </div>
-            <div class="basis-3/12">
-                @for (item of totalsInvoice().genericsTax; track item.taxScheme.id) {
-                <div class="flex flex-row">
-                    <div class="basis-1/2">
-                        <p class="mb-0 text-sm text-gray-500 dark:text-gray-400">
-                            {{item.taxScheme.name}} {{item.taxRate.rate}}%
-                        </p>
+    
+    
+    
+            <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
+    
+            <div class="flex flex-row">
+                <div class="basis-9/12">
+                    <p class="mb-0 text-sm text-gray-500 dark:text-gray-400">
+                        <strong class="pr-2 pt-1 font-semibold text-gray-900 dark:text-white">
+                            Valor en letras:
+                        </strong>
+                        <span class="pt-1 italic">
+                            @if (totalsInvoice()) {
+                            {{totalsInvoice()!.totalInWords}}
+                            }
+                        </span>
+                    </p>
+                    <p class="mb-0 text-sm text-gray-500 dark:text-gray-400">
+                        <strong class="pr-2 pt-1 font-semibold text-gray-900 dark:text-white">
+                            Número de líneas:
+                        </strong>
+                        <span class="pt-1">
+                            @if (totalsInvoice()) {
+                            {{totalsInvoice()!.lineCount}}
+                            }
+                        </span>
+                    </p>
+    
+                </div>
+                <div class="basis-3/12">
+                    <div class="flex flex-row">
+                        <div class="basis-1/2">
+                            <p class="mb-0 text-sm text-gray-500 dark:text-gray-400">
+                                <strong class="pr-2 pt-1 font-semibold text-gray-900 dark:text-white">
+                                    Subtotal:
+                                </strong>
+                            </p>
+                        </div>
+                        <div class="basis-1/2">
+                            <p class="mb-0 pr-1 text-right text-sm text-gray-500 dark:text-gray-400">
+                                <span class="uppercase">
+                                    @if (totalsInvoice()) {
+                                    $ {{totalsInvoice()!.subTotal | number}}
+                                    }
+    
+                                </span>
+                            </p>
+                        </div>
                     </div>
-                    <div class="basis-1/2">
-                        <p class="mb-0 pr-1 text-right text-sm text-gray-500 dark:text-gray-400">
-                            <span class="uppercase">
-                                ${{item.totalRate | number}}
-
-                            </span>
-                        </p>
+                    <div class="flex flex-row">
+                        <div class="basis-1/2">
+                            <p class="mb-0 text-sm text-gray-500 dark:text-gray-400">
+                                Descuento:
+                            </p>
+                        </div>
+                        <div class="basis-1/2">
+                            <p class="mb-0 pr-1 text-right text-sm text-gray-500 dark:text-gray-400">
+                                <span class="uppercase">
+                                    @if (totalsInvoice()) {
+                                    ${{totalsInvoice().allowanceChangueTotal - totalsInvoice().globalAllowance |
+                                    number}}
+                                    }
+    
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    @if (totalsInvoice()) {
+    
+                    @for (item of totalsInvoice().itemsTax; track item.taxScheme.id) {
+                    <div class="flex flex-row">
+                        <div class="basis-1/2">
+                            <p class="mb-0 text-sm text-gray-500 dark:text-gray-400">
+    
+                                {{item.taxScheme.name}} {{item.taxRate.rate}}%
+    
+    
+                            </p>
+                        </div>
+                        <div class="basis-1/2">
+                            <p class="mb-0 pr-1 text-right text-sm text-gray-500 dark:text-gray-400">
+                                <span class="uppercase">
+                                    ${{item.totalRate | number}}
+    
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    }
+    
+                    }
+    
+                </div>
+            </div>
+    
+            @if (totalsInvoice().totalGenericsTax > 0) {
+            <div class="flex flex-row">
+                <div class="basis-9/12">
+                </div>
+                <div class="basis-3/12">
+                    <div class="flex flex-row">
+                        <div class="basis-1/2">
+    
+                            <p class="pl-1 bg-slate-200 text-lg font-medium text-gray-500 dark:text-white">Sin retenciones:
+    
+                            </p>
+                        </div>
+                        <div class="basis-1/2">
+                            <p class="pr-1 text-right pl-1 bg-slate-200 text-lg font-medium text-gray-500 dark:text-white">
+                                <span class=" uppercase">
+                                    @if (totalsInvoice()) {
+                                    $ {{totalsInvoice().total | number}}
+                                    }
+                                </span>
+                            </p>
+    
+                        </div>
                     </div>
                 </div>
-                }
             </div>
-        </div>
-        }
-
-
-        <div class="flex flex-row">
-            <div class="basis-9/12">
-            </div>
-            <div class="basis-3/12">
-                <div class="flex flex-row">
-                    <div class="basis-1/2">
-
-                        <p class="pl-1 bg-slate-400 text-lg font-medium text-gray-900 dark:text-white">Total a pagar:
-
-                        </p>
+    
+    
+    
+            <div class="flex flex-row">
+                <div class="basis-9/12">
+                </div>
+                <div class="basis-3/12">
+                    @for (item of totalsInvoice().genericsTax; track item.taxScheme.id) {
+                    <div class="flex flex-row">
+                        <div class="basis-1/2">
+                            <p class="mb-0 text-sm text-gray-500 dark:text-gray-400">
+                                {{item.taxScheme.name}} {{item.taxRate.rate}}%
+                            </p>
+                        </div>
+                        <div class="basis-1/2">
+                            <p class="mb-0 pr-1 text-right text-sm text-gray-500 dark:text-gray-400">
+                                <span class="uppercase">
+                                    ${{item.totalRate | number}}
+    
+                                </span>
+                            </p>
+                        </div>
                     </div>
-                    <div class="basis-1/2">
-                        <p class="pr-1 text-right pl-1 bg-slate-400 text-lg font-medium text-gray-900 dark:text-white">
-                            <span class=" uppercase">
-                                @if (totalsInvoice()) {
-                                $ {{totalsInvoice().totalToPay | number}}
-                                }
-                            </span>
-                        </p>
-
+                    }
+                </div>
+            </div>
+            }
+    
+    
+            <div class="flex flex-row">
+                <div class="basis-9/12">
+                </div>
+                <div class="basis-3/12">
+                    <div class="flex flex-row">
+                        <div class="basis-1/2">
+    
+                            <p class="pl-1 bg-slate-400 text-lg dark:bg-blue-900 font-medium text-gray-900 dark:text-white">Total a pagar:
+    
+                            </p>
+                        </div>
+                        <div class="basis-1/2">
+                            <p class="pr-1 text-right pl-1 bg-slate-400 dark:bg-blue-900 text-lg font-medium text-gray-900 dark:text-white">
+                                <span class=" uppercase">
+                                    @if (totalsInvoice()) {
+                                    $ {{totalsInvoice().totalToPay | number}}
+                                    }
+                                </span>
+                            </p>
+    
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- NOTAS NO LLEVAN RETENCIONES -->
-        @if (!['22', '30', '20', '32'].includes(form.controls['operationType'].value)) {
-
-        <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
-        <div class="text-right mr-4">
-
-            <button type="button" (click)="loadGenericTaxes()"
-                class=" text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-500 dark:focus:ring-green-800">
-                Impuestos Genericos y Retenciones
-            </button>
-        </div>
-
-        <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
-        }
-
-
-        <div class="text-center mr-4">
-            <!-- <button type="button" type="submit"
-            class="px-6 py-3.5 text-base font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-            Emitir documento</button> -->
-            <button type="button" (click)="emitDocument()"
-                class="px-6 py-3.5 text-base font-medium text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                <svg class="pr-2 w-6 h-6 text-white dark:text-white" aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 20">
-                    <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z" />
-                    <path
-                        d="M14.067 0H7v5a2 2 0 0 1-2 2H0v4h7.414l-1.06-1.061a1 1 0 1 1 1.414-1.414l2.768 2.768a1 1 0 0 1 0 1.414l-2.768 2.768a1 1 0 0 1-1.414-1.414L7.414 13H0v5a1.969 1.969 0 0 0 1.933 2h12.134A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.933-2Z" />
-                </svg>
-                Emitir documento
-            </button>
-        </div>
-    </form>
-
+    
+            <!-- NOTAS NO LLEVAN RETENCIONES -->
+            @if (!['22', '30', '20', '32'].includes(form.controls['operationType'].value)) {
+    
+            <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
+            <div class="text-right mr-4">
+    
+                <button type="button" (click)="loadGenericTaxes()"
+                    class=" text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-500 dark:focus:ring-green-800">
+                    Impuestos Genericos y Retenciones
+                </button>
+            </div>
+    
+            <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
+            }
+    
+    
+            <div class="text-center mr-4">
+                <!-- <button type="button" type="submit"
+                class="px-6 py-3.5 text-base font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                Emitir documento</button> -->
+                <button type="button" (click)="emitDocument()"
+                    class="px-6 py-3.5 text-base font-medium text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    <svg class="pr-2 w-6 h-6 text-white dark:text-white" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 20">
+                        <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z" />
+                        <path
+                            d="M14.067 0H7v5a2 2 0 0 1-2 2H0v4h7.414l-1.06-1.061a1 1 0 1 1 1.414-1.414l2.768 2.768a1 1 0 0 1 0 1.414l-2.768 2.768a1 1 0 0 1-1.414-1.414L7.414 13H0v5a1.969 1.969 0 0 0 1.933 2h12.134A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.933-2Z" />
+                    </svg>
+                    Emitir documento
+                </button>
+            </div>
+        </form>
+    
+    </div>
 </div>
 
 

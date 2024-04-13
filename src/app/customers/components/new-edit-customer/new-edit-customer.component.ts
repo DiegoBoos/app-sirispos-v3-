@@ -141,10 +141,13 @@ export class NewEditCustomerComponent implements OnInit, AfterViewInit {
       nombre2: [''],
       tributaryIdentificationName: [''],
       electronicMail: ['', [Validators.required, Validators.email]],
-      telephone: ['', [Validators.required]],
+      telephone: [''],
+      mobile: [''],
       paisId: [48, [Validators.required]],
       municipioId: [757, [Validators.required]],
       addressLine1: [''],
+      addressLine2: [''],
+      addressLine3: [''],
       tipoPersonaId: [2, [Validators.required]],
       tipoRegimenId: [1, [Validators.required]],
       schemeIdentifier: ['ZZ', [Validators.required]],
@@ -213,12 +216,19 @@ export class NewEditCustomerComponent implements OnInit, AfterViewInit {
           );
           this.form.controls['electronicMail'].setValue(cliente.email);
           this.form.controls['telephone'].setValue(cliente.telefono);
+          this.form.controls['mobile'].setValue(cliente.celular);
           this.form.controls['paisId'].setValue(cliente.tercero?.paisId);
           this.form.controls['municipioId'].setValue(
             cliente.tercero?.municipioId
           );
           this.form.controls['addressLine1'].setValue(
-            cliente.tercero?.direccion1
+            cliente?.direccion1
+          );
+          this.form.controls['addressLine2'].setValue(
+            cliente?.direccion2
+          );
+          this.form.controls['addressLine3'].setValue(
+            cliente?.direccion3
           );
           this.form.controls['tipoPersonaId'].setValue(
             cliente.tercero?.tipoPersonaId

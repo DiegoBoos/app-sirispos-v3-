@@ -83,7 +83,7 @@ export class AuthService {
         status = user!.userRoles!.findIndex(i=>i.role.name === 'cxc') > 0;
         nameRole = 'Cuentas por Cobrar';
         break;
-      case 'discounts':
+      // case 'discounts':
       case 'messengers-query':
       case 'events-query':
         status = user!.userRoles!.findIndex(i=>i.role.name === 'Administración') > 0;
@@ -94,8 +94,8 @@ export class AuthService {
         nameRole = 'Pedidos';
         break;
       case 'pedidos-separacion':
-        status = user!.userRoles!.findIndex(i=>i.role.name === 'verifica') > 0;
-        nameRole = 'Verificar';
+        status = user!.userRoles!.findIndex(i=>i.role.name === 'separacion') > 0;
+        nameRole = 'Separación de Pedidos';
         break;
     }
 

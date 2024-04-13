@@ -19,11 +19,11 @@ import { NewEditCustomerComponent } from '../new-edit-customer/new-edit-customer
   imports: [CommonModule, MatDialogModule],
   template: `
     <div
-      class="mt-4 flex bg-blue-100 h-14 items-center rounded border border-solid border-gray-300 p-4"
+      class="mt-4 flex bg-blue-100 dark:bg-blue-900 h-14 items-center rounded border border-solid border-gray-300 p-4"
     >
       <div class="flex items-center">
         <!-- Sección Cliente -->
-        <p class="pl-1 mr-2">Cliente:</p>
+        <p class="pl-1 mr-2 dark:text-white">Cliente:</p>
 
         @if (customerSelected().cliente_id) {
         <p class="mb-0 text-gray-500 dark:text-gray-400 text-sm">
@@ -45,7 +45,7 @@ import { NewEditCustomerComponent } from '../new-edit-customer/new-edit-customer
         <button
           (click)="openDialogNewEdit('add')"
           type="button"
-          class="w-30 ml-4 mt-2 text-gray-700 hover:text-white border border-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-500 dark:text-gray-500 dark:hover:text-white dark:hover:bg-gray-500 dark:focus:ring-gray-800"
+          class="w-30 ml-4 mt-2 text-gray-700 hover:text-white border border-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-200 dark:text-gray-200 dark:hover:text-white dark:hover:bg-gray-500 dark:focus:ring-gray-800"
         >
           <span class="font-extrabold pt-1">+</span>
           Nuevo

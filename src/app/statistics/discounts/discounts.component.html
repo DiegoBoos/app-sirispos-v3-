@@ -1,11 +1,11 @@
 <div class="w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
-    <h1 class="pb-4 font-bold text-xl"><a [routerLink]="['/dashboard/statistics']" routerLinkActive="router-link-active"
-        class="cursor-pointer underline">Estadísticas</a></h1>
+    <h1 class="pb-4 font-bold text-xl dark:text-white"><a [routerLink]="['/dashboard/statistics']"
+            routerLinkActive="router-link-active" class="cursor-pointer underline">Estadísticas</a></h1>
 
-         <!-- Para activar el uso de la signal -->
-         <span class="hidden">{{isLoading()}}</span>
+    <!-- Para activar el uso de la signal -->
+    <span class="hidden">{{isLoading()}}</span>
 
-    <h2 class="text-center text-xl text-gray-500 ">Estadística de descuentos al pago</h2>
+    <h2 class="text-center text-xl text-gray-500 dark:text-gray-200">Estadística de descuentos al pago</h2>
     <br>
     <div class="flex justify-between mb-5">
         <div class="grid gap-4 grid-cols-2">
@@ -22,8 +22,10 @@
                         class="absolute z-10 invisible inline-block text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 w-72 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400">
                         <div class="p-3 space-y-2">
                             <h3 class="font-semibold text-gray-900 dark:text-white">Cantidad de Documentos</h3>
-                            <p>Número de documentos con descuentos realizados al pago con Nota Crédito <strong class="font-bold">{{countEmit() | number}}</strong> </p>
-                            <p>Número de documentos con descuentos realizados al pago SIN Nota Crédito <strong class="font-bold">{{countNotEmit() | number}}</strong></p>
+                            <p>Número de documentos con descuentos realizados al pago con Nota Crédito <strong
+                                    class="font-bold">{{countEmit() | number}}</strong> </p>
+                            <p>Número de documentos con descuentos realizados al pago SIN Nota Crédito <strong
+                                    class="font-bold">{{countNotEmit() | number}}</strong></p>
                         </div>
                         <div data-popper-arrow></div>
                     </div>
@@ -43,8 +45,10 @@
                         class="absolute z-10 invisible inline-block text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 w-72 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400">
                         <div class="p-3 space-y-2">
                             <h3 class="font-semibold text-gray-900 dark:text-white">Valor total de descuentos</h3>
-                            <p>Total de descuentos realizados al con Nota Crédito <strong class="font-bold">$ {{totalEmit() | number}}</strong> </p>
-                            <p>Total de descuentos realizados al pago SIN Nota Crédito <strong class="font-bold">$ {{totalNotEmit() | number}}</strong></p>
+                            <p>Total de descuentos realizados al con Nota Crédito <strong class="font-bold">$
+                                    {{totalEmit() | number}}</strong> </p>
+                            <p>Total de descuentos realizados al pago SIN Nota Crédito <strong class="font-bold">$
+                                    {{totalNotEmit() | number}}</strong></p>
                         </div>
                         <div data-popper-arrow></div>
                     </div>
@@ -53,21 +57,20 @@
             </div>
         </div>
         <div class="flex items-center">
-            <span class="mx-2 text-gray-500">Desde</span>
+            <span class="mx-2 text-gray-500 dark:text-gray-300">Desde</span>
             <div class="relative">
                 <input name="dateIni" type="date" [(ngModel)]="dateFrom" [max]="maxDate | date:'yyyy-MM-dd'"
-                    class="mt-1 w-36 pt-0 peer block min-h-[auto] rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                    class="mt-1 w-36 pt-0 peer block min-h-[auto] rounded-lg border border-blue-300 bg-blue-50 px-3 py-2 leading-[1.6] outline-none transition-all duration-200 ease-linear focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-blue-700 dark:bg-gray-700 dark:text-white dark:focus:border-blue-500"
                     placeholder="Select date start">
             </div>
-            <span class="mx-2 text-gray-500">hasta</span>
+            <span class="mx-2 text-gray-500 dark:text-gray-300">hasta</span>
             <div class="relative">
-
                 <input name="dateTo" type="date" [min]="dateFrom" [max]="maxDate | date:'yyyy-MM-dd'"
                     [(ngModel)]="dateTo"
-                    class="mt-1 w-36 pt-0 peer block min-h-[auto] rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                    class="mt-1 w-36 pt-0 peer block min-h-[auto] rounded-lg border border-blue-300 bg-blue-50 px-3 py-2 leading-[1.6] outline-none transition-all duration-200 ease-linear focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-blue-700 dark:bg-gray-700 dark:text-white dark:focus:border-blue-500"
                     placeholder="Select date end">
             </div>
-            <div class="relative">
+            <div class="relative pl-4">
 
                 <button type="button" (click)="loadData()"
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -79,23 +82,17 @@
     </div>
     @if (count()>0) {
     <div id="line-chart">
-        <apx-chart [series]="series()" [chart]="chartOptions.chart!" 
-            [plotOptions]="chartOptions.plotOptions!"
-            [xaxis]="xaxis()!"
-            [yaxis]="chartOptions.yaxis!"
-            [title]="chartOptions.title!"
-            [dataLabels]="chartOptions.dataLabels!"
-            [stroke]="chartOptions.stroke!"
-            [fill]="chartOptions.fill!"
-            [colors]="chartOptions.colors!"
-        >
-            
+        <apx-chart [series]="series()" [chart]="chartOptions.chart!" [plotOptions]="chartOptions.plotOptions!"
+            [xaxis]="xaxis()!" [yaxis]="chartOptions.yaxis!" [title]="chartOptions.title!"
+            [dataLabels]="chartOptions.dataLabels!" [stroke]="chartOptions.stroke!" [fill]="chartOptions.fill!"
+            [colors]="chartOptions.colors!">
+
         </apx-chart>
     </div>
 
     <div class="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between mt-2.5">
         <div class="pt-5">
-            <a  (click)="exportData()"
+            <a (click)="exportData()"
                 class="cursor-pointer px-5 py-2.5 text-sm font-medium text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                 <svg class="w-3.5 h-3.5 text-white me-2 rtl:rotate-180" aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 20">

@@ -1,250 +1,263 @@
-<h2 class="text-center text-gray-700">Separación de Pedidos</h2>
-<div role="button" tabindex="0"
-    class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus:text-blue-900 active:text-blue-900 outline-none">
-    <div>
-        <svg (click)="exit()" class="text-blue-600 icon icon-tabler icon-tabler-logout-2" width="24" height="24"
-            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round"
-            stroke-linejoin="round">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M10 8v-2a2 2 0 0 1 2 -2h7a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-2" />
-            <path d="M15 12h-12l3 -3" />
-            <path d="M6 15l-3 -3" />
-        </svg>
+<div class="w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
+    <h2 class="text-center text-gray-700">Separación de Pedidos</h2>
+    <div role="button" tabindex="0"
+        class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus:text-blue-900 active:text-blue-900 outline-none">
+        <div>
+            <svg (click)="exit()" class="text-blue-600 icon icon-tabler icon-tabler-logout-2" width="24" height="24"
+                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M10 8v-2a2 2 0 0 1 2 -2h7a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-2" />
+                <path d="M15 12h-12l3 -3" />
+                <path d="M6 15l-3 -3" />
+            </svg>
 
-    </div>
+        </div>
 
-    <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Buscar</label>
-    <div class="relative w-full pr-4">
-        <div class="absolute inset-y-0 start-2 flex items-center ps-3 pointer-events-none">
-            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                fill="none" viewBox="0 0 20 20">
+        <label for="default-search"
+            class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Buscar</label>
+        <div class="relative w-full pr-4">
+            <div class="absolute inset-y-0 start-2 flex items-center ps-3 pointer-events-none">
+                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                </svg>
+            </div>
+            <div class="pl-2 space-y-4">
+                <input type="search" id="default-search" [(ngModel)]="orden" name="default-search"
+                    class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="No. orden..." required>
+                <button type="submit" (click)="searchPedido()"
+                    class="text-white absolute end-6 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Buscar</button>
+            </div>
+        </div>
+
+        @if(pedido() && pedido()?.estado === 'Z' && pedido()?.pendientes!.length === 0) {
+        <button (click)="sendPedido()"
+            class="mr-4 relative text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+            type="button">
+            Enviar
+        </button>
+        }
+
+        <!-- Dropdown menu -->
+        <!-- <div id="dropdownHover1"
+                class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-36 dark:bg-gray-700">
+                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownHoverButton">
+                    @for (pedido of pedidoService.pedidosFinalizados() ; track pedido.pedidoId; let index = $index) {
+                    <li (click)="loadPedido(pedido)">
+                        <span
+                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{pedido.orden}}</span>
+                    </li>
+                    }
+        
+                </ul>
+            </div> -->
+
+        <button id="dropdownHoverButton" data-dropdown-toggle="dropdownHover2" data-dropdown-trigger="hover"
+            class="pr-4 relative text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            type="button">Pendientes <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                fill="none" viewBox="0 0 10 6">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                    d="m1 1 4 4 4-4" />
+            </svg>
+
+            <div
+                class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900">
+                {{pedidosFinalizados().length}}</div>
+        </button>
+
+        <div class="pl-4" (click)="emitSocketFinalizados()" title="Actualizar">
+            <svg xmlns="http://www.w3.org/2000/svg" class=" text-red-500 icon icon-tabler icon-tabler-refresh"
+                width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" />
+                <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" />
             </svg>
         </div>
-        <div class="pl-2 space-y-4">
-            <input type="search" id="default-search" [(ngModel)]="orden" name="default-search"
-                class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="No. orden..." required>
-            <button type="submit" (click)="searchPedido()"
-                class="text-white absolute end-6 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Buscar</button>
+
+        <div class="pl-4" (click)="emitSocketReset()" title="Inicializar">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-restore" width="24" height="24"
+                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M3.06 13a9 9 0 1 0 .49 -4.087" />
+                <path d="M3 4.001v5h5" />
+                <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+            </svg>
         </div>
-    </div>
 
-    @if(pedido() && pedido()?.estado === 'Z' && pendientes().length === 0) {
-    <button (click)="sendPedido()"
-        class="mr-4 relative text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-        type="button">
-        Enviar
-    </button>
-    }
 
-    <!-- Dropdown menu -->
-    <!-- <div id="dropdownHover1"
-            class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-36 dark:bg-gray-700">
+        <!-- Dropdown menu -->
+        <div id="dropdownHover2"
+            class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-96 dark:bg-gray-700">
             <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownHoverButton">
                 @for (pedido of pedidoService.pedidosFinalizados() ; track pedido.pedidoId; let index = $index) {
                 <li (click)="loadPedido(pedido)">
                     <span
-                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{pedido.orden}}</span>
+                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{pedido.orden}}
+                        -
+                        {{pedido!.cliente.tercero?.nombre1}}&nbsp;{{pedido!.cliente.tercero?.apellido1}}
+                        ({{pedido!.cliente.nombreComercial}})&nbsp;-&nbsp;{{pedido!.cliente.tercero?.direccion1}}&nbsp;{{pedido!.cliente.tercero?.direccion2}}
+                        ({{pedido!.cliente.tercero?.municipio?.nombre}})
+                        &nbsp;Vendedor: {{pedido!.vendedor.nombre}}
+                    </span>
                 </li>
                 }
-    
+
             </ul>
-        </div> -->
+        </div>
 
-    <button id="dropdownHoverButton" data-dropdown-toggle="dropdownHover2" data-dropdown-trigger="hover"
-        class="pr-4 relative text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        type="button">Pendientes <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-            fill="none" viewBox="0 0 10 6">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="m1 1 4 4 4-4" />
+
+
+    </div>
+
+
+    @if (pedido() && pedido()?.estado === 'V') {
+
+    <div class="flex items-center p-4 text-sm text-gray-800 rounded-lg bg-gray-50 dark:bg-gray-800 dark:text-gray-300"
+        role="alert">
+        <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor" viewBox="0 0 20 20">
+            <path
+                d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
         </svg>
+        <span class="sr-only">Info</span>
+        <div>
+            <span class="font-medium">No. Orden:&nbsp;{{pedido()!.orden}}</span> -
+            {{pedido()!.cliente.tercero?.nombre1}}&nbsp;{{pedido()!.cliente.tercero?.apellido1}}
+            ({{pedido()!.cliente.nombreComercial}})&nbsp;-&nbsp;{{pedido()!.cliente.tercero?.direccion1}}&nbsp;{{pedido()!.cliente.tercero?.direccion2}}
+            ({{pedido()!.cliente.tercero?.municipio?.nombre}})
+            &nbsp;Vendedor: {{pedido()!.vendedor.nombre}}
+        </div>
+    </div>
+    }
 
-        <div
-            class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900">
-            {{pedidosFinalizados().length}}</div>
-    </button>
 
-    <div class="pl-4" (click)="emitSocketFinalizados()" title="Actualizar">
-        <svg xmlns="http://www.w3.org/2000/svg" class=" text-red-500 icon icon-tabler icon-tabler-refresh" width="24"
-            height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round"
-            stroke-linejoin="round">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" />
-            <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" />
+    <div class="mb-1 border-b border-gray-200 dark:border-gray-700">
+        <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-tab"
+            data-tabs-toggle="#default-tab-content" role="tablist">
+            <li class="me-2" role="presentation">
+                <button class="inline-block p-4 border-b-2 rounded-t-lg" id="basic-tab" data-tabs-target="#basic"
+                    type="button" role="tab" aria-controls="basic" aria-selected="false">Pendientes</button>
+            </li>
+            <li class="me-2" role="presentation">
+                <button
+                    class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                    id="advance-tab" data-tabs-target="#advance" type="button" role="tab" aria-controls="advance"
+                    aria-selected="false">Separados</button>
+            </li>
+        </ul>
+    </div>
+    <div id="default-tab-content">
+        <div class="hidden p-0 rounded-lg bg-gray-50 dark:bg-gray-800" id="basic" role="tabpanel"
+            aria-labelledby="basic-tab">
+            <ul class="h-70 py-2 overflow-y-scroll text-gray-700 dark:text-gray-200">
+                @for (item of pedido()?.pendientes ; track item.pedidodetalleId; let index = $index) {
+
+                <li (click)="toSeparado(item)" class="pb-3 sm:pb-0 cursor-pointer bg-blue-100"
+                    [ngClass]="{'bg-blue-200': index % 2 === 0 }">
+                    <div class="flex items-center space-x-4 rtl:space-x-reverse">
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-600">
+                                [{{item.producto.codigoInterno}}]&nbsp;{{item.producto.descripcion}}
+                                {{item.producto.descripcionAdicional}}
+                            </p>
+                            <p class="text-sm text-gray-500 truncate dark:text-gray-500">
+                                Marca:&nbsp;{{item.producto.marca.nombre}}
+                                @if (item.producto.fil1) {
+                                &nbsp;|&nbsp;Fil:&nbsp;{{item.producto.fil1}}
+                                }
+                                @if (item.producto.col1) {
+                                &nbsp;Col:&nbsp;{{item.producto.col1}}
+                                }
+                                @if (item.producto.est1) {
+                                &nbsp;Est:&nbsp;{{item.producto.est1}}
+                                }
+                            </p>
+                        </div>
+                        <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-gray-600">
+                            {{item.cantidad}}&nbsp;Unid.&nbsp;-&nbsp;{{item.cantidadFraccion}}&nbsp;Frac.
+                            <!-- <button type="button" (click)="editCustomer(detail.cliente_id)"
+                                    class="px-3 py-2 text-xs font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Editar</button> -->
+
+                        </div>
+                    </div>
+                </li>
+                }
+
+            </ul>
+
+        </div>
+
+        <div class="hidden p-0 rounded-lg bg-gray-50 dark:bg-gray-800" id="advance" role="tabpanel"
+            aria-labelledby="advance-tab">
+
+            <ul class="h-70 py-2 overflow-y-scroll text-gray-700 dark:text-gray-200">
+                @for (item of pedido()?.separados ; track item.pedidodetalleId; let index = $index) {
+
+                <li (click)="toPendiente(item)" class="pb-3 sm:pb-0 cursor-pointer bg-green-100"
+                    [ngClass]="{'bg-green-200': index % 2 === 0 }">
+                    <div class="flex items-center space-x-4 rtl:space-x-reverse">
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-600">
+                                [{{item.producto.codigoInterno}}]&nbsp;{{item.producto.descripcion}}
+                                {{item.producto.descripcionAdicional}}
+                            </p>
+                            <p class="text-sm text-gray-600 truncate dark:text-gray-400">
+                                Marca:&nbsp;{{item.producto.marca.nombre}}
+                                @if (item.producto.fil1) {
+                                &nbsp;|&nbsp;Fil:&nbsp;{{item.producto.fil1}}
+                                }
+                                @if (item.producto.col1) {
+                                &nbsp;Col:&nbsp;{{item.producto.col1}}
+                                }
+                                @if (item.producto.est1) {
+                                &nbsp;Est:&nbsp;{{item.producto.est1}}
+                                }
+                            </p>
+                        </div>
+                        <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-gray-600">
+                            {{item.cantidad}}&nbsp;Unid.&nbsp;-&nbsp;{{item.cantidadFraccion}}&nbsp;Frac.
+                            <!-- <button type="button" (click)="editCustomer(detail.cliente_id)"
+                            class="px-3 py-2 text-xs font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Editar</button> -->
+
+                        </div>
+                    </div>
+                </li>
+                }
+
+            </ul>
+        </div>
+    </div>
+
+
+    @if (message() !== '') {
+    <div class="flex p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+        role="alert">
+        <svg class="flex-shrink-0 inline w-4 h-4 me-3 mt-[2px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor" viewBox="0 0 20 20">
+            <path
+                d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
         </svg>
-    </div>
+        <span class="sr-only">Danger</span>
+        <div>
+            <span class="font-medium">{{message()}}</span>
+            @if (pedido()) {
+            <ul class="mt-1.5 list-disc list-inside">
+                <li>No. Orden: {{pedido()?.orden}}</li>
+                <li>Cliente:
+                    {{pedido()?.cliente?.tercero?.nombre1}}&nbsp;{{pedido()?.cliente?.tercero?.apellido1}}&nbsp;({{pedido()?.cliente?.nombreComercial}})
+                </li>
+                <li>Fecha: {{pedido()?.fecha | date:'yyyy-mm-dd hh:mm'}}</li>
+                <li>Elaboro: {{pedido()?.user?.nombre}}</li>
+            </ul>
 
-    <div class="pl-4" (click)="emitSocketReset()" title="Inicializar">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-restore" width="24" height="24"
-            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round"
-            stroke-linejoin="round">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M3.06 13a9 9 0 1 0 .49 -4.087" />
-            <path d="M3 4.001v5h5" />
-            <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
-        </svg>
-    </div>
-
-
-    <!-- Dropdown menu -->
-    <div id="dropdownHover2"
-        class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-36 dark:bg-gray-700">
-        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownHoverButton">
-            @for (pedido of pedidoService.pedidosFinalizados() ; track pedido.pedidoId; let index = $index) {
-            <li (click)="loadPedido(pedido)">
-                <span
-                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{pedido.orden}}</span>
-            </li>
             }
-
-        </ul>
+        </div>
     </div>
-
-
+    }
 
 </div>
-
-
-@if (pedido() && pedido()?.estado === 'Z') {
-
-<div class="flex items-center p-4 text-sm text-gray-800 rounded-lg bg-gray-50 dark:bg-gray-800 dark:text-gray-300"
-    role="alert">
-    <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-        fill="currentColor" viewBox="0 0 20 20">
-        <path
-            d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-    </svg>
-    <span class="sr-only">Info</span>
-    <div>
-        <span class="font-medium">No. Orden:&nbsp;{{pedido()!.orden}}</span> -
-        {{pedido()!.cliente.tercero?.nombre1}}&nbsp;{{pedido()!.cliente.tercero?.apellido1}}
-        ({{pedido()!.cliente.nombreComercial}})
-    </div>
-</div>
-}
-
-
-<div class="mb-1 border-b border-gray-200 dark:border-gray-700">
-    <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-tab"
-        data-tabs-toggle="#default-tab-content" role="tablist">
-        <li class="me-2" role="presentation">
-            <button class="inline-block p-4 border-b-2 rounded-t-lg" id="basic-tab" data-tabs-target="#basic"
-                type="button" role="tab" aria-controls="basic" aria-selected="false">Pendientes</button>
-        </li>
-        <li class="me-2" role="presentation">
-            <button
-                class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-                id="advance-tab" data-tabs-target="#advance" type="button" role="tab" aria-controls="advance"
-                aria-selected="false">Separados</button>
-        </li>
-    </ul>
-</div>
-<div id="default-tab-content">
-    <div class="hidden p-0 rounded-lg bg-gray-50 dark:bg-gray-800" id="basic" role="tabpanel"
-        aria-labelledby="basic-tab">
-        <ul class="h-70 py-2 overflow-y-scroll text-gray-700 dark:text-gray-200">
-            @for (item of pendientes() ; track item.pedidodetalleId; let index = $index) {
-
-            <li (click)="toSeparado(item)" class="pb-3 sm:pb-0 cursor-pointer bg-blue-100"
-                [ngClass]="{'bg-blue-200': index % 2 === 0 }">
-                <div class="flex items-center space-x-4 rtl:space-x-reverse">
-                    <div class="flex-1 min-w-0">
-                        <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                            [{{item.producto.codigoInterno}}]&nbsp;{{item.producto.descripcion}}
-                            {{item.producto.descripcionAdicional}}
-                        </p>
-                        <p class="text-sm text-gray-500 truncate dark:text-gray-400">
-                            Marca:&nbsp;{{item.producto.marca.nombre}}
-                            @if (item.producto.fil1) {
-                            &nbsp;|&nbsp;Fil:&nbsp;{{item.producto.fil1}}
-                            }
-                            @if (item.producto.col1) {
-                            &nbsp;Col:&nbsp;{{item.producto.col1}}
-                            }
-                            @if (item.producto.est1) {
-                            &nbsp;Est:&nbsp;{{item.producto.est1}}
-                            }
-                        </p>
-                    </div>
-                    <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                        {{item.cantidad}}&nbsp;Unid.&nbsp;-&nbsp;{{item.cantidadFraccion}}&nbsp;Frac.
-                        <!-- <button type="button" (click)="editCustomer(detail.cliente_id)"
-                                class="px-3 py-2 text-xs font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Editar</button> -->
-
-                    </div>
-                </div>
-            </li>
-            }
-
-        </ul>
-
-    </div>
-
-    <div class="hidden p-0 rounded-lg bg-gray-50 dark:bg-gray-800" id="advance" role="tabpanel"
-        aria-labelledby="advance-tab">
-
-        <ul class="h-70 py-2 overflow-y-scroll text-gray-700 dark:text-gray-200">
-            @for (item of separados() ; track item.pedidodetalleId; let index = $index) {
-
-            <li (click)="toPendiente(item)" class="pb-3 sm:pb-0 cursor-pointer bg-green-100"
-                [ngClass]="{'bg-green-200': index % 2 === 0 }">
-                <div class="flex items-center space-x-4 rtl:space-x-reverse">
-                    <div class="flex-1 min-w-0">
-                        <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                            [{{item.producto.codigoInterno}}]&nbsp;{{item.producto.descripcion}}
-                            {{item.producto.descripcionAdicional}}
-                        </p>
-                        <p class="text-sm text-gray-500 truncate dark:text-gray-400">
-                            Marca:&nbsp;{{item.producto.marca.nombre}}
-                            @if (item.producto.fil1) {
-                            &nbsp;|&nbsp;Fil:&nbsp;{{item.producto.fil1}}
-                            }
-                            @if (item.producto.col1) {
-                            &nbsp;Col:&nbsp;{{item.producto.col1}}
-                            }
-                            @if (item.producto.est1) {
-                            &nbsp;Est:&nbsp;{{item.producto.est1}}
-                            }
-                        </p>
-                    </div>
-                    <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                        {{item.cantidad}}&nbsp;Unid.&nbsp;-&nbsp;{{item.cantidadFraccion}}&nbsp;Frac.
-                        <!-- <button type="button" (click)="editCustomer(detail.cliente_id)"
-                        class="px-3 py-2 text-xs font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Editar</button> -->
-
-                    </div>
-                </div>
-            </li>
-            }
-
-        </ul>
-    </div>
-</div>
-
-
-@if (message() !== '') {
-<div class="flex p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-    <svg class="flex-shrink-0 inline w-4 h-4 me-3 mt-[2px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-        fill="currentColor" viewBox="0 0 20 20">
-        <path
-            d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-    </svg>
-    <span class="sr-only">Danger</span>
-    <div>
-        <span class="font-medium">{{message()}}</span>
-        @if (pedido()) {
-        <ul class="mt-1.5 list-disc list-inside">
-            <li>No. Orden: {{pedido()?.orden}}</li>
-            <li>Cliente:
-                {{pedido()?.cliente?.tercero?.nombre1}}&nbsp;{{pedido()?.cliente?.tercero?.apellido1}}&nbsp;({{pedido()?.cliente?.nombreComercial}})
-            </li>
-            <li>Fecha: {{pedido()?.fecha | date:'yyyy-mm-dd hh:mm'}}</li>
-            <li>Elaboro: {{pedido()?.user?.nombre}}</li>
-        </ul>
-
-        }
-    </div>
-</div>
-}

@@ -1,6 +1,6 @@
 <div class="w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
     <div class="p-4 md:p-5">
-        <h1 class="pb-4 font-bold text-xl"><a [routerLink]="['/dashboard/messengers']"
+        <h1 class="pb-4 font-bold text-xl dark:text-white"><a [routerLink]="['/dashboard/messengers']"
                 routerLinkActive="router-link-active" class="cursor-pointer underline">Mensajería</a> - Mensajeros</h1>
         <form class="space-y-4" action="#">
             <label for="default-search"
@@ -26,7 +26,7 @@
                 
                 <button data-tooltip-target="tooltip-bottom-register" data-tooltip-placement="bottom" type="button"
                     (click)="newMessenger()"
-                    class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                     <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -43,7 +43,7 @@
 
                 <!-- <button data-tooltip-target="tooltip-bottom" data-tooltip-placement="bottom" type="button"
                     (click)="listMessengerDownload()"
-                    class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                     <svg class="w-6 h-6 text-white-800 dark:text-white" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -71,7 +71,7 @@
             <div
                 class="mt-4 min-h-[410px] max-h-52  overflow-y-auto pt-2 relative overflow-x-auto shadow-md sm:rounded-lg">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-blue-700 dark:text-gray-200">
 
                         <tr>
 
@@ -110,7 +110,7 @@
 
                             <td class="px-6 py-2">
                                 <span (click)="editMessenger(messenger)"
-                                    class="mr-2 p-1 cursor-pointer rounded text-white font-bold bg-green-500">
+                                    class="mr-2 p-1 cursor-pointer rounded text-white font-bold bg-blue-500">
                                     Editar
                                 </span>
                                 <span (click)="licenseMessenger(messenger)"

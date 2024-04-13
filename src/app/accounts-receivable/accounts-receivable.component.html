@@ -1,22 +1,39 @@
-<div class="w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
-    <h1 class="pb-4 font-bold text-xl">Cuentas por Cobrar</h1>
+<!-- <div class="w-full bg-white rounded-lg shadow dark:bg-gray-800 dark:text-white p-4 md:p-6">
+    <h1 class="pb-4 font-bold text-xl text-blue-600 dark:text-white">Cuentas por Cobrar</h1>
     <div id="mega-menu-full-dropdown"
-        class="mt-1 bg-white border-gray-200 shadow-sm border-y dark:bg-gray-800 dark:border-gray-600">
+    class="grid max-w-screen-xl px-4 py-5 mx-auto text-gray-900 dark:text-white sm:grid-cols-2 md:grid-cols-3 md:px-6">
         <div
             class="grid max-w-screen-xl px-4 py-5 mx-auto text-gray-900 dark:text-white sm:grid-cols-2 md:grid-cols-3 md:px-6">
-
             <ul aria-labelledby="mega-menu-full-dropdown-button">
-
                 <li>
                     <a [routerLink]="['/dashboard/customer-payments']" routerLinkActive="router-link-active"
-                        class="block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <div class="font-semibold">Pagos</div>
-                        <span class="text-sm text-gray-500 dark:text-gray-400">Módulo de pagos</span>
+                        class="block p-3 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-800">
+                        <div class="font-semibold text-blue-700 dark:text-blue-400">Pagos</div>
+                        <span class="text-sm text-gray-500 dark:text-blue-200">Módulo de pagos</span>
                     </a>
                 </li>
-
             </ul>
+        </div>
+    </div>
+</div> -->
 
+
+<div class="w-full bg-white rounded-lg shadow dark:bg-gray-800 dark:text-white p-4 md:p-6">
+    <h1 class="pb-4 font-bold text-xl text-blue-600 dark:text-white">Cuentas por Cobrar</h1>
+    <div id="mega-menu-full-dropdown"
+        class="mt-1 bg-blue-50 border-blue-200 shadow-sm border-y dark:bg-blue-900 dark:border-blue-700">
+        <div
+            class="grid max-w-screen-xl px-4 py-5 mx-auto text-gray-900 dark:text-white sm:grid-cols-2 md:grid-cols-3 md:px-6">
+            <ul aria-labelledby="mega-menu-full-dropdown-button">
+                <li>
+                    <a [routerLink]="['/dashboard/customer-payments']" routerLinkActive="router-link-active"
+                        class="block p-3 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-800">
+                        <div class="font-semibold text-blue-700 dark:text-blue-400">Pagos</div>
+                        <span class="text-sm text-gray-500 dark:text-blue-200">Módulo de pagos</span>
+                    </a>
+                </li>
+            </ul>
+            
         </div>
     </div>
 </div>
