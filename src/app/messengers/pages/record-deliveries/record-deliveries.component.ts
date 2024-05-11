@@ -80,6 +80,8 @@ export default class RecordDeliveriesComponent {
         format(new Date(), 'yyyy-MM-dd')
       )
       .subscribe((data) => {
+        console.log(data);
+        
         const messengerEvents: MessengerEvent[] = data;
 
         messengerEvents.map((i) => {

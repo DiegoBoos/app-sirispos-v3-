@@ -112,43 +112,43 @@
 
 
         </form>
-        <div class="relative">
+        <div class="relative" *blockUI="'load-data'">
 
             <div class="mt-4 min-h-[410px] max-h-52  overflow-y-auto pt-2 relative overflow-x-auto shadow-md sm:rounded-lg"
-                *blockUI="'load-data'">
+                >
                 <table class="w-full text-xs text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
 
                         <tr>
 
-                            <th scope="col" class="px-6 py-1">
+                            <th scope="col" class="px-2 py-1">
                                 Fecha
                             </th>
-                            <th scope="col" class="px-6 py-2">
+                            <th scope="col" class="px-2 py-2">
                                 No. Orden
                             </th>
-                            <th scope="col" class="px-6 py-2">
+                            <th scope="col" class="px-3 py-2">
                                 Identificación
                             </th>
                             <th scope="col" class="px-6 py-2">
                                 Cliente
                             </th>
-                            <th scope="col" class="px-6 py-2">
+                            <th scope="col" class="px-4 py-2">
                                 Vendedor
                             </th>
                             <th scope="col" class="px-6 py-2">
-                                Separador
+                                Separación
                             </th>
                             <th scope="col" class="text-right px-6 py-2">
                                 Valor
                             </th>
-                            <th scope="col" class="px-6 py-2">
+                            <th scope="col" class="px-2 py-2">
                                 Status
                             </th>
-                            <th scope="col" class="px-6 py-2">
+                            <!-- <th scope="col" class="px-2 py-2">
                                 Origen
-                            </th>
-                            <th scope="col" class="px-6 py-2">
+                            </th> -->
+                            <th scope="col" class="px-3 py-2">
 
                             </th>
                         </tr>
@@ -160,32 +160,41 @@
                             [ngClass]="{
                         'bg-red-100 hover:bg-red-50': pedido.estado === 'A',
                       }">
-                            <td class="px-6 py-1">
+                            <td class="px-2 py-1">
                                 {{pedido.fecha | date: 'yyyy-MM-dd':'+0:00':'es-CO'}}
                             </td>
-                            <td class="px-6 py-2 font-extrabold">
+                            <td class="px-2 py-2 font-extrabold">
                                 {{pedido.orden}}
                             </td>
-                            <td class="px-6 py-2">
+                            <td class="px-3 py-2">
                                 {{pedido.cliente.tercero?.tipoDocumento?.codigoAlterno}}&nbsp;{{pedido.cliente.tercero?.identificacion}}
                             </td>
                             <td class="px-6 py-2">
-                                {{pedido.cliente.nombreComercial}}
+                                {{pedido.cliente.tercero?.nombre1 || ''}} {{pedido.cliente.tercero?.apellido1  || ''}} ({{pedido.cliente.nombreComercial}})
                             </td>
-                            <td class="px-6 py-2">
+                            <td class="px-4 py-2">
                                 {{pedido.vendedor.nombre}}
                             </td>
                             <td class="px-6 py-2">
-                                {{pedido.userSeparation?.nombre}}
+                                
+                                {{pedido.userSeparation?.nombre}} 
+                                @if (pedido.separationTimeEnd) {
+                                   
+                                    <p>
+                                        ({{pedido.separationTimeStart | date: 'yyyy-mm-dd H:mm'}} hasta {{pedido.separationTimeEnd  | date: 'yyyy-mm-dd H:mm'}})
+
+                                    </p>
+                                 
+                                }
                             </td>
                             <td class="text-right px-6 py-2 font-extrabold">
                                 $ {{pedido.subtotal | number}}
                             </td>
-                            <td class="px-6 py-2">
+                            <td class="px-2 py-2">
                                 {{ pedido.estado | statuspedido }}
                             </td>
 
-                            <td class="text-center px-6 py-1">
+                            <!-- <td class="text-center px-2 py-1">
                                 @if (pedido.fromMovil === 1) {
                                 <div title="Aplicación Móvil">
                                     <svg class="icon icon-tabler icon-tabler-device-mobile-pin" width="24" height="24"
@@ -216,9 +225,9 @@
                                     </svg>
                                 </div>
                                 }
-                            </td>
+                            </td> -->
 
-                            <td class="flex items-center px-6 py-2">
+                            <td class="flex items-center px-3 py-2">
                                 <span (click)="printPedido(pedido.pedidoId,pedido.orden)"
                                     class="mr-2 p-1 cursor-pointer rounded text-white font-bold bg-blue-500">
                                     PDF

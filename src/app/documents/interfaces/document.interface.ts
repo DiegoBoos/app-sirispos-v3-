@@ -7,6 +7,10 @@ export interface DocumentEmit {
     dueDate:             Date;
     documentType:        string;
     documentTypeCode:    string;
+    sinvoicePeriodStartDate? :Date;
+    sinvoicePeriodStartTime? :Date;
+    sinvoicePeriodEndDate? :Date;
+    sinvoicePeriodEndTime? :Date;
     currency:            string;
     operationType:       OperationType;
     customizationId:     string; // Aplica solo a Salud

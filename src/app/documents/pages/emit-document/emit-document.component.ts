@@ -9,7 +9,7 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { format } from 'date-fns';
+import { endOfMonth, format, startOfMonth, subMonths } from 'date-fns';
 
 import { SearchParam } from '@shared/interfaces/search-param.interface';
 import { DiscrepancyResponse } from '@shared/models/discrepancy-response.model';
@@ -135,6 +135,19 @@ export default class EmitDocumentComponent implements OnInit {
   public minDate: Date = new Date();
   public maxDate: Date = new Date();
 
+  // public codeDocument = signal('');
+  public codeDocument = '';
+
+  public dateFrom: string = format(startOfMonth(subMonths(new Date(), 1)),'yyyy-MM-dd');
+  public dateTo: string = format(endOfMonth(subMonths(new Date(), 1)),'yyyy-MM-dd');
+
+  public hourFrom: string = '12:00';
+  public hourTo: string = '12:00';
+  // public dateFrom: string = format(
+  //   new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1),
+  //   'yyyy-MM-dd'
+  // );
+  // public dateTo: string = format(new Date(), 'yyyy-MM-dd');
   public taxSchemesGenerics = computed(() => {
     const taxSchemas = this.taxSchemesService.taxSchemesGenerics();
     taxSchemas.forEach((i) => {
@@ -188,6 +201,11 @@ export default class EmitDocumentComponent implements OnInit {
       delivery: 0,
       notes: [''],
       orderReference: [''],
+
+      sinvoicePeriodStartDate: null,
+      sinvoicePeriodStartTime: null,
+      sinvoicePeriodEndDate: null,
+      sinvoicePeriodEndTime: null,
     },
     {
       validators: [
@@ -206,7 +224,7 @@ export default class EmitDocumentComponent implements OnInit {
 
   groupValues = computed(() => {
     // this.#documentItems();
-    console.log(this.#documentItems());
+    // console.log(this.#documentItems());
 
     this.form.controls['documentItems'].setValue(this.#documentItems());
     return this.calculateTotal();
@@ -290,6 +308,11 @@ export default class EmitDocumentComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    this.form.controls['sinvoicePeriodStartDate'].setValue(this.dateFrom);
+    this.form.controls['sinvoicePeriodEndDate'].setValue(this.dateTo);
+    this.form.controls['sinvoicePeriodStartTime'].setValue(this.hourFrom);
+    this.form.controls['sinvoicePeriodEndTime'].setValue(this.hourTo);
     initFlowbite();
   }
 
@@ -300,6 +323,10 @@ export default class EmitDocumentComponent implements OnInit {
 
   onChange(e: any) {
     const code = e.value;
+
+    // this.codeDocument.set(code);
+    this.codeDocument = code;
+    
     this.form.controls['discrepancyResponse'].setValue(null);
     this.invoiceType = this.invoiceTypes().filter(
       (i) => i.operationTypes.filter((j) => j.code === code)[0]
@@ -616,11 +643,9 @@ export default class EmitDocumentComponent implements OnInit {
       customizationId: '',
       discrepancyResponse: data.discrepancyResponse,
       lineExtensionAmount: this.#totalsInvoice().subTotal,
-      taxExclusiveAmount:
-        this.#totalsInvoice().subTotal +
+      taxExclusiveAmount: this.#totalsInvoice().subTotal +
         this.#totalsInvoice().allowanceChangueTotal,
-      taxInclusiveAmount:
-        this.#totalsInvoice().subTotal +
+      taxInclusiveAmount: this.#totalsInvoice().subTotal +
         this.#totalsInvoice().allowanceChangueTotal +
         totalItemsTax +
         this.#totalsInvoice().totalGenericsTax,
@@ -638,8 +663,12 @@ export default class EmitDocumentComponent implements OnInit {
       orderReference: data.orderReference,
       buyer,
       seller,
+      sinvoicePeriodStartDate: this.codeDocument === '22'? data.sinvoicePeriodStartDate: null,
+      sinvoicePeriodStartTime: this.codeDocument === '22'? data.sinvoicePeriodStartTime: null,
+      sinvoicePeriodEndDate: this.codeDocument === '22'? data.sinvoicePeriodEndDate: null,
+      sinvoicePeriodEndTime: this.codeDocument === '22'? data.sinvoicePeriodEndTime: null,
     };
-    // console.log(document);
+
 
     this.documentService.createDocument(document).subscribe((resp: any) => {
       if (resp) {
