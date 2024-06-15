@@ -20,7 +20,7 @@
               {{pedido.cliente.tercero?.nombre1 || ''}} {{pedido.cliente.tercero?.apellido1  || ''}}
               {{pedido.cliente.tercero?.razonSocial1  || ''}} 
               ({{ pedido.cliente.nombreComercial }}) -
-              {{ pedido.cliente.direccion1 }}
+              {{ pedido.cliente.direccion1 }} {{ pedido.cliente.tercero?.municipio?.nombre }}
             </p>
             <p class="mb-0 text-gray-500 dark:text-gray-400 text-sm">
               <strong class="font-semibold text-gray-900 dark:text-white">

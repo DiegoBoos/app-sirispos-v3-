@@ -6,7 +6,7 @@ import {
   inject,
 } from '@angular/core';
 import { MapViewComponent } from './components/map-view/map-view.component';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { Pedido } from '../pedidos/interfaces/pedido.interface';
 import { User } from '../auth/interfaces/user.interface';
 
