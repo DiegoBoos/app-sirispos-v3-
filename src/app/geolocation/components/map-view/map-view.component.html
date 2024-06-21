@@ -7,28 +7,25 @@
                 class="mt-1 w-36 pt-0 peer block min-h-[auto] rounded-lg border border-blue-300 bg-blue-50 px-3 py-2 leading-[1.6] outline-none transition-all duration-200 ease-linear focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-blue-700 dark:bg-gray-700 dark:text-white dark:focus:border-blue-500"
                 placeholder="Select date end">
         </div>
-        <!-- <p class="pl-6">
-            <strong class="pr-2 pt-1 font-semibold text-gray-900 dark:text-white">
-                Vendedor
-            </strong>
-    
-        </p> -->
-        <div class="relative p-4">
-            <select name="vendedores"
-            [(ngModel)]="selectedVendedor"
-            (ngModelChange)="filterVendedores()"
-                class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        @if (vendedores().length>0) {
+         ∫
+            <div class="relative p-4">
+                <select name="vendedores"
+                [(ngModel)]="selectedVendedor"
+                (ngModelChange)="filterVendedores()"
+                    class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                
+                    @for (vendedor of vendedores() ; track vendedor) {
             
-                @for (vendedor of vendedores() ; track vendedor) {
-        
-                <option [value]="vendedor">
-                    {{vendedor}}</option>
-        
-                }
-        
-            </select>
-
-        </div>
+                    <option [value]="vendedor">
+                        {{vendedor}}</option>
+            
+                    }
+            
+                </select>
+    
+            </div>
+        }
     </div>
 }
 

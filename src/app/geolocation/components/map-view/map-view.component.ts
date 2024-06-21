@@ -4,9 +4,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   Input,
-  OnInit,
   ViewChild,
-  computed,
   inject,
   signal,
 } from '@angular/core';
@@ -43,7 +41,7 @@ import { FormsModule } from '@angular/forms';
   `,
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class MapViewComponent implements OnInit, AfterViewInit {
+export class MapViewComponent implements AfterViewInit {
   private geolocationService = inject(GeolocationService);
   
   @ViewChild(MapInfoWindow) infoWindow?: MapInfoWindow;
@@ -71,27 +69,11 @@ export class MapViewComponent implements OnInit, AfterViewInit {
 
   @Input() pedido?: Pedido;
   #ubicaciones = signal<UbicacionInterface[]>([]);
-  // public ubicaciones = computed(() => {
-  //   if (this.selectedVendedor === 'Todos los vendedores') {
-  //     return this.#ubicaciones();
 
-  //   } else {
-  //     return this.#ubicaciones().filter(i=>i.user_nombre===this.selectedVendedor);
-
-  //   }
-  // })
   public ubicaciones = signal<UbicacionInterface[]>([]);
 
   ubicacion = signal<UbicacionInterface|undefined>(undefined);
 
-  ngOnInit(): void {
-    
-    // if (!this.pedido) {
-    //   this.getLocalizaciones();
-
-    // }
-   
-  }
 
   filterVendedores() {
     if (this.selectedVendedor === 'Todos los vendedores') {
@@ -100,10 +82,12 @@ export class MapViewComponent implements OnInit, AfterViewInit {
     } else {
       this.ubicaciones.set(this.#ubicaciones().filter(i=>i.user_nombre===this.selectedVendedor));
     }
+    this.center = { lat: this.ubicaciones()[0].latitud, lng: this.#ubicaciones()[0].longitud };
   }
 
   getLocalizaciones() {
     this.#ubicaciones.set([]);
+    this.ubicaciones.set([]);
     this.vendedores.set([]);
     this.geolocationService.getGeolocation(this.dateTo).subscribe((data: any)=>{
       this.#ubicaciones.set(data);
@@ -113,7 +97,7 @@ export class MapViewComponent implements OnInit, AfterViewInit {
         return arr.slice(0);
       });
       this.filterVendedores();
-      this.center = { lat: this.#ubicaciones()[0].latitud, lng: this.#ubicaciones()[0].longitud };
+     
     })
   }
 
